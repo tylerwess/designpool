@@ -30,9 +30,9 @@ export default async function JobsPage({
       <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">
         Design roles from public company boards. Each one is at most 30 days old.
       </p>
-      <div className="mt-8 lg:grid lg:grid-cols-[16.5rem_minmax(0,1fr)] lg:gap-10">
+      <div className="mt-8">
         <Filters filters={filters} />
-        <section>
+        <section className="mt-8">
           {board.status !== "ok" ? (
             <Surface className="p-5 text-sm leading-6">{board.message}</Surface>
           ) : (

@@ -1,9 +1,10 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/Button";
-import { fieldClassName, FieldLabel, FieldLegend } from "@/components/ui/Field";
-import { activeFilterCount, type JobFilters } from "@/lib/filters";
+import { controlClassName } from "@/components/ui/Field";
+import { activeFilterCount, filtersToQuery, type JobFilters } from "@/lib/filters";
 import {
   DISCIPLINES,
   EMPLOYMENT_TYPES,
@@ -15,202 +16,401 @@ import {
   WORK_TYPES,
 } from "@/lib/taxonomy";
 
-function CheckGroup({
-  legend,
+function hrefFor(filters: JobFilters): string {
+  const query = filtersToQuery(filters);
+  return query ? `/jobs?${query}` : "/jobs";
+}
+
+function choiceLabel(name: string, selected: string[]): string {
+  if (selected.length === 0) return name;
+  if (selected.length === 1) return selected[0];
+  return `${name} · ${selected.length}`;
+}
+
+function yearsLabel(filters: JobFilters): string {
+  const { yearsMin, yearsMax, includeUnknownYears } = filters;
+  if (yearsMin == null && yearsMax == null) return includeUnknownYears ? "Years" : "Years stated";
+  if (yearsMin != null && yearsMax != null) return yearsMin === yearsMax ? `${yearsMin} yrs` : `${yearsMin}–${yearsMax} yrs`;
+  if (yearsMin != null) return `${yearsMin}+ yrs`;
+  return `Up to ${yearsMax} yrs`;
+}
+
+function Chevron() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" className="shrink-0">
+      <path
+        d="M4 6.5 8 10.5 12 6.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function Option({
+  type,
   name,
-  options,
-  selected,
+  value,
+  defaultChecked,
+  children,
 }: {
-  legend: string;
+  type: "checkbox" | "radio";
   name: string;
-  options: Array<{ id: string; label: string }>;
-  selected: string[];
+  value: string;
+  defaultChecked: boolean;
+  children: ReactNode;
 }) {
   return (
-    <fieldset>
-      <FieldLegend>{legend}</FieldLegend>
-      <div className="mt-2 space-y-1.5">
-        {options.map((option) => (
-          <label key={option.id} className="flex items-center gap-2 text-sm">
-            <input
-              type="checkbox"
-              name={name}
-              value={option.id}
-              defaultChecked={selected.includes(option.id)}
-              className="accent-accent"
-            />
-            <span>{option.label}</span>
-          </label>
-        ))}
+    <label className="flex h-11 items-center gap-3 rounded-full px-3 text-sm hover:bg-surface">
+      <input type={type} name={name} value={value} defaultChecked={defaultChecked} className="size-4 shrink-0 accent-accent" />
+      <span>{children}</span>
+    </label>
+  );
+}
+
+function Menu({
+  id,
+  open,
+  label,
+  active,
+  clearHref,
+  onToggle,
+  children,
+}: {
+  id: string;
+  open: boolean;
+  label: string;
+  active: boolean;
+  clearHref?: string;
+  onToggle: () => void;
+  children: ReactNode;
+}) {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [alignEnd, setAlignEnd] = useState(false);
+  const chip = active ? "border-ink bg-ink text-bg" : "border-line bg-bg text-ink";
+  function toggle() {
+    const rect = wrapRef.current?.getBoundingClientRect();
+    if (rect) setAlignEnd(rect.left + rect.width / 2 > window.innerWidth / 2);
+    onToggle();
+  }
+
+  return (
+    <div ref={wrapRef} className="relative">
+      <div className={`inline-flex h-9 items-center rounded-full border ${chip}`}>
+        <button
+          type="button"
+          className={`inline-flex h-9 items-center gap-2 text-sm ${active && clearHref ? "pl-3.5 pr-2.5" : "px-3.5"}`}
+          aria-expanded={open}
+          aria-controls={id}
+          onClick={toggle}
+        >
+          <span>{label}</span>
+          <Chevron />
+        </button>
+        {active && clearHref ? (
+          <Link
+            href={clearHref}
+            aria-label={`Clear ${label}`}
+            className="inline-flex h-9 items-center border-l border-line pl-2.5 pr-3.5 text-sm"
+          >
+            ×
+          </Link>
+        ) : null}
       </div>
-    </fieldset>
+      <div
+        id={id}
+        className={`${open ? "block" : "hidden"} absolute z-30 mt-2 w-[min(20rem,calc(100vw-2.5rem))] rounded-2xl border border-line bg-bg p-2 ${alignEnd ? "right-0" : "left-0"}`}
+      >
+        <div className="max-h-80 overflow-auto">{children}</div>
+        <div className="px-1 pt-2 pb-1">
+          <Button type="submit" className="w-full">
+            Show results
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FilterForm({ filters }: { filters: JobFilters }) {
+  const rootRef = useRef<HTMLFormElement>(null);
+  const baseId = useId();
+  const [open, setOpen] = useState<string | null>(null);
+  const count = activeFilterCount(filters);
+
+  useEffect(() => {
+    function onPointer(event: MouseEvent) {
+      if (!rootRef.current?.contains(event.target as Node)) setOpen(null);
+    }
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") setOpen(null);
+    }
+    document.addEventListener("mousedown", onPointer);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onPointer);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, []);
+
+  function toggle(id: string) {
+    setOpen((current) => (current === id ? null : id));
+  }
+
+  const seniorityLabels = filters.seniority.map((level) => SENIORITY_LABELS[level]);
+  const industryLabels = filters.industry.map((id) => INDUSTRIES.find((item) => item.id === id)?.label ?? id);
+  const disciplineLabels = filters.discipline.map((id) => DISCIPLINES.find((item) => item.id === id)?.label ?? id);
+  const workLabels = filters.work.map((id) => WORK_TYPES.find((item) => item.id === id)?.label ?? id);
+  const employmentLabels = filters.employment.map((id) => EMPLOYMENT_TYPES.find((item) => item.id === id)?.label ?? id);
+  const postedLabel = POSTED_WINDOWS.find((window) => window.id === filters.posted)?.label;
+  const yearsActive = filters.yearsMin != null || filters.yearsMax != null || !filters.includeUnknownYears;
+
+  return (
+    <form ref={rootRef} action="/jobs" method="get" aria-label="Search roles" className="space-y-3">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+        <label className="min-w-0 flex-1">
+          <span className="sr-only">Title or company</span>
+          <input
+            type="search"
+            name="q"
+            defaultValue={filters.q}
+            placeholder="Title or company"
+            className={controlClassName}
+          />
+        </label>
+        <label className="min-w-0 flex-1">
+          <span className="sr-only">Location</span>
+          <input
+            type="search"
+            name="location"
+            defaultValue={filters.location}
+            placeholder="City or country"
+            className={controlClassName}
+          />
+        </label>
+        <Button type="submit" className="w-full shrink-0 sm:w-auto">
+          Search
+        </Button>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <Menu
+          id={`${baseId}-sort`}
+          open={open === "sort"}
+          label={filters.sort === "company" ? "Company A–Z" : "Newest"}
+          active={filters.sort !== "newest"}
+          clearHref={hrefFor({ ...filters, sort: "newest" })}
+          onToggle={() => toggle("sort")}
+        >
+          <Option type="radio" name="sort" value="newest" defaultChecked={filters.sort === "newest"}>
+            Newest
+          </Option>
+          <Option type="radio" name="sort" value="company" defaultChecked={filters.sort === "company"}>
+            Company A–Z
+          </Option>
+        </Menu>
+
+        <Menu
+          id={`${baseId}-seniority`}
+          open={open === "seniority"}
+          label={choiceLabel("Seniority", seniorityLabels)}
+          active={filters.seniority.length > 0}
+          clearHref={hrefFor({ ...filters, seniority: [] })}
+          onToggle={() => toggle("seniority")}
+        >
+          {SENIORITY_LEVELS.map((level) => (
+            <Option
+              key={level}
+              type="checkbox"
+              name="seniority"
+              value={level}
+              defaultChecked={filters.seniority.includes(level)}
+            >
+              {SENIORITY_LABELS[level]}
+            </Option>
+          ))}
+        </Menu>
+
+        <Menu
+          id={`${baseId}-work`}
+          open={open === "work"}
+          label={choiceLabel("Work type", workLabels)}
+          active={filters.work.length > 0}
+          clearHref={hrefFor({ ...filters, work: [] })}
+          onToggle={() => toggle("work")}
+        >
+          {WORK_TYPES.map((option) => (
+            <Option
+              key={option.id}
+              type="checkbox"
+              name="work"
+              value={option.id}
+              defaultChecked={filters.work.includes(option.id)}
+            >
+              {option.label}
+            </Option>
+          ))}
+        </Menu>
+
+        <Menu
+          id={`${baseId}-posted`}
+          open={open === "posted"}
+          label={postedLabel ? `Posted · ${postedLabel}` : "Date posted"}
+          active={Boolean(filters.posted)}
+          clearHref={hrefFor({ ...filters, posted: "" })}
+          onToggle={() => toggle("posted")}
+        >
+          <Option type="radio" name="posted" value="" defaultChecked={!filters.posted}>
+            Any time
+          </Option>
+          {POSTED_WINDOWS.map((window) => (
+            <Option key={window.id} type="radio" name="posted" value={window.id} defaultChecked={filters.posted === window.id}>
+              Past {window.label}
+            </Option>
+          ))}
+        </Menu>
+
+        <Menu
+          id={`${baseId}-industry`}
+          open={open === "industry"}
+          label={choiceLabel("Industry", industryLabels)}
+          active={filters.industry.length > 0}
+          clearHref={hrefFor({ ...filters, industry: [] })}
+          onToggle={() => toggle("industry")}
+        >
+          {INDUSTRIES.map((option) => (
+            <Option
+              key={option.id}
+              type="checkbox"
+              name="industry"
+              value={option.id}
+              defaultChecked={filters.industry.includes(option.id)}
+            >
+              {option.label}
+            </Option>
+          ))}
+        </Menu>
+
+        <Menu
+          id={`${baseId}-discipline`}
+          open={open === "discipline"}
+          label={choiceLabel("Discipline", disciplineLabels)}
+          active={filters.discipline.length > 0}
+          clearHref={hrefFor({ ...filters, discipline: [] })}
+          onToggle={() => toggle("discipline")}
+        >
+          {DISCIPLINES.map((option) => (
+            <Option
+              key={option.id}
+              type="checkbox"
+              name="discipline"
+              value={option.id}
+              defaultChecked={filters.discipline.includes(option.id)}
+            >
+              {option.label}
+            </Option>
+          ))}
+        </Menu>
+
+        <Menu
+          id={`${baseId}-employment`}
+          open={open === "employment"}
+          label={choiceLabel("Employment", employmentLabels)}
+          active={filters.employment.length > 0}
+          clearHref={hrefFor({ ...filters, employment: [] })}
+          onToggle={() => toggle("employment")}
+        >
+          {EMPLOYMENT_TYPES.map((option) => (
+            <Option
+              key={option.id}
+              type="checkbox"
+              name="employment"
+              value={option.id}
+              defaultChecked={filters.employment.includes(option.id)}
+            >
+              {option.label}
+            </Option>
+          ))}
+        </Menu>
+
+        <Menu
+          id={`${baseId}-size`}
+          open={open === "size"}
+          label={choiceLabel("Company size", filters.size)}
+          active={filters.size.length > 0}
+          clearHref={hrefFor({ ...filters, size: [] })}
+          onToggle={() => toggle("size")}
+        >
+          {SIZE_BUCKETS.map((bucket) => (
+            <Option key={bucket} type="checkbox" name="size" value={bucket} defaultChecked={filters.size.includes(bucket)}>
+              {bucket}
+            </Option>
+          ))}
+        </Menu>
+
+        <Menu
+          id={`${baseId}-years`}
+          open={open === "years"}
+          label={yearsLabel(filters)}
+          active={yearsActive}
+          clearHref={hrefFor({ ...filters, yearsMin: null, yearsMax: null, includeUnknownYears: true })}
+          onToggle={() => toggle("years")}
+        >
+          <div className="grid grid-cols-2 gap-2 px-1 pb-2">
+            <label className="block text-sm">
+              <span className="mb-1.5 block px-1 text-muted">Minimum</span>
+              <input
+                type="number"
+                name="yearsMin"
+                min={0}
+                max={40}
+                defaultValue={filters.yearsMin ?? ""}
+                className={controlClassName}
+              />
+            </label>
+            <label className="block text-sm">
+              <span className="mb-1.5 block px-1 text-muted">Maximum</span>
+              <input
+                type="number"
+                name="yearsMax"
+                min={0}
+                max={40}
+                defaultValue={filters.yearsMax ?? ""}
+                className={controlClassName}
+              />
+            </label>
+          </div>
+          <Option type="radio" name="includeUnknownYears" value="1" defaultChecked={filters.includeUnknownYears}>
+            Include roles with no years stated
+          </Option>
+          <Option type="radio" name="includeUnknownYears" value="0" defaultChecked={!filters.includeUnknownYears}>
+            Hide roles with no years stated
+          </Option>
+        </Menu>
+
+        <Link
+          href={hrefFor({ ...filters, salary: !filters.salary })}
+          aria-pressed={filters.salary}
+          className={`inline-flex h-9 items-center rounded-full border px-3.5 text-sm ${
+            filters.salary ? "border-ink bg-ink text-bg" : "border-line bg-bg text-ink"
+          }`}
+        >
+          Has salary
+        </Link>
+
+        {count > 0 ? (
+          <Button href="/jobs" variant="ghost">
+            Clear all
+          </Button>
+        ) : null}
+      </div>
+    </form>
   );
 }
 
 export function Filters({ filters }: { filters: JobFilters }) {
-  const [open, setOpen] = useState(false);
-  const formId = useId();
-  const count = activeFilterCount(filters);
-
-  return (
-    <>
-      <div className="mb-4 flex items-center justify-between gap-3 lg:hidden">
-        <Button
-          type="button"
-          variant="secondary"
-          aria-expanded={open}
-          aria-controls={formId}
-          onClick={() => setOpen(true)}
-        >
-          Filters{count ? ` (${count})` : ""}
-        </Button>
-        <Button href="/jobs" variant="ghost">
-          Clear filters
-        </Button>
-      </div>
-      {open ? (
-        <button
-          type="button"
-          className="fixed inset-0 z-20 bg-ink/30 lg:hidden"
-          aria-label="Close filters"
-          onClick={() => setOpen(false)}
-        />
-      ) : null}
-      <aside
-        id={formId}
-        className={`${open ? "fixed inset-y-0 right-0 z-30 block w-[min(100%,22rem)] overflow-auto border-l border-line bg-bg p-5" : "hidden"} lg:sticky lg:top-4 lg:block lg:max-h-[calc(100vh-2rem)] lg:w-auto lg:overflow-auto lg:border-0 lg:bg-transparent lg:p-0`}
-      >
-        <div className="mb-4 flex items-center justify-between lg:hidden">
-          <h2 className="font-display text-2xl">Filters</h2>
-          <Button type="button" variant="ghost" onClick={() => setOpen(false)}>
-            Close
-          </Button>
-        </div>
-        <form
-          action="/jobs"
-          method="get"
-          className="space-y-6"
-          onChange={(event) => {
-            const target = event.target;
-            if (target instanceof HTMLInputElement && ["search", "text", "number"].includes(target.type)) return;
-            event.currentTarget.requestSubmit();
-          }}
-        >
-          <label className="block text-sm">
-            <FieldLabel>Search</FieldLabel>
-            <input
-              type="search"
-              name="q"
-              defaultValue={filters.q}
-              placeholder="Title or company"
-              className={fieldClassName}
-            />
-          </label>
-
-          <label className="block text-sm">
-            <FieldLabel>Sort</FieldLabel>
-            <select name="sort" defaultValue={filters.sort} className={fieldClassName}>
-              <option value="newest">Newest</option>
-              <option value="company">Company A–Z</option>
-            </select>
-          </label>
-
-          <CheckGroup
-            legend="Seniority"
-            name="seniority"
-            selected={filters.seniority}
-            options={SENIORITY_LEVELS.map((level) => ({ id: level, label: SENIORITY_LABELS[level] }))}
-          />
-
-          <fieldset>
-            <FieldLegend>Years asked</FieldLegend>
-            <p className="mt-2 text-xs leading-5 text-muted">Senior roles asking for 5 years or fewer: set the maximum to 5.</p>
-            <div className="mt-2 grid grid-cols-2 gap-2">
-              <label className="text-sm">
-                Min
-                <input
-                  type="number"
-                  name="yearsMin"
-                  min={0}
-                  max={40}
-                  defaultValue={filters.yearsMin ?? ""}
-                  className={fieldClassName}
-                />
-              </label>
-              <label className="text-sm">
-                Max
-                <input
-                  type="number"
-                  name="yearsMax"
-                  min={0}
-                  max={40}
-                  defaultValue={filters.yearsMax ?? ""}
-                  className={fieldClassName}
-                />
-              </label>
-            </div>
-            <label className="mt-3 block text-sm">
-              Roles with no years stated
-              <select
-                name="includeUnknownYears"
-                defaultValue={filters.includeUnknownYears ? "1" : "0"}
-                className={fieldClassName}
-              >
-                <option value="1">Include them</option>
-                <option value="0">Hide them</option>
-              </select>
-            </label>
-          </fieldset>
-
-          <CheckGroup legend="Industry" name="industry" selected={filters.industry} options={[...INDUSTRIES]} />
-          <CheckGroup legend="Discipline" name="discipline" selected={filters.discipline} options={[...DISCIPLINES]} />
-          <CheckGroup legend="Work type" name="work" selected={filters.work} options={[...WORK_TYPES]} />
-
-          <label className="block text-sm">
-            <FieldLabel>Location</FieldLabel>
-            <input
-              type="search"
-              name="location"
-              defaultValue={filters.location}
-              placeholder="City or country"
-              className={fieldClassName}
-            />
-          </label>
-
-          <CheckGroup legend="Employment" name="employment" selected={filters.employment} options={[...EMPLOYMENT_TYPES]} />
-
-          <label className="flex items-center gap-2 text-sm">
-            <input type="checkbox" name="salary" value="1" defaultChecked={filters.salary} className="accent-accent" />
-            Has salary
-          </label>
-
-          <CheckGroup
-            legend="Company size"
-            name="size"
-            selected={filters.size}
-            options={SIZE_BUCKETS.map((bucket) => ({ id: bucket, label: bucket }))}
-          />
-
-          <label className="block text-sm">
-            <FieldLabel>Posted within</FieldLabel>
-            <select name="posted" defaultValue={filters.posted} className={fieldClassName}>
-              <option value="">Any time</option>
-              {POSTED_WINDOWS.map((window) => (
-                <option key={window.id} value={window.id}>
-                  {window.label}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <div className="flex items-center gap-4">
-            <Button type="submit">Apply</Button>
-            <Button href="/jobs" variant="ghost" className="hidden lg:inline-flex">
-              Clear filters
-            </Button>
-          </div>
-        </form>
-      </aside>
-    </>
-  );
+  return <FilterForm key={filtersToQuery(filters) || "all"} filters={filters} />;
 }

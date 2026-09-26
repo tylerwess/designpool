@@ -1,7 +1,10 @@
 import type { ReactNode } from "react";
 
-export const fieldClassName =
-  "mt-2 w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink placeholder:text-muted";
+/** Fixed height, equal inline padding, no browser select chrome. */
+export const controlClassName =
+  "control box-border h-11 w-full appearance-none rounded-full border border-line bg-bg px-4 text-sm text-ink placeholder:text-muted";
+
+export const fieldClassName = `mt-2 ${controlClassName}`;
 
 export function FieldLegend({ children }: { children: ReactNode }) {
   return <legend className="text-xs uppercase tracking-[0.14em] text-muted">{children}</legend>;

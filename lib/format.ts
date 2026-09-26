@@ -1,10 +1,10 @@
 import { listingTimestamp } from "./filters";
+import { disciplineLabel, EMPLOYMENT_TYPES, industryLabel, SENIORITY_LABELS } from "./taxonomy";
 import type { Listing } from "./types";
 
 export function listingHref(listing: Pick<Listing, "source" | "companyToken" | "externalId">): string {
   return `/jobs/${listing.source}/${encodeURIComponent(listing.companyToken)}/${encodeURIComponent(listing.externalId)}`;
 }
-import { disciplineLabel, industryLabel, SENIORITY_LABELS } from "./taxonomy";
 
 export function formatAge(iso: string | null, now = Date.now()): string {
   if (!iso) return "recently";
@@ -80,4 +80,26 @@ export function workLabel(listing: Listing): string {
   if (listing.remoteType === "hybrid") return "Hybrid";
   if (listing.remoteType === "onsite") return "Onsite";
   return "Location flexible";
+}
+
+export function employmentLabel(type: Listing["employmentType"]): string {
+  return EMPLOYMENT_TYPES.find((item) => item.id === type)?.label ?? type;
+}
+
+export function listingFacts(listing: Listing): Array<{ label: string; value: string }> {
+  const years = formatYears(listing.yearsMin, listing.yearsMax);
+  const disciplines = listing.disciplines.map(disciplineLabel).filter(Boolean).join(", ");
+  return [
+    { label: "Seniority", value: seniorityLabel(listing.seniority) },
+    { label: "Years asked", value: years ?? "Not stated" },
+    { label: "Stretch", value: listing.stretch ? "Yes" : "No" },
+    { label: "Industry", value: industryLabel(listing.industry) },
+    { label: "Discipline", value: disciplines || "Not stated" },
+    { label: "Work type", value: workLabel(listing) },
+    { label: "Location", value: listing.location || "Not listed" },
+    { label: "Employment", value: employmentLabel(listing.employmentType) },
+    { label: "Company size", value: listing.sizeBucket },
+    { label: "Salary", value: formatSalary(listing) ?? "Not listed" },
+    { label: "Posted", value: formatListingAge(listing) },
+  ];
 }

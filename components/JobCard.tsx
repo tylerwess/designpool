@@ -51,12 +51,13 @@ export function JobCard({ listing, titleHref }: { listing: Listing; titleHref?: 
             {listing.employmentType === "contract" ? " · Contract" : ""}
           </p>
         </div>
-        <div className="flex shrink-0 items-center gap-4">
-          <Button href={href} variant="ghost">
-            View ↗
+        <div className="flex shrink-0 flex-wrap items-center gap-2">
+          <Button href={href} variant="secondary">
+            Read more
           </Button>
-          <Button href={listing.url} external variant="secondary">
-            Apply
+          <Button href={listing.url} external>
+            Apply <span aria-hidden="true">↗</span>
+            <span className="sr-only"> (opens the company posting in a new tab)</span>
           </Button>
         </div>
       </div>

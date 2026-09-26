@@ -18,7 +18,7 @@ Text contrast stays at WCAG AA for ink and muted on both canvases.
 
 OpenAI’s product and security pages (`openai.com`): black canvas, centered display type, thin-bordered cards, a rounded pill of choices, a row of large numbers with small captions, and a gray section band. Light mode uses the same structure on white.
 
-Job rows, the filter sidebar, and the “View ↗” action stay, without a scrolling marquee.
+Job rows use two actions: Read more opens the role, and Apply launches the company posting. Search and filters are a field row plus chips that open dropdowns. Controls use a fixed height and equal inline padding, with no native select chrome. There is no scrolling marquee.
 
 ## Themes
 

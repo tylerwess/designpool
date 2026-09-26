@@ -31,7 +31,7 @@ export function ThemeToggle() {
     <button
       ref={buttonRef}
       type="button"
-      className="theme-toggle rounded-full border border-line px-3 py-1.5 text-sm text-ink"
+      className="theme-toggle inline-flex h-9 items-center rounded-full border border-line px-3.5 text-sm text-ink"
       onClick={toggle}
       aria-pressed="false"
       aria-label="Toggle color theme"

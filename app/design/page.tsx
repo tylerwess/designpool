@@ -170,7 +170,7 @@ export default function DesignPage() {
             Secondary
           </Button>
           <Button href="/jobs" variant="ghost">
-            View ↗
+            Read more
           </Button>
         </div>
         <div className="mt-4 flex flex-wrap gap-2">

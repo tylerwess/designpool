@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Surface } from "@/components/ui/Surface";
 import { loadListing } from "@/lib/board";
-import { formatListingAge, formatSalary, listingMeta, seniorityLabel, workLabel } from "@/lib/format";
+import { formatSalary, listingFacts, seniorityLabel } from "@/lib/format";
 import { pageMetadata } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
@@ -40,6 +40,7 @@ export default async function JobPage({ params }: { params: Promise<JobParams> }
   if (!result.job) notFound();
   const listing = result.job;
   const salary = formatSalary(listing);
+  const facts = listingFacts(listing);
 
   return (
     <Container size="narrow" className="py-12">
@@ -50,7 +51,7 @@ export default async function JobPage({ params }: { params: Promise<JobParams> }
         <h1 className="mt-4 font-display text-4xl leading-tight sm:text-5xl">{listing.title}</h1>
         <p className="mt-3 text-muted">
           {listing.company}
-          {listing.location ? ` · ${listing.location}` : ""} · {workLabel(listing)}
+          {listing.location ? ` · ${listing.location}` : ""}
         </p>
         <ul className="mt-4 flex flex-wrap gap-1.5">
           <li>
@@ -72,21 +73,35 @@ export default async function JobPage({ params }: { params: Promise<JobParams> }
             </li>
           ) : null}
         </ul>
-        <p className="mt-4 text-sm">{listingMeta(listing)}</p>
-        <p className="mt-2 text-sm text-muted">
-          Posted {formatListingAge(listing)}
-          {salary ? ` · ${salary}` : ""}
-        </p>
         <div className="mt-6">
           <Button href={listing.url} external>
-            Apply on company site
+            Apply <span aria-hidden="true">↗</span>
+            <span className="sr-only"> (opens the company posting in a new tab)</span>
           </Button>
         </div>
+
+        <h2 className="mt-10 font-display text-2xl">Characteristics</h2>
+        <dl className="mt-4 divide-y divide-line border-y border-line">
+          {facts.map((fact) => (
+            <div key={fact.label} className="grid grid-cols-[9rem_minmax(0,1fr)] items-baseline gap-4 py-3 text-sm">
+              <dt className="text-muted">{fact.label}</dt>
+              <dd>{fact.value}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <h2 className="mt-10 font-display text-2xl">Description</h2>
         {listing.description ? (
-          <div className="mt-10 whitespace-pre-wrap border-t border-line pt-8 text-sm leading-7">{listing.description}</div>
+          <div className="mt-4 whitespace-pre-wrap text-sm leading-7">{listing.description}</div>
         ) : (
-          <p className="mt-10 text-sm text-muted">The company didn’t include a description in the public feed.</p>
+          <p className="mt-4 text-sm text-muted">The company didn’t include a description in the public feed.</p>
         )}
+        <div className="mt-8">
+          <Button href={listing.url} external>
+            Apply <span aria-hidden="true">↗</span>
+            <span className="sr-only"> (opens the company posting in a new tab)</span>
+          </Button>
+        </div>
       </article>
     </Container>
   );
