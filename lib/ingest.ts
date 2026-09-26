@@ -1,4 +1,5 @@
-import { companies, type Company } from "../data/companies";
+import type { Company } from "../data/companies";
+import { companiesForIngest } from "./ingest-sources";
 import { classifyListing } from "./llm";
 import { isDesignRole } from "./design-role";
 import { deleteExpired, deleteStale, countBySeniority, upsertListing } from "./listings";
@@ -12,6 +13,7 @@ const FETCH_CONCURRENCY = 6;
 
 export type IngestResult = {
   ok: boolean;
+  sources: string[];
   companies: number;
   succeeded: number;
   failed: Array<{ name: string; error: string }>;
@@ -82,7 +84,7 @@ export async function toListingDraft(company: Company, job: FetchedJob, seenAt: 
   };
 }
 
-export async function runIngest(source: Company[] = companies): Promise<IngestResult> {
+export async function runIngest(source: Company[] = companiesForIngest()): Promise<IngestResult> {
   const seenAt = new Date().toISOString();
   const cutoff = new Date(Date.now() - THIRTY_DAYS_MS).toISOString();
   let deletedExpired = await deleteExpired(cutoff);
@@ -97,6 +99,8 @@ export async function runIngest(source: Company[] = companies): Promise<IngestRe
         await upsertListing(draft);
         upserted += 1;
       }
+      // Only this company's rows. A source left out of the run is never passed in,
+      // and a failed fetch never reaches this delete, so those listings stay.
       const deletedStale = await deleteStale(company.ats, company.token, seenAt);
       console.error(`[ingest ${index + 1}/${source.length}] ${company.name}: ${upserted} design roles`);
       return { ok: true as const, name: company.name, upserted, deletedStale };
@@ -116,6 +120,7 @@ export async function runIngest(source: Company[] = companies): Promise<IngestRe
 
   return {
     ok: failed.length === 0,
+    sources: [...new Set(source.map((company) => company.ats))],
     companies: source.length,
     succeeded: outcomes.length - failed.length,
     failed,
