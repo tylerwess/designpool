@@ -152,7 +152,7 @@ test("the theme switch and floating apply tokens stay documented", () => {
   assert.equal(TOGGLE_COLORS.day, "#00a6ff");
   assert.equal(TOGGLE_COLORS.moon, "#fff");
   assert.equal(TOGGLE_COLORS.sun, "#ffcf48");
-  assert.equal(TOGGLE_SIZE, "17px");
+  assert.equal(TOGGLE_SIZE, "13px");
   assert.equal(DESCRIPTION_PREVIEW.lines, 6);
   assert.equal(SPACE[6], "1.5rem");
   assert.equal(SPACE[8], "2rem");
@@ -170,7 +170,7 @@ test("the theme switch and floating apply tokens stay documented", () => {
   assert.match(toggle, /className="switch"/);
   assert.match(toggle, /aria-label="Light mode"/);
   assert.equal(toggle.includes("#"), false);
-  for (const phrase of ["switch", "Apply now", "toggle-day", "17px"]) {
+  for (const phrase of ["switch", "Apply now", "toggle-day", "13px"]) {
     assert.equal(doc.includes(phrase), true, `DESIGN_SYSTEM.md should mention ${phrase}`);
   }
 });

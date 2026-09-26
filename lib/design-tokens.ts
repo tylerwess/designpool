@@ -163,7 +163,7 @@ export const TOGGLE_COLORS = {
   sun: "#ffcf48",
 } as const;
 
-export const TOGGLE_SIZE = "17px";
+export const TOGGLE_SIZE = "13px";
 
 export const DESCRIPTION_PREVIEW = {
   lines: 6,

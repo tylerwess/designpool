@@ -57,9 +57,10 @@
   --tag-bg: var(--light-tag-bg);
   --tag-fg: var(--light-tag-fg);
 
-  --toggle-light: #efefef;
-  --toggle-dark: #2a2a2a;
-  --toggle-size: 10px;
+  --toggle-night: #2a2a2a;
+  --toggle-day: #00a6ff;
+  --toggle-moon: #fff;
+  --toggle-sun: #ffcf48;
   --shadow-float: 0 10px 28px rgb(0 0 0 / 0.22);
   --z-float: 40;
   --description-preview-lines: 6;
@@ -378,7 +379,7 @@ input.control[type="number"]::-webkit-outer-spin-button {
 }
 
 .switch {
-  --toggle-size: 17px;
+  --toggle-size: 13px;
   font-size: var(--toggle-size);
   position: relative;
   display: inline-block;
