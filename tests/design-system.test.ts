@@ -130,6 +130,7 @@ test("the written system and the gallery route exist", () => {
   assert.match(page, /ThemeToggle/);
   assert.match(page, /Apply now/);
   assert.match(page, /TowerLoader/);
+  assert.match(page, /SourceLogoReel/);
   assert.match(page, /<Logo /);
   assert.match(page, /shouldHideDesignGallery/);
   assert.match(page, /notFound\(\)/);

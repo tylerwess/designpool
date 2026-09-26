@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { companies } from "../data/companies";
-import { companyDomain, companyInitial, companyLogoSrc, companyWebsite } from "../lib/company-logo";
+import { companyDomain, companyInitial, companyLogoSrc, companyWebsite, reelCompanies } from "../lib/company-logo";
 
 test("companyInitial uses the first letter", () => {
   assert.equal(companyInitial("Figma"), "F");
@@ -30,4 +30,14 @@ test("every seeded company has a website that yields a logo URL", () => {
     assert.ok(companyLogoSrc(company.website), `${company.name} did not produce a logo URL`);
     assert.equal(companyWebsite(company.ats, company.token), company.website);
   }
+});
+
+test("the source reel lists live jobs first, then the rest of the seed list", () => {
+  const marks = reelCompanies([
+    { company: "Figma", source: "greenhouse", companyToken: "figma" },
+    { company: "Figma", source: "greenhouse", companyToken: "figma" },
+  ]);
+  assert.equal(marks[0]?.name, "Figma");
+  assert.equal(marks.length, companies.length);
+  assert.equal(new Set(marks.map((mark) => `${mark.name}:${mark.website}`)).size, marks.length);
 });

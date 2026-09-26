@@ -6,6 +6,7 @@ import { CompanyLogo } from "@/components/ui/CompanyLogo";
 import { Logo } from "@/components/ui/Logo";
 import { Tag } from "@/components/ui/Tag";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { SourceLogoReel } from "@/components/SourceLogoReel";
 import { TowerLoader } from "@/components/ui/TowerLoader";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
@@ -257,6 +258,10 @@ export default function DesignPage() {
           <JobCard listing={sample} titleHref="/jobs" />
         </div>
         <Surface className="mt-4 p-5 text-sm leading-6">Empty and message states use this surface.</Surface>
+        <div className="mt-8">
+          <p className="text-xs uppercase tracking-[0.16em] text-muted">Source logo reel</p>
+          <SourceLogoReel />
+        </div>
         <div className="mt-8">
           <p className="text-xs uppercase tracking-[0.16em] text-muted">Tower loader</p>
           <TowerLoader />

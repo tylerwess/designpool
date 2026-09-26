@@ -1,4 +1,5 @@
 import { LandingLive } from "@/components/LandingLive";
+import { SourceLogoReel } from "@/components/SourceLogoReel";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Surface } from "@/components/ui/Surface";
@@ -30,17 +31,20 @@ export default async function HomePage() {
         </div>
       </Container>
 
-      {jobs.length > 0 ? (
-        <Container className="pb-14">
-          <LandingLive jobs={jobs} />
-        </Container>
-      ) : (
-        <Container className="pb-14">
-          <Surface className="mx-auto max-w-xl p-5 text-center text-sm leading-6">
-            {board.status === "ok" ? "No roles yet. Listings show up after the first ingest." : board.message}
-          </Surface>
-        </Container>
-      )}
+      <div className="pb-14">
+        <SourceLogoReel jobs={jobs} />
+        {jobs.length > 0 ? (
+          <Container className="mt-10">
+            <LandingLive jobs={jobs} />
+          </Container>
+        ) : (
+          <Container className="mt-10">
+            <Surface className="mx-auto max-w-xl p-5 text-center text-sm leading-6">
+              {board.status === "ok" ? "No roles yet. Listings show up after the first ingest." : board.message}
+            </Surface>
+          </Container>
+        )}
+      </div>
 
       <section className="bg-surface">
         <Container className="py-14 text-center sm:py-16">
