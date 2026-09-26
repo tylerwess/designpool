@@ -46,8 +46,15 @@ export default async function HomePage() {
             {SOURCE_PLATFORMS.map((platform, index) => (
               <span key={platform.name} className="inline-flex items-center gap-2">
                 {index > 0 ? <span aria-hidden="true">+</span> : null}
-                <CompanyLogo name={platform.name} website={platform.website} />
-                {platform.name}
+                <a
+                  href={platform.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 hover:underline"
+                >
+                  <CompanyLogo name={platform.name} website={platform.website} />
+                  {platform.name}
+                </a>
               </span>
             ))}
           </p>
