@@ -4,7 +4,7 @@ import { classifyListing } from "./llm";
 import { isDesignRole } from "./design-role";
 import { deleteExpired, deleteStale, countBySeniority, upsertListing } from "./listings";
 import { fetchCompanyJobs, type FetchedJob } from "./sources";
-import { disciplinesFor } from "./text";
+import { benefitsFor, disciplinesFor } from "./text";
 import { parseYears } from "./years";
 import type { ListingDraft } from "./types";
 
@@ -81,6 +81,7 @@ export async function toListingDraft(company: Company, job: FetchedJob, seenAt: 
     industry: company.industry,
     sizeBucket: company.sizeBucket,
     disciplines: disciplinesFor(job.title, description),
+    benefits: benefitsFor(description),
   };
 }
 

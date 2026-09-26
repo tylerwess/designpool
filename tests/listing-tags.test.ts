@@ -31,6 +31,7 @@ function job(overrides: Partial<Listing> = {}): Listing {
     industry: "productivity",
     sizeBucket: "1000+",
     disciplines: ["product_design"],
+    benefits: [],
     ...overrides,
   };
 }

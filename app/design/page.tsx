@@ -54,6 +54,7 @@ const sample: Listing = {
   industry: "productivity",
   sizeBucket: "1000+",
   disciplines: ["product_design", "design_systems"],
+  benefits: ["equity", "stock_options"],
 };
 
 function Swatch({ theme, token }: { theme: "light" | "dark"; token: ColorToken }) {

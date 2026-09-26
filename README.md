@@ -94,7 +94,7 @@ The Vercel project is `designpool`. Production is [https://designpool-taupe.verc
    DATABASE_URL="postgres://…" npm run ingest
    ```
 
-5. After both `DATABASE_URL` and `CRON_SECRET` are set, merge so production deploys, then trigger ingest once. There is no separate migration. The first successful cron call creates the `listings` table with `CREATE TABLE IF NOT EXISTS` before it writes rows. Leave `INGEST_SOURCES` unset to ingest Greenhouse, Ashby, and Lever together, or set it to a subset such as `greenhouse` to narrow a run.
+5. After both `DATABASE_URL` and `CRON_SECRET` are set, merge so production deploys, then trigger ingest once. There is no separate migration step to run by hand: the first successful cron call creates the `listings` table with `CREATE TABLE IF NOT EXISTS`, and any columns added since (like `benefits`) are added with a best-effort `ALTER TABLE ... ADD COLUMN` that swallows the "already exists" error on repeat runs. Leave `INGEST_SOURCES` unset to ingest Greenhouse, Ashby, and Lever together, or set it to a subset such as `greenhouse` to narrow a run.
 
    ```bash
    curl -H "Authorization: Bearer $CRON_SECRET" https://designpool-taupe.vercel.app/api/cron

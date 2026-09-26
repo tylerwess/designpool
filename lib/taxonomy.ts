@@ -83,6 +83,22 @@ export const DISCIPLINE_LABELS: Record<DisciplineId, string> = Object.fromEntrie
   DISCIPLINES.map((discipline) => [discipline.id, discipline.label]),
 ) as Record<DisciplineId, string>;
 
+export const BENEFITS = [
+  { id: "equity", label: "Equity" },
+  { id: "401k_match", label: "401(k) match" },
+  { id: "stock_options", label: "Stock options" },
+  { id: "pto", label: "PTO" },
+  { id: "visa_sponsorship", label: "Sponsors visa" },
+  { id: "wellness", label: "Wellness benefits" },
+  { id: "free_meals", label: "Free meals/beverages onsite" },
+] as const;
+
+export type BenefitId = (typeof BENEFITS)[number]["id"];
+
+export const BENEFIT_LABELS: Record<BenefitId, string> = Object.fromEntries(
+  BENEFITS.map((benefit) => [benefit.id, benefit.label]),
+) as Record<BenefitId, string>;
+
 export const SIZE_BUCKETS = ["1-50", "51-200", "201-1000", "1000+"] as const;
 export type SizeBucket = (typeof SIZE_BUCKETS)[number];
 
@@ -122,6 +138,10 @@ export function isIndustry(value: string): value is IndustryId {
 
 export function isDiscipline(value: string): value is DisciplineId {
   return value in DISCIPLINE_LABELS;
+}
+
+export function isBenefit(value: string): value is BenefitId {
+  return value in BENEFIT_LABELS;
 }
 
 export function isSizeBucket(value: string): value is SizeBucket {
