@@ -10,7 +10,7 @@ export function Footer() {
         <div>
           <Logo className="text-lg" />
           <p className="mt-2 max-w-xs text-sm leading-6 text-muted">
-            The design job board that respects your time. Roles stay for 30 days.
+            The free design job board that respects your time. Roles stay for 30 days.
           </p>
         </div>
         <div>

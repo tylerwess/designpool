@@ -24,7 +24,8 @@ export default function OpenGraphImage() {
       >
         <div style={{ display: "flex", fontSize: 28, letterSpacing: "0.08em", color: color.muted }}>DESIGNPOOL</div>
         <div style={{ display: "flex", fontSize: 64, lineHeight: 1.05, maxWidth: 920 }}>
-          The design job board that respects your time.
+          The <span style={{ color: color.accent, margin: "0 0.18em" }}>free</span> design job board that respects
+          your time.
         </div>
         <div style={{ display: "flex", fontSize: 28, color: color.muted }}>Filters that matter · 30 days · {siteUrl().host}</div>
       </div>

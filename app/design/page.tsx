@@ -68,7 +68,9 @@ function ThemePreview({ mode, label }: { mode: "force-light" | "force-dark"; lab
   return (
     <div className={`${mode} rounded-xl border border-line bg-bg p-6 text-ink`}>
       <p className="text-xs uppercase tracking-[0.16em] text-muted">{label}</p>
-      <p className="mt-3 font-display text-3xl leading-tight">The design job board that respects your time.</p>
+      <p className="mt-3 font-display text-3xl leading-tight">
+        The <span className="text-accent">free</span> design job board that respects your time.
+      </p>
       <p className="mt-3 text-sm leading-6 text-muted">Black or white canvas, thin borders, the same class names in both themes.</p>
       <div className="mt-4 flex flex-wrap items-center gap-3">
         <span className="rounded-full bg-accent px-4 py-2 text-sm text-on-accent">Browse</span>
@@ -165,7 +167,9 @@ export default function DesignPage() {
             <p className="text-xs uppercase tracking-[0.16em] text-muted">
               {TYPE_ROLES.structure.share}% · {TYPE_ROLES.structure.family}
             </p>
-            <p className="mt-2 font-display text-4xl">The design job board that respects your time.</p>
+            <p className="mt-2 font-display text-4xl">
+              The <span className="text-accent">free</span> design job board that respects your time.
+            </p>
           </div>
           <div>
             <p className="text-xs uppercase tracking-[0.16em] text-muted">

@@ -6,7 +6,7 @@ export const PRODUCTION_SITE_URL = "https://designpool-taupe.vercel.app";
 export const SITE_NAME = "Designpool";
 
 export const SITE_DESCRIPTION =
-  "The design job board that respects your time. Filters that actually matter, and nothing older than 30 days.";
+  "The free design job board that respects your time. Filters that actually matter, and nothing older than 30 days.";
 
 export function siteUrl(): URL {
   const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim();

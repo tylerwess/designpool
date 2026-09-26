@@ -103,6 +103,8 @@ test("primary accent text meets WCAG AA in both themes", () => {
       const ratio = contrastRatio(on, PALETTES[theme][token]);
       assert.ok(ratio >= 4.5, `${theme} ${token} on ${on} is ${ratio.toFixed(2)}:1`);
     }
+    const accentOnBg = contrastRatio(PALETTES[theme].accent, PALETTES[theme].bg);
+    assert.ok(accentOnBg >= 3, `${theme} accent on bg is ${accentOnBg.toFixed(2)}:1`);
   }
   assert.equal(PALETTES.light.accent, "#5928ed");
   assert.equal(PALETTES.light["on-accent"], "#ffffff");
