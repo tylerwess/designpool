@@ -143,29 +143,34 @@ test("the written system and the gallery route exist", () => {
   assert.equal(readFileSync(join(ROOT, "app/globals.css"), "utf8").includes("ticker-track"), false);
 });
 
-test("the theme checkbox and floating apply tokens stay documented", () => {
+test("the theme switch and floating apply tokens stay documented", () => {
   const css = readFileSync(join(ROOT, "app/globals.css"), "utf8");
   const doc = readFileSync(join(ROOT, "DESIGN_SYSTEM.md"), "utf8");
   const toggle = readFileSync(join(ROOT, "components/ui/ThemeToggle.tsx"), "utf8");
 
-  assert.equal(TOGGLE_COLORS.light, "#efefef");
-  assert.equal(TOGGLE_COLORS.dark, "#2a2a2a");
-  assert.equal(TOGGLE_SIZE, "10px");
+  assert.equal(TOGGLE_COLORS.night, "#2a2a2a");
+  assert.equal(TOGGLE_COLORS.day, "#00a6ff");
+  assert.equal(TOGGLE_COLORS.moon, "#fff");
+  assert.equal(TOGGLE_COLORS.sun, "#ffcf48");
+  assert.equal(TOGGLE_SIZE, "17px");
   assert.equal(DESCRIPTION_PREVIEW.lines, 6);
   assert.equal(SPACE[6], "1.5rem");
   assert.equal(SPACE[8], "2rem");
   assert.match(css, /--space-6:\s*1\.5rem/);
   assert.match(css, /--space-8:\s*2rem/);
   assert.match(css, new RegExp(`--toggle-size:\\s*${TOGGLE_SIZE}`));
-  assert.match(css, new RegExp(TOGGLE_COLORS.light.replace("#", "#")));
-  assert.match(css, new RegExp(TOGGLE_COLORS.dark));
-  assert.match(css, /\.theme-checkbox/);
-  assert.match(css, /prefers-reduced-motion: reduce[\s\S]*\.theme-checkbox/);
+  assert.match(css, new RegExp(TOGGLE_COLORS.night));
+  assert.match(css, new RegExp(TOGGLE_COLORS.day));
+  assert.match(css, /\.switch\s*\{/);
+  assert.match(css, /\.slider\s*\{/);
+  assert.match(css, /\.star\s*\{/);
+  assert.match(css, /\.cloud\s*\{/);
+  assert.match(css, /prefers-reduced-motion: reduce[\s\S]*\.slider/);
   assert.match(css, new RegExp(`--shadow-float:\\s*${ELEVATION.float.replace(/[()]/g, "\\$&")}`));
-  assert.match(toggle, /className="theme-checkbox"/);
-  assert.match(toggle, /aria-label="Dark mode"/);
+  assert.match(toggle, /className="switch"/);
+  assert.match(toggle, /aria-label="Light mode"/);
   assert.equal(toggle.includes("#"), false);
-  for (const phrase of ["theme-checkbox", "Apply now", "toggle-light", "10px"]) {
+  for (const phrase of ["switch", "Apply now", "toggle-day", "17px"]) {
     assert.equal(doc.includes(phrase), true, `DESIGN_SYSTEM.md should mention ${phrase}`);
   }
 });

@@ -8,9 +8,20 @@ function preferredDark(): boolean {
   return stored === "dark" || (stored !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
 }
 
-function applyTheme(next: boolean) {
-  document.documentElement.classList.toggle("dark", next);
-  document.documentElement.style.colorScheme = next ? "dark" : "light";
+function applyTheme(dark: boolean) {
+  document.documentElement.classList.toggle("dark", dark);
+  document.documentElement.style.colorScheme = dark ? "dark" : "light";
+}
+
+function CloudIcon() {
+  return (
+    <svg className="cloud" viewBox="0 0 64 40" aria-hidden="true">
+      <path
+        fill="currentColor"
+        d="M20 30a11 11 0 0 1-1-21.94A14 14 0 0 1 46 12a10 10 0 0 1-2 19.9H20Z"
+      />
+    </svg>
+  );
 }
 
 export function ThemeToggle() {
@@ -19,22 +30,24 @@ export function ThemeToggle() {
   useLayoutEffect(() => {
     const dark = preferredDark();
     applyTheme(dark);
-    if (inputRef.current) inputRef.current.checked = dark;
+    if (inputRef.current) inputRef.current.checked = !dark;
   }, []);
 
   function onChange(event: ChangeEvent<HTMLInputElement>) {
-    const next = event.target.checked;
-    applyTheme(next);
-    localStorage.setItem(THEME_STORAGE_KEY, next ? "dark" : "light");
+    const light = event.target.checked;
+    applyTheme(!light);
+    localStorage.setItem(THEME_STORAGE_KEY, light ? "light" : "dark");
   }
 
   return (
-    <input
-      ref={inputRef}
-      type="checkbox"
-      className="theme-checkbox"
-      aria-label="Dark mode"
-      onChange={onChange}
-    />
+    <label className="switch">
+      <input ref={inputRef} type="checkbox" aria-label="Light mode" onChange={onChange} />
+      <span className="slider">
+        <span className="star star_1" />
+        <span className="star star_2" />
+        <span className="star star_3" />
+        <CloudIcon />
+      </span>
+    </label>
   );
 }

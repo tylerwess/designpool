@@ -155,13 +155,15 @@ export const UI_PRIMITIVES = [
   "Logo",
 ] as const;
 
-/** Theme checkbox halves. The supplied `.theme-checkbox` CSS keeps these hex values literally. */
+/** Day/night switch colors. The supplied `.switch` CSS keeps these hex values literally. */
 export const TOGGLE_COLORS = {
-  light: "#efefef",
-  dark: "#2a2a2a",
+  night: "#2a2a2a",
+  day: "#00a6ff",
+  moon: "#fff",
+  sun: "#ffcf48",
 } as const;
 
-export const TOGGLE_SIZE = "10px";
+export const TOGGLE_SIZE = "17px";
 
 export const DESCRIPTION_PREVIEW = {
   lines: 6,

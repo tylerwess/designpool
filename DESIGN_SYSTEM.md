@@ -24,7 +24,7 @@ Job rows use two actions: Read more opens the role, and Apply launches the compa
 
 `app/globals.css` defines a light set and a dark set. Semantic tokens point at one set. `.dark` on `<html>` swaps the pointers.
 
-The first visit follows `prefers-color-scheme`. The header control is a checkbox (`.theme-checkbox`, `aria-label="Dark mode"`). Checked is dark. It writes `designpool-theme` (`light` or `dark`) to `localStorage`. `themeInitScript` runs before paint. `--toggle-size` is `10px` so the control is 62.5×31.25px in the header. The supplied checkbox CSS keeps `#efefef` and `#2a2a2a` (`toggle-light` / `toggle-dark`) as literal hex; those values are also recorded as `TOGGLE_COLORS`. `prefers-reduced-motion` turns the slide off.
+The first visit follows `prefers-color-scheme`. The header control is a day/night switch (`.switch`, `aria-label="Light mode"` on the checkbox). Checked is light (day, cloud). Unchecked is dark (night, stars). It writes `designpool-theme` (`light` or `dark`) to `localStorage`. `themeInitScript` runs before paint. `--toggle-size` is `17px` so the control renders at 4×2.2em. The supplied switch CSS keeps `#2a2a2a` (`toggle-night`), `#00a6ff` (`toggle-day`), `#fff` (`toggle-moon`), and `#ffcf48` (`toggle-sun`) as literal hex; those values are also recorded as `TOGGLE_COLORS`. `prefers-reduced-motion` turns the slide off.
 
 `/design` is a local-only gallery (`npm run dev`). It 404s when `NODE_ENV === "production"` or `VERCEL_ENV` is set, is omitted from the sitemap and robots, and sends `noindex`. The page still shows both palettes at once with `.force-light` and `.force-dark`.
 
