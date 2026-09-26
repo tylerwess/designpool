@@ -1,17 +1,11 @@
 import { LandingLive } from "@/components/LandingLive";
+import { SourcePlatforms } from "@/components/SourcePlatforms";
 import { ArrowIcon, Button } from "@/components/ui/Button";
-import { CompanyLogo } from "@/components/ui/CompanyLogo";
 import { Container } from "@/components/ui/Container";
 import { Surface } from "@/components/ui/Surface";
 import { TowerLoader } from "@/components/ui/TowerLoader";
 import { loadBoard } from "@/lib/board";
 import { FILTERS_MATTER_COPY, pageMetadata } from "@/lib/site";
-
-const SOURCE_PLATFORMS = [
-  { name: "Greenhouse", website: "https://www.greenhouse.com" },
-  { name: "Ashby", website: "https://www.ashbyhq.com" },
-  { name: "Lever", website: "https://www.lever.co" },
-];
 
 export const metadata = pageMetadata({ path: "/" });
 
@@ -42,22 +36,7 @@ export default async function HomePage() {
 
         <div className="mt-10">
           <p className="text-sm text-muted">Listings powered by</p>
-          <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-2 font-display text-lg text-ink">
-            {SOURCE_PLATFORMS.map((platform, index) => (
-              <span key={platform.name} className="inline-flex items-center gap-2">
-                {index > 0 ? <span aria-hidden="true">+</span> : null}
-                <a
-                  href={platform.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 hover:underline"
-                >
-                  <CompanyLogo name={platform.name} website={platform.website} />
-                  {platform.name}
-                </a>
-              </span>
-            ))}
-          </p>
+          <SourcePlatforms className="mt-3 text-lg" />
         </div>
       </Container>
 

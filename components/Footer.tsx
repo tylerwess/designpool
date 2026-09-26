@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SourcePlatforms } from "@/components/SourcePlatforms";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Logo } from "@/components/ui/Logo";
@@ -30,9 +31,8 @@ export function Footer() {
         </div>
         <div>
           <Eyebrow>Sources</Eyebrow>
-          <p className="mt-3 text-sm leading-6 text-muted">
-            Pulled from public Greenhouse, Ashby, and Lever boards. Apply goes to the original posting.
-          </p>
+          <SourcePlatforms className="mt-3 text-base" />
+          <p className="mt-2 text-sm leading-6 text-muted">Apply goes to the original posting.</p>
         </div>
       </Container>
     </footer>
