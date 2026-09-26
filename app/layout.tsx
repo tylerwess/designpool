@@ -59,7 +59,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className="flex min-h-full flex-col bg-bg text-ink">
         <Script id="designpool-theme" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <Header />
-        <div className="flex-1">{children}</div>
+        <div className="grid-wrapper flex-1">
+          <div className="grid-background" aria-hidden="true" />
+          <div className="relative z-10">{children}</div>
+        </div>
         <Footer />
       </body>
     </html>
