@@ -201,8 +201,8 @@ body {
 }
 
 .dark .grid-background {
-  background-image: linear-gradient(to right, #1e293b 1px, transparent 1px),
-    linear-gradient(to bottom, #1e293b 1px, transparent 1px);
+  background-image: linear-gradient(to right, #2a1f45 1px, transparent 1px),
+    linear-gradient(to bottom, #2a1f45 1px, transparent 1px);
 }
 
 @media (max-width: 639px) {
