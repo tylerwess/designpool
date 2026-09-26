@@ -192,8 +192,8 @@ body {
   background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px),
     linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
   background-size: 20px 30px;
-  -webkit-mask-image: radial-gradient(ellipse 70% 30% at 50% 0%, #000 60%, transparent 100%);
-  mask-image: radial-gradient(ellipse 70% 30% at 50% 0%, #000 60%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 15% at 50% 0%, #000 60%, transparent 100%);
+  mask-image: radial-gradient(ellipse 70% 15% at 50% 0%, #000 60%, transparent 100%);
 }
 
 .dark .grid-wrapper {
@@ -208,8 +208,8 @@ body {
 @media (max-width: 639px) {
   .grid-background {
     background-size: 16px 24px;
-    -webkit-mask-image: radial-gradient(ellipse 100% 22.5% at 50% 0%, #000 55%, transparent 100%);
-    mask-image: radial-gradient(ellipse 100% 22.5% at 50% 0%, #000 55%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 100% 11.25% at 50% 0%, #000 55%, transparent 100%);
+    mask-image: radial-gradient(ellipse 100% 11.25% at 50% 0%, #000 55%, transparent 100%);
   }
 }
 
