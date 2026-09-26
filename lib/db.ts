@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { postgresClientOptions } from "./postgres-url";
 
 export type SqlParam = string | number | null;
 
@@ -81,14 +82,13 @@ function toPostgres(sql: string): string {
 
 async function openPostgres(): Promise<Db> {
   const postgres = (await import("postgres")).default;
-  const url = process.env.DATABASE_URL!.trim();
-  const local = /localhost|127\.0\.0\.1/.test(url);
+  const { url, ssl } = postgresClientOptions(process.env.DATABASE_URL!);
   const sql = postgres(url, {
     prepare: false,
     max: 1,
     idle_timeout: 20,
     connect_timeout: 20,
-    ssl: local || /sslmode=disable/.test(url) ? false : /sslmode=/.test(url) ? undefined : "require",
+    ssl,
   });
 
   return {
