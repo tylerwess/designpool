@@ -1,7 +1,9 @@
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
-import { FILTERS_MATTER_COPY, pageMetadata } from "@/lib/site";
+import { pageMetadata } from "@/lib/site";
 import { SENIORITY_LABELS, SENIORITY_LEVELS, TYPICAL_MIN_YEARS } from "@/lib/taxonomy";
+
+const TYLER_WESSON_URL = "https://www.tylerwdesign.site/";
 
 export const metadata = pageMetadata({
   path: "/about",
@@ -23,30 +25,43 @@ export default function AboutPage() {
       <h1 className="mt-3 font-display text-4xl sm:text-5xl">How this board works</h1>
       <div className="mt-8 space-y-4 text-sm leading-7 text-ink">
         <p>
-          Designpool lists design roles only: product design, UX, UI and visual, brand, design systems, UX research,
-          content design, motion, design engineering, and design leadership. Titles that use “design” for mechanical,
-          chip, hardware, or circuit engineering are left out.
-        </p>
-        <p>
-          Listings come from each company’s public Greenhouse, Ashby, or Lever board. The Apply button goes to the
-          original posting. Nothing here is an application form.
+          Designpool is built by{" "}
+          <a href={TYLER_WESSON_URL} target="_blank" rel="noopener noreferrer" className="underline hover:no-underline">
+            Tyler Wesson
+          </a>
+          , a senior product designer who got tired of digging through stale posts and agency reposts to find good,
+          fresh roles. So I built the board I wanted.
         </p>
       </div>
 
-      <h2 className="mt-12 font-display text-3xl">Filters that actually matter</h2>
-      <p className="mt-4 text-sm leading-7">{FILTERS_MATTER_COPY}</p>
+      <h2 className="mt-12 font-display text-3xl">Design roles only</h2>
+      <p className="mt-4 text-sm leading-7">
+        Product, UX, UI, visual, brand, design systems, research, content, motion, design engineering, and
+        leadership. No mechanical, chip, or hardware “design” titles.
+      </p>
 
-      <h2 className="mt-12 font-display text-3xl">Only 30 days</h2>
+      <h2 className="mt-12 font-display text-3xl">Straight from the source</h2>
+      <p className="mt-4 text-sm leading-7">
+        Every listing comes from the company’s own Greenhouse, Ashby, or Lever board. No agencies, no recruiters, no
+        reposts. Apply takes you to the original posting.
+      </p>
+
+      <h2 className="mt-12 font-display text-3xl">Filters that actually matter</h2>
+      <p className="mt-4 text-sm leading-7">
+        Filter by what you’re actually looking for: benefits, visa sponsorship, time posted, specific industries,
+        years of experience, and nine seniority levels.
+      </p>
+
+      <h2 className="mt-12 font-display text-3xl">Always fresh</h2>
       <div className="mt-4 space-y-4 text-sm leading-7">
         <p>
-          A role’s age is the date the company posted it, when that date exists. Otherwise it is the day Designpool first
-          saw it. Anything older than 30 days is deleted. If a role disappears from the source feed, it is deleted on the
-          next daily run, even if it is newer than that.
+          Nothing older than 30 days. Roles pulled from a company’s board disappear on the next daily check. Age is
+          the company’s post date, or the day Designpool first saw it.
         </p>
       </div>
 
       <h2 className="mt-12 font-display text-3xl">Nine seniority levels</h2>
-      <p className="mt-4 text-sm leading-7">Each role gets exactly one level, from the title first and the years asked for second.</p>
+      <p className="mt-4 text-sm leading-7">One level per role, based on the title first and years asked for second.</p>
       <table className="mt-6 w-full border-collapse text-left text-sm">
         <thead>
           <tr className="border-b border-line text-xs uppercase tracking-[0.14em] text-muted">
