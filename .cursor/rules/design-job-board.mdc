@@ -100,7 +100,7 @@ Filters are multi-select where it makes sense.
 
 ## Environment variables
 - `DATABASE_URL` is the Postgres connection string. When it is unset on Vercel, the site still builds and shows an empty state.
-- `CRON_SECRET` protects the daily cron route.
+- `CRON_SECRET` protects the daily cron route. While it is unset, the route rejects every request. The build and the site do not require it.
 - `LLM_CLASSIFIER_ENABLED` is optional and defaults to `false`. A matching API key is needed only if it's enabled.
 - `NEXT_PUBLIC_SITE_URL` is the canonical origin for metadata, the sitemap, and Open Graph. It defaults to `https://designpool-taupe.vercel.app`.
 

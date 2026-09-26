@@ -36,7 +36,7 @@ CRON_SECRET=dev-secret npm run dev
 curl -H "Authorization: Bearer dev-secret" http://localhost:3000/api/cron
 ```
 
-The route ingests every company, deletes roles that disappeared from their source feed, then deletes anything older than 30 days. A missing or wrong secret returns 401.
+The route ingests every company, deletes roles that disappeared from their source feed, then deletes anything older than 30 days. With `CRON_SECRET` unset, or with a missing or wrong bearer token, the route returns 401 and does not ingest.
 
 ## Adding a company
 
@@ -73,27 +73,27 @@ Copy `.env.example` to `.env.local`.
 | Variable | Required | Purpose |
 | --- | --- | --- |
 | `DATABASE_URL` | For listings | Postgres connection string, for example Neon from the Vercel Marketplace. When it is unset outside Vercel, the app uses local SQLite. When it is unset on Vercel, the build still succeeds and the site shows an empty state. |
-| `CRON_SECRET` | For cron | Sent by Vercel as `Authorization: Bearer <CRON_SECRET>`. The cron route rejects every request without it. |
+| `CRON_SECRET` | For cron | Bearer token for `/api/cron`. While it is unset, every request to that route returns 401. Pages and the build do not read it. |
 | `NEXT_PUBLIC_SITE_URL` | No | Canonical origin for metadata, `/sitemap.xml`, and Open Graph. Defaults to `https://designpool-taupe.vercel.app`. |
 | `LLM_CLASSIFIER_ENABLED` | No | Defaults to `false`. The title and years rules run on their own. |
 | `LLM_API_URL`, `LLM_API_KEY`, `LLM_MODEL` | Only if the LLM flag is `true` | Optional pass for ambiguous “Lead” titles. Failures fall back to the rules. |
 
-On a fresh Vercel deploy, before `DATABASE_URL` is set, the site renders an empty state instead of failing the build.
+On a fresh Vercel deploy, before `DATABASE_URL` and `CRON_SECRET` are set, the build succeeds, the site renders an empty state, and `/api/cron` returns 401.
 
 ## Deploy on Vercel
 
 The Vercel project is `designpool`. Production is [https://designpool-taupe.vercel.app](https://designpool-taupe.vercel.app). Pushes and pull requests get preview deployments. Metadata, the sitemap, and Open Graph use that production origin unless `NEXT_PUBLIC_SITE_URL` is set.
 
 1. The framework preset is Next.js. Node 22 is set in `package.json`.
-2. `CRON_SECRET` is set for Production and Preview. Vercel Cron sends it as a bearer token.
-3. Add Neon Postgres from Vercel Storage and connect it so `DATABASE_URL` is set for Production, Preview, and Development. Until that variable exists, the build succeeds and `/` and `/jobs` show an empty state instead of failing.
+2. Add `CRON_SECRET` for Production and Preview. Use a long random string. Until it exists, `/api/cron` returns 401 for every caller, including the daily Vercel cron. After it is set, Vercel sends it as `Authorization: Bearer <CRON_SECRET>`.
+3. Add Neon Postgres from Vercel Storage and connect it so `DATABASE_URL` is set for Production, Preview, and Development. Until that variable exists, the build succeeds and `/` and `/jobs` show an empty state. Neither variable is required for the build.
 4. `vercel.json` schedules `GET /api/cron` once a day (`15 8 * * *`, 08:15 UTC). The route exports `maxDuration` of 60 seconds, the usual Hobby-plan ceiling. A full ingest of the seeded companies finished in well under a minute locally. On Pro you can raise that export if a run ever times out. You can also fill the database from your machine:
 
    ```bash
    DATABASE_URL="postgres://…" npm run ingest
    ```
 
-5. After `DATABASE_URL` is set, deploy and trigger ingest once:
+5. After both `DATABASE_URL` and `CRON_SECRET` are set, deploy and trigger ingest once:
 
    ```bash
    curl -H "Authorization: Bearer $CRON_SECRET" https://designpool-taupe.vercel.app/api/cron
