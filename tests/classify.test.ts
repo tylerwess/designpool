@@ -14,15 +14,15 @@ describe("classifyRole", () => {
     assert.equal(level("Brand Designer").seniority, "mid");
   });
 
-  it("maps the nine title bands", () => {
+  it("maps the eight title bands", () => {
     assert.equal(level("New Grad Product Designer").seniority, "new_grad");
     assert.equal(level("2026 New Grad, Product Design").seniority, "new_grad");
     assert.equal(level("Early Career Designer").seniority, "new_grad");
     assert.equal(level("Design Intern").seniority, "new_grad");
-    assert.equal(level("Associate Product Designer").seniority, "entry");
-    assert.equal(level("Junior Visual Designer").seniority, "entry");
-    assert.equal(level("Designer I").seniority, "entry");
-    assert.equal(level("Apprentice Designer").seniority, "entry");
+    assert.equal(level("Associate Product Designer").seniority, "new_grad");
+    assert.equal(level("Junior Visual Designer").seniority, "new_grad");
+    assert.equal(level("Designer I").seniority, "new_grad");
+    assert.equal(level("Apprentice Designer").seniority, "new_grad");
     assert.equal(level("Senior Product Designer").seniority, "senior");
     assert.equal(level("Sr. Product Designer").seniority, "senior");
     assert.equal(level("Product Designer III").seniority, "senior");

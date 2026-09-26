@@ -1,6 +1,6 @@
 # Designpool
 
-A minimal public job board for design roles. It pulls openings from company Greenhouse, Ashby, and Lever boards, classifies each one into one of nine seniority levels, and deletes anything older than 30 days.
+A minimal public job board for design roles. It pulls openings from company Greenhouse, Ashby, and Lever boards, classifies each one into one of eight seniority levels, and deletes anything older than 30 days.
 
 The interface has light and dark mode and a small design system. Tokens, type, and components are documented in [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md). The living gallery at `/design` is local `npm run dev` only; production and Vercel preview return 404. Change colors in `lib/design-tokens.ts` and `app/globals.css` together. `npm test` checks that they still match.
 
@@ -108,7 +108,7 @@ Leave `LLM_CLASSIFIER_ENABLED` unset or `false` unless you want the optional mod
 
 ## How seniority is decided
 
-Each role gets one level from the title: New grad, Entry level, Mid-senior, Senior, Staff, Principal, Manager, Director, or Executive. Years of experience are parsed from the description (`5+ years`, `3-5 years`, `3 to 5 years`, `at least 4 years`, `minimum of 6 years`, and spelled-out numbers). Unrelated numbers, such as “5 years of runway” or a company age, are ignored.
+Each role gets one level from the title: New grad/Entry level, Mid-senior, Senior, Staff, Principal, Manager, Director, or Executive. Years of experience are parsed from the description (`5+ years`, `3-5 years`, `3 to 5 years`, `at least 4 years`, `minimum of 6 years`, and spelled-out numbers). Unrelated numbers, such as “5 years of runway” or a company age, are ignored.
 
 If the title asks for fewer years than that level usually does, the title is kept and the role is marked Stretch. Roles that never state years use the title only.
 

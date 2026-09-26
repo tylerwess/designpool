@@ -1,6 +1,5 @@
 export const SENIORITY_LEVELS = [
   "new_grad",
-  "entry",
   "mid",
   "senior",
   "staff",
@@ -13,8 +12,7 @@ export const SENIORITY_LEVELS = [
 export type Seniority = (typeof SENIORITY_LEVELS)[number];
 
 export const SENIORITY_LABELS: Record<Seniority, string> = {
-  new_grad: "New grad",
-  entry: "Entry level",
+  new_grad: "New grad/Entry level",
   mid: "Mid-senior",
   senior: "Senior",
   staff: "Staff",
@@ -27,7 +25,6 @@ export const SENIORITY_LABELS: Record<Seniority, string> = {
 /** Typical minimum years for a level. A lower stated minimum earns a Stretch badge. */
 export const TYPICAL_MIN_YEARS: Record<Seniority, number> = {
   new_grad: 0,
-  entry: 0,
   mid: 2,
   senior: 5,
   staff: 8,

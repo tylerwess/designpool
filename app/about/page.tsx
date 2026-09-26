@@ -25,12 +25,12 @@ export default function AboutPage() {
       <h1 className="mt-3 font-display text-4xl sm:text-5xl">How this board works</h1>
       <div className="mt-8 space-y-4 text-sm leading-7 text-ink">
         <p>
-          Designpool is built by{" "}
+          Hey, I’m{" "}
           <a href={TYLER_WESSON_URL} target="_blank" rel="noopener noreferrer" className="underline hover:no-underline">
-            Tyler Wesson
+            Tyler
           </a>
-          , a senior product designer who got tired of digging through stale posts and agency reposts to find good,
-          fresh roles. So I built the board I wanted.
+          , a designer who got tired of digging through stale posts and agency reposts to find good, fresh roles. So
+          I built the board I wanted.
         </p>
       </div>
 
@@ -48,7 +48,7 @@ export default function AboutPage() {
 
       <h2 className="mt-12 font-display text-3xl">Filters that actually matter</h2>
       <p className="mt-4 text-sm leading-7">
-        Filter by what you’re actually looking for: time posted, specific industries, years of experience, and nine
+        Filter by what you’re actually looking for: time posted, specific industries, years of experience, and eight
         seniority levels.
       </p>
 
@@ -60,7 +60,7 @@ export default function AboutPage() {
         </p>
       </div>
 
-      <h2 className="mt-12 font-display text-3xl">Nine seniority levels</h2>
+      <h2 className="mt-12 font-display text-3xl">Eight seniority levels</h2>
       <p className="mt-4 text-sm leading-7">One level per role, based on the title first and years asked for second.</p>
       <table className="mt-6 w-full border-collapse text-left text-sm">
         <thead>

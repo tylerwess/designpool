@@ -82,7 +82,7 @@ test("the landing hero keeps the more-relevant industry filter line", () => {
   const home = readFileSync(join(process.cwd(), "app/page.tsx"), "utf8");
   assert.equal(
     FILTERS_MATTER_COPY,
-    "Filters that actually matter. Nine seniority levels, years of experience, and more relevant industry filters.",
+    "Filters that actually matter. Eight seniority levels, years of experience, and more relevant industry filters.",
   );
   assert.match(home, /FILTERS_MATTER_COPY/);
   assert.equal(home.includes("and industry."), false);
@@ -90,7 +90,7 @@ test("the landing hero keeps the more-relevant industry filter line", () => {
 
 test("the about page credits Tyler Wesson and links his site", () => {
   const about = readFileSync(join(process.cwd(), "app/about/page.tsx"), "utf8");
-  assert.match(about, /Tyler Wesson/);
+  assert.match(about, /Tyler/);
   assert.match(about, /https:\/\/www\.tylerwdesign\.site\//);
   assert.match(about, /target="_blank"/);
   assert.match(about, /rel="noopener noreferrer"/);

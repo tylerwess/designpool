@@ -9,7 +9,7 @@ export const SITE_DESCRIPTION =
   "The free design job board that respects your time. Filters that actually matter, and nothing older than 30 days.";
 
 export const FILTERS_MATTER_COPY =
-  "Filters that actually matter. Nine seniority levels, years of experience, and more relevant industry filters.";
+  "Filters that actually matter. Eight seniority levels, years of experience, and more relevant industry filters.";
 
 export function siteUrl(): URL {
   const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim();
