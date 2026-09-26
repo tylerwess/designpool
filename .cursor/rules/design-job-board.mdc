@@ -1,0 +1,108 @@
+---
+description: Product and build spec for the Design Job Board, a minimalist public job board for design roles with real seniority and years-of-experience filters and a 30-day freshness rule.
+alwaysApply: true
+---
+
+# Design Job Board: build spec
+
+## Goal
+A bare-bones, minimalist public job board for **design roles only** (product design, UX, UI/visual, brand, design systems, UX research, content design, motion, design engineering, design leadership). What sets it apart is **precise seniority filtering** (nine levels instead of LinkedIn's lumped "Mid-Senior") and **freshness** (no listing stays up longer than 30 days).
+
+## Look and feel
+- Minimal and calm, in the spirit of Claude's UI: a warm off-white background, generous whitespace, and a small palette with one muted accent.
+- Headings use a clean serif or humanist sans, and body text uses a neutral sans.
+- Use subtle 1px borders and soft radius, with no heavy shadows or gradients.
+- It should be fast, responsive, and accessible (keyboard-navigable filters, visible focus states, good contrast).
+
+## Stack
+- Next.js (App Router) + TypeScript + Tailwind, deployed on Vercel.
+- Postgres (e.g. Neon via the Vercel Marketplace) for listings. Provide a local fallback (SQLite or local Postgres) so it runs without cloud credentials.
+- A Vercel Cron job runs once daily for ingestion and cleanup. The route is protected by `CRON_SECRET`.
+
+## Pages
+1. **Landing (`/`)**
+   - A hero with a one-line pitch.
+   - Value props: **"We keep jobs fresh"**, **"Only 30 days allowed on here"**, and **"Better filters to find roles"** (nine real seniority levels, years of experience, industry).
+   - A call to action to browse jobs, plus an optional preview of the latest listings.
+2. **Jobs (`/jobs`)**
+   - A filter sidebar (a drawer on mobile) with a result count and a "Clear filters" control.
+   - Filter state lives in URL query params so views are shareable.
+   - Each job card shows the title, company, location or remote status, seniority badge, years range, industry tag, discipline tags, salary (when available), and posted age ("3d ago").
+   - The **Apply** button links directly to the company's original posting.
+3. **Optional:** a simple job detail view and a short About/FAQ explaining the 30-day rule and how seniority is decided.
+
+## Data sources
+Use the public, no-auth ATS job-board APIs:
+- **Greenhouse:** `https://boards-api.greenhouse.io/v1/boards/{token}/jobs?content=true`
+- **Ashby:** `https://api.ashbyhq.com/posting-api/job-board/{name}?includeCompensation=true`
+- **Lever (optional):** `https://api.lever.co/v0/postings/{company}?mode=json`
+
+Keep a curated, easy-to-edit companies config (e.g. `data/companies.ts`) with these fields:
+`name`, `ats` (`greenhouse` | `ashby` | `lever`), `token`, `industry`, `sizeBucket` (e.g. `1-50`, `51-200`, `201-1000`, `1000+`), `website`.
+
+Seed it with 50+ design-forward companies across industries. Verify that each token returns data, and drop the ones that don't.
+
+Ingestion:
+- Fetch every company once a day.
+- Keep only design roles, using a title include/exclude keyword list. Exclude engineering senses of "design", such as mechanical, chip/ASIC, hardware, and circuit design engineer.
+- Upsert by a stable key of `source + company + jobId`.
+- Store: title, company, URL, location, remote type, employment type, salary min/max/currency (when present), description (plain text), source posted/updated date, `first_seen_at`, `last_seen_at`, and the derived fields below.
+
+## 30-day freshness rule
+- A listing's age is measured from the source posted date if one exists, otherwise from `first_seen_at`.
+- Listings **older than 30 days are deleted.**
+- Listings that **disappear from the source feed are deleted.**
+- Both cleanups run in the daily cron job right after ingestion.
+
+## Seniority classification (the core feature)
+Each listing gets exactly one level. The classifier combines **title signals** with **years of experience** parsed from the description.
+
+| Level | Title signals | Typical years |
+|---|---|---|
+| New grad | New Grad, University, Graduate, Early Career, 2026/2027 grad | 0 |
+| Entry level | Associate, Junior, Designer I, Apprentice | 0–2 |
+| Mid-senior | Plain Product Designer, Designer II, UX Designer | 2–5 |
+| Senior | Senior, Sr., Designer III | 5–8 |
+| Staff | Staff, some uses of Lead | 8+ |
+| Principal | Principal, Distinguished | 10+ |
+| Manager | Design Manager, Manager, Product Design, Lead + direct reports | 6+ with people management |
+| Director | Director, Sr. Director, Head of Design (larger company) | 10+ |
+| Executive | VP, SVP, Chief Design Officer, Head of Design (startup) | 12+ |
+
+Edge cases:
+- **"Lead"** is treated as an individual-contributor level (Staff) unless the description mentions people management ("direct reports", "hire", "grow a team", "manage a team of designers"). With those signals it becomes Manager.
+- **"Head of Design"** uses company size: a startup (roughly under 200 people) means Executive, and a larger company means Director.
+- **Title vs. years conflict:** keep the title's level and add a **"Stretch"** badge (e.g. a "Senior" title asking for 3+ years).
+- **No years stated** (about a third of listings): fall back to the title alone.
+- Leave a pluggable hook for an optional cheap LLM pass on truly ambiguous listings. It sits behind an env var and is **off by default**, so the rules must work on their own.
+
+### Years-of-experience parser
+- Extract `yearsMin` / `yearsMax` from phrases like `5+ years`, `3-5 years`, `3–5 years`, `3 to 5 years`, `at least 4 years`, `minimum of 6 years`, and spelled-out numbers (`five years`).
+- Ignore unrelated numbers (e.g. "5 years of runway", company age).
+- Write unit tests for both the parser and the classifier using realistic title and description samples.
+
+## Filters and tags
+Filters are multi-select where it makes sense.
+- **Seniority level:** the nine levels above.
+- **Years of experience:** a min/max range, with a toggle to include listings that state no years. This should support queries like "Senior roles asking for 5 years or fewer."
+- **Industry:** fintech, defense/govtech, AI/ML, healthcare, climate/energy, dev tools, consumer social, e-commerce/marketplace, enterprise SaaS, productivity, crypto/web3, gaming, media/entertainment, education, mobility/transportation, hardware/robotics, security, travel/hospitality. Industry comes mainly from the company config.
+- **Discipline:** product design, UX, UI/visual, brand, design systems, UX research, content design, motion, design engineering, design leadership. Derived from the title and description.
+- **Work type:** remote / hybrid / onsite, plus a location or country text search.
+- **Employment type:** full-time / contract / internship.
+- **Salary:** show it when provided, with a "Has salary" filter.
+- **Company size** bucket.
+- **Posted within:** 24h / 3d / 7d / 14d / 30d.
+- **Keyword search** across title and company.
+- **Sort:** newest (default) or company A–Z.
+- **Badges:** level, Stretch, Remote, and Salary listed.
+
+## Environment variables
+- `DATABASE_URL` is the Postgres connection string.
+- `CRON_SECRET` protects the daily cron route.
+- `LLM_CLASSIFIER_ENABLED` is optional and defaults to `false`. A matching API key is needed only if it's enabled.
+
+## Done when
+- The app runs locally, a real ingest against the live APIs fills the database, and every filter works end to end.
+- The daily cron route (ingest, then 30-day and stale deletion) works and is protected.
+- The classifier and parser tests pass.
+- The README covers local setup, adding companies, env vars, and deploying to Vercel (including the cron config in `vercel.json`).
