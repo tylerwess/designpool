@@ -42,9 +42,11 @@ export function LandingLive({ jobs }: { jobs: Listing[] }) {
 
   return (
     <div>
-      <div className="mx-auto grid max-w-md grid-cols-2 gap-8 text-center sm:gap-16">
-        <Stat value={jobs.length} label={jobs.length === 1 ? "open role" : "open roles"} />
-        <Stat value={companyCount} label={companyCount === 1 ? "company" : "companies"} />
+      <div className="mx-auto max-w-lg rounded-2xl bg-surface px-6 py-8 sm:px-10 sm:py-10">
+        <div className="grid grid-cols-2 gap-8 text-center sm:gap-16">
+          <Stat value={jobs.length} label={jobs.length === 1 ? "open role" : "open roles"} />
+          <Stat value={companyCount} label={companyCount === 1 ? "company" : "companies"} />
+        </div>
       </div>
 
       {segments.length > 0 ? (
