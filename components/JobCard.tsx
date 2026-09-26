@@ -1,22 +1,30 @@
 import Link from "next/link";
+import { ListingByline } from "@/components/ListingByline";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { CompanyLogo } from "@/components/ui/CompanyLogo";
 import { Surface } from "@/components/ui/Surface";
-import { companyWebsite } from "@/lib/company-logo";
-import { formatListingAge, formatSalary, listingHref, listingMeta, seniorityLabel, workLabel } from "@/lib/format";
+import { formatSalary, listingHref, listingMeta, seniorityLabel, workLabel } from "@/lib/format";
 import type { Listing } from "@/lib/types";
 
 export function JobCard({ listing, titleHref }: { listing: Listing; titleHref?: string }) {
   const salary = formatSalary(listing);
-  const place = [listing.location, workLabel(listing)].filter(Boolean).join(" · ");
   const href = titleHref ?? listingHref(listing);
+  const work =
+    listing.remoteType === "remote" || listing.remoteType === "hybrid" || listing.remoteType === "onsite"
+      ? workLabel(listing)
+      : null;
 
   return (
     <Surface className="p-5">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
-          <ul className="flex flex-wrap gap-1.5">
+          <ListingByline listing={listing} />
+          <h2 className="mt-3 font-display text-2xl leading-snug">
+            <Link href={href} className="hover:underline">
+              {listing.title}
+            </Link>
+          </h2>
+          <ul className="mt-3 flex flex-wrap gap-1.5">
             <li>
               <Badge tone="accent">{seniorityLabel(listing.seniority)}</Badge>
             </li>
@@ -25,9 +33,9 @@ export function JobCard({ listing, titleHref }: { listing: Listing; titleHref?: 
                 <Badge>Stretch</Badge>
               </li>
             ) : null}
-            {listing.remoteType === "remote" ? (
+            {work ? (
               <li>
-                <Badge>Remote</Badge>
+                <Badge>{work}</Badge>
               </li>
             ) : null}
             {salary ? (
@@ -36,29 +44,18 @@ export function JobCard({ listing, titleHref }: { listing: Listing; titleHref?: 
               </li>
             ) : null}
           </ul>
-          <h2 className="mt-3 font-display text-2xl leading-snug">
-            <Link href={href} className="hover:underline">
-              {listing.title}
-            </Link>
-          </h2>
-          <p className="mt-1.5 flex items-center gap-2 text-sm text-muted">
-            <CompanyLogo
-              name={listing.company}
-              website={companyWebsite(listing.source, listing.companyToken)}
-              size="sm"
-            />
-            <span className="min-w-0">
-              {listing.company}
-              {place ? ` · ${place}` : ""}
-            </span>
-          </p>
           {listingMeta(listing) ? <p className="mt-2 text-sm leading-6 text-ink">{listingMeta(listing)}</p> : null}
-          <p className="mt-2 text-sm text-muted">
-            {formatListingAge(listing)}
-            {salary ? ` · ${salary}` : ""}
-            {listing.employmentType === "internship" ? " · Internship" : ""}
-            {listing.employmentType === "contract" ? " · Contract" : ""}
-          </p>
+          {salary || listing.employmentType !== "full_time" ? (
+            <p className="mt-2 text-sm text-muted">
+              {[
+                salary,
+                listing.employmentType === "internship" ? "Internship" : null,
+                listing.employmentType === "contract" ? "Contract" : null,
+              ]
+                .filter(Boolean)
+                .join(" · ")}
+            </p>
+          ) : null}
         </div>
         <div className="flex shrink-0 flex-wrap items-center gap-2">
           <Button href={href} variant="secondary">

@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ExpandableDescription } from "@/components/ExpandableDescription";
+import { ListingByline } from "@/components/ListingByline";
 import { Button } from "@/components/ui/Button";
-import { CompanyLogo } from "@/components/ui/CompanyLogo";
 import { Container } from "@/components/ui/Container";
 import { Surface } from "@/components/ui/Surface";
 import { Tag } from "@/components/ui/Tag";
 import { loadListing } from "@/lib/board";
-import { companyWebsite } from "@/lib/company-logo";
 import { splitDescription } from "@/lib/description";
 import { listingTags } from "@/lib/listing-tags";
 import { pageMetadata } from "@/lib/site";
@@ -52,6 +51,9 @@ export default async function JobPage({ params }: { params: Promise<JobParams> }
         <Button href="/jobs" variant="ghost">
           All roles
         </Button>
+        <div className="mt-6">
+          <ListingByline listing={listing} size="lg" />
+        </div>
         <h1 className="mt-4 font-display text-4xl leading-tight sm:text-5xl">{listing.title}</h1>
         {tags.length > 0 ? (
           <ul className="mt-4 flex flex-wrap gap-2">
@@ -62,17 +64,6 @@ export default async function JobPage({ params }: { params: Promise<JobParams> }
             ))}
           </ul>
         ) : null}
-        <p className="mt-4 flex items-center gap-3 text-muted">
-          <CompanyLogo
-            name={listing.company}
-            website={companyWebsite(listing.source, listing.companyToken)}
-            size="lg"
-          />
-          <span>
-            {listing.company}
-            {listing.location ? ` · ${listing.location}` : ""}
-          </span>
-        </p>
         <div className="mt-6">
           <Button href={listing.url} external>
             Apply

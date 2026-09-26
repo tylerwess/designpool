@@ -187,7 +187,7 @@ export default function DesignPage() {
           <Tag href="/jobs?industry=productivity">Productivity</Tag>
           <Tag href="/jobs?work=remote">Remote</Tag>
           <Tag href="/jobs?salary=1">Has salary</Tag>
-          <Tag href="/jobs?posted=7d">Past 7 days</Tag>
+          <Tag href="/jobs?employment=full_time">Full-time</Tag>
         </div>
         <div className="mt-6 flex flex-wrap items-center gap-6">
           <div className="flex items-center gap-2 text-sm text-muted">

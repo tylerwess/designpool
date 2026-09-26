@@ -20,6 +20,15 @@ export function formatListingAge(listing: Pick<Listing, "postedAt" | "firstSeenA
   return formatAge(new Date(listingTimestamp(listing)).toISOString(), now);
 }
 
+export function listingByline(
+  listing: Pick<Listing, "company" | "location" | "postedAt" | "firstSeenAt">,
+  now = Date.now(),
+): string {
+  return [listing.company, listing.location || null, `Posted ${formatListingAge(listing, now)}`]
+    .filter(Boolean)
+    .join(" · ");
+}
+
 export function formatYears(min: number | null, max: number | null): string | null {
   return yearsFilterLabel(min, max);
 }
