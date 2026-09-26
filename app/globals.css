@@ -774,10 +774,6 @@ input.control[type="number"]::-webkit-outer-spin-button {
   margin-top: var(--space-6);
 }
 
-.source-stack .landing-live {
-  margin-top: var(--space-8);
-}
-
 .source-reel {
   overflow: hidden;
   -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);

@@ -2,7 +2,6 @@ import { LandingLive } from "@/components/LandingLive";
 import { ArrowIcon, Button } from "@/components/ui/Button";
 import { CompanyLogo } from "@/components/ui/CompanyLogo";
 import { Container } from "@/components/ui/Container";
-import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Surface } from "@/components/ui/Surface";
 import { TowerLoader } from "@/components/ui/TowerLoader";
 import { loadBoard } from "@/lib/board";
@@ -24,7 +23,7 @@ export default async function HomePage() {
 
   return (
     <div>
-      <Container className="py-16 sm:py-20">
+      <Container className="pt-16 sm:pt-20">
         <div className="hero-lead">
           <h1 className="hero-title max-w-4xl font-display text-5xl leading-[1.02] sm:text-7xl">
             <TowerLoader />
@@ -42,7 +41,7 @@ export default async function HomePage() {
         </div>
 
         <div className="mt-10">
-          <Eyebrow>Listings powered by</Eyebrow>
+          <p className="text-sm text-muted">Listings powered by</p>
           <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-2 font-display text-lg text-ink">
             {SOURCE_PLATFORMS.map((platform, index) => (
               <span key={platform.name} className="inline-flex items-center gap-2">
@@ -59,7 +58,7 @@ export default async function HomePage() {
         </div>
       </Container>
 
-      <div className="source-stack pb-14">
+      <div className="source-stack mt-10 pb-14">
         {jobs.length > 0 ? (
           <Container>
             <LandingLive jobs={jobs} />
