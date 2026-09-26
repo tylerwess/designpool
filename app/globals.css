@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+/*
+  Color hex values are defined only in this file. Semantic tokens (--bg,
+  --ink, …) point at the light or dark set. Components use the semantic
+  names, so a theme switch does not require a second class on each element.
+*/
+:root {
+  --light-bg: #ffffff;
+  --light-surface: #f3f3f3;
+  --light-ink: #111111;
+  --light-muted: #5c5c5c;
+  --light-line: #e4e4e4;
+  --light-accent: #111111;
+  --light-accent-soft: #ececec;
+
+  --dark-bg: #000000;
+  --dark-surface: #2c2c2c;
+  --dark-ink: #ffffff;
+  --dark-muted: #a3a3a3;
+  --dark-line: #333333;
+  --dark-accent: #ffffff;
+  --dark-accent-soft: #1c1c1c;
+
+  --bg: var(--light-bg);
+  --surface: var(--light-surface);
+  --ink: var(--light-ink);
+  --muted: var(--light-muted);
+  --line: var(--light-line);
+  --accent: var(--light-accent);
+  --accent-soft: var(--light-accent-soft);
+
+  color-scheme: light;
+}
+
+.dark {
+  --bg: var(--dark-bg);
+  --surface: var(--dark-surface);
+  --ink: var(--dark-ink);
+  --muted: var(--dark-muted);
+  --line: var(--dark-line);
+  --accent: var(--dark-accent);
+  --accent-soft: var(--dark-accent-soft);
+  color-scheme: dark;
+}
+
+.force-light {
+  --bg: var(--light-bg);
+  --surface: var(--light-surface);
+  --ink: var(--light-ink);
+  --muted: var(--light-muted);
+  --line: var(--light-line);
+  --accent: var(--light-accent);
+  --accent-soft: var(--light-accent-soft);
+  color-scheme: light;
+}
+
+.force-dark {
+  --bg: var(--dark-bg);
+  --surface: var(--dark-surface);
+  --ink: var(--dark-ink);
+  --muted: var(--dark-muted);
+  --line: var(--dark-line);
+  --accent: var(--dark-accent);
+  --accent-soft: var(--dark-accent-soft);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans), Lato, "Segoe UI", sans-serif;
+}
+
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-display), "Fjalla One", "Arial Narrow", sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+h1,
+h1.font-display {
+  letter-spacing: -0.035em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+input.control,
+select.control {
+  box-sizing: border-box;
+  height: 2.75rem;
+  margin: 0;
+  padding: 0 1rem;
+  line-height: 2.75rem;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+input.control[type="search"]::-webkit-search-decoration,
+input.control[type="search"]::-webkit-search-cancel-button,
+input.control[type="search"]::-webkit-search-results-button,
+input.control[type="search"]::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+
+input.control[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input.control[type="number"]::-webkit-inner-spin-button,
+input.control[type="number"]::-webkit-outer-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.theme-toggle .when-dark {
+  display: none;
+}
+
+html.dark .theme-toggle .when-dark {
+  display: inline;
+}
+
+html.dark .theme-toggle .when-light {
+  display: none;
+}
