@@ -38,7 +38,7 @@ The first visit follows `prefers-color-scheme`. The header control writes `desig
 | Living gallery | `/design` |
 | This note | `DESIGN_SYSTEM.md` |
 
-Headings load Fjalla One and body text loads Lato through `next/font/google` in `app/layout.tsx`.
+Headings load Fjalla One and body text loads Lato through `next/font/google` in `app/layout.tsx`. Headings use a slight negative letter-spacing (`-0.02em`, and `-0.035em` on `h1`) so large Fjalla One lines sit tighter without crowding.
 
 ## How this stays durable
 

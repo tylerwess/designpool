@@ -6,7 +6,7 @@ export function Header() {
   return (
     <header className="border-b border-line">
       <Container className="flex items-center justify-between gap-4 py-4">
-        <Link href="/" className="font-display text-xl tracking-wide text-ink">
+        <Link href="/" className="font-display text-xl text-ink">
           Designpool
         </Link>
         <nav className="flex items-center gap-4 text-sm sm:gap-5">

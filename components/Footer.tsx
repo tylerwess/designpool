@@ -7,7 +7,7 @@ export function Footer() {
     <footer className="border-t border-line">
       <Container className="grid gap-8 py-10 sm:grid-cols-3">
         <div>
-          <p className="font-display text-lg tracking-wide">Designpool</p>
+          <p className="font-display text-lg">Designpool</p>
           <p className="mt-2 max-w-xs text-sm leading-6 text-muted">
             The design job board that respects your time. Roles stay for 30 days.
           </p>

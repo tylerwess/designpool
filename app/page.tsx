@@ -15,7 +15,7 @@ export const dynamic = "force-dynamic";
 function Stat({ value, label }: { value: string; label: string }) {
   return (
     <div>
-      <p className="font-display text-4xl tracking-tight sm:text-6xl">{value}</p>
+      <p className="font-display text-4xl sm:text-6xl">{value}</p>
       <p className="mt-2 text-sm text-muted">{label}</p>
     </div>
   );
