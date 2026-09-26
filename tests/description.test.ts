@@ -40,4 +40,17 @@ describe("toDescriptionHtml", () => {
     assert.equal(toDescriptionHtml(null), "");
     assert.equal(toDescriptionHtml("   "), "");
   });
+
+  it("decodes a stray &mdash; entity in plain-text descriptions instead of double-escaping it", () => {
+    const html = toDescriptionHtml("Salary: $140,000 &mdash; $140,000 USD");
+    assert.equal(html.includes("&amp;mdash;"), false);
+    assert.equal(html.includes("&mdash;"), false);
+    assert.match(html, /\$140,000 — \$140,000 USD/);
+  });
+
+  it("fixes a double-escaped &amp;mdash; entity in HTML descriptions", () => {
+    const html = sanitizeDescriptionHtml("<p>Salary: $140,000 &amp;mdash; $140,000 USD</p>");
+    assert.equal(html.includes("&amp;mdash;"), false);
+    assert.match(html, /&mdash;/);
+  });
 });
