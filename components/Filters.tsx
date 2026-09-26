@@ -7,7 +7,6 @@ import { controlClassName } from "@/components/ui/Field";
 import { activeFilterCount, filtersToQuery, type JobFilters } from "@/lib/filters";
 import { yearsFilterLabel } from "@/lib/format";
 import {
-  BENEFITS,
   DISCIPLINES,
   EMPLOYMENT_TYPES,
   INDUSTRIES,
@@ -165,7 +164,6 @@ function FilterForm({ filters }: { filters: JobFilters }) {
   const disciplineLabels = filters.discipline.map((id) => DISCIPLINES.find((item) => item.id === id)?.label ?? id);
   const workLabels = filters.work.map((id) => WORK_TYPES.find((item) => item.id === id)?.label ?? id);
   const employmentLabels = filters.employment.map((id) => EMPLOYMENT_TYPES.find((item) => item.id === id)?.label ?? id);
-  const benefitLabels = filters.benefits.map((id) => BENEFITS.find((item) => item.id === id)?.label ?? id);
   const postedLabel = POSTED_WINDOWS.find((window) => window.id === filters.posted)?.label;
   const yearsActive = filters.yearsMin != null || filters.yearsMax != null || !filters.includeUnknownYears;
 
@@ -341,27 +339,6 @@ function FilterForm({ filters }: { filters: JobFilters }) {
               name="employment"
               value={option.id}
               defaultChecked={filters.employment.includes(option.id)}
-            >
-              {option.label}
-            </Option>
-          ))}
-        </Menu>
-
-        <Menu
-          id={`${baseId}-benefits`}
-          open={open === "benefits"}
-          label={choiceLabel("Benefits", benefitLabels)}
-          active={filters.benefits.length > 0}
-          clearHref={hrefFor({ ...filters, benefits: [] })}
-          onToggle={() => toggle("benefits")}
-        >
-          {BENEFITS.map((option) => (
-            <Option
-              key={option.id}
-              type="checkbox"
-              name="benefits"
-              value={option.id}
-              defaultChecked={filters.benefits.includes(option.id)}
             >
               {option.label}
             </Option>

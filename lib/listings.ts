@@ -1,13 +1,12 @@
 import { getDb, type SqlParam } from "./db";
 import type { Listing, ListingDraft } from "./types";
-import type { Ats, BenefitId, DisciplineId, EmploymentType, IndustryId, Seniority, SizeBucket, WorkType } from "./taxonomy";
+import type { Ats, DisciplineId, EmploymentType, IndustryId, Seniority, SizeBucket, WorkType } from "./taxonomy";
 
 const LIST_COLUMNS = `
   id, source, external_id, company, company_token, title, url, location,
   remote_type, employment_type, salary_min, salary_max, salary_currency,
   salary_interval, posted_at, source_updated_at, first_seen_at, last_seen_at,
-  seniority, stretch, years_min, years_max, industry, size_bucket, disciplines,
-  benefits
+  seniority, stretch, years_min, years_max, industry, size_bucket, disciplines
 `;
 
 type ListingRow = {
@@ -37,7 +36,6 @@ type ListingRow = {
   industry: string;
   size_bucket: string;
   disciplines: string;
-  benefits: string;
 };
 
 function mapRow(row: ListingRow): Listing {
@@ -47,13 +45,6 @@ function mapRow(row: ListingRow): Listing {
     if (Array.isArray(parsed)) disciplines = parsed;
   } catch {
     disciplines = [];
-  }
-  let benefits: BenefitId[] = [];
-  try {
-    const parsed = JSON.parse(row.benefits) as BenefitId[];
-    if (Array.isArray(parsed)) benefits = parsed;
-  } catch {
-    benefits = [];
   }
   return {
     id: row.id,
@@ -82,7 +73,6 @@ function mapRow(row: ListingRow): Listing {
     industry: row.industry as IndustryId,
     sizeBucket: row.size_bucket as SizeBucket,
     disciplines,
-    benefits,
   };
 }
 
@@ -130,7 +120,6 @@ export async function upsertListing(listing: ListingDraft): Promise<void> {
     listing.industry,
     listing.sizeBucket,
     JSON.stringify(listing.disciplines),
-    JSON.stringify(listing.benefits),
   ];
   await db.run(
     `INSERT INTO listings (
@@ -138,8 +127,8 @@ export async function upsertListing(listing: ListingDraft): Promise<void> {
       remote_type, employment_type, salary_min, salary_max, salary_currency,
       salary_interval, description, posted_at, source_updated_at, first_seen_at,
       last_seen_at, seniority, stretch, years_min, years_max, industry,
-      size_bucket, disciplines, benefits
-    ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+      size_bucket, disciplines
+    ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
     ON CONFLICT(id) DO UPDATE SET
       company = excluded.company,
       company_token = excluded.company_token,
@@ -162,8 +151,7 @@ export async function upsertListing(listing: ListingDraft): Promise<void> {
       years_max = excluded.years_max,
       industry = excluded.industry,
       size_bucket = excluded.size_bucket,
-      disciplines = excluded.disciplines,
-      benefits = excluded.benefits`,
+      disciplines = excluded.disciplines`,
     params,
   );
 }

@@ -48,8 +48,8 @@ export default function AboutPage() {
 
       <h2 className="mt-12 font-display text-3xl">Filters that actually matter</h2>
       <p className="mt-4 text-sm leading-7">
-        Filter by what you’re actually looking for: benefits, visa sponsorship, time posted, specific industries,
-        years of experience, and nine seniority levels.
+        Filter by what you’re actually looking for: time posted, specific industries, years of experience, and nine
+        seniority levels.
       </p>
 
       <h2 className="mt-12 font-display text-3xl">Always fresh</h2>

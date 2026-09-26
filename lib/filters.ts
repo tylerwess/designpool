@@ -1,12 +1,10 @@
 import type { Listing } from "./types";
 import {
-  isBenefit,
   isDiscipline,
   isIndustry,
   isSeniority,
   isSizeBucket,
   POSTED_WINDOWS,
-  type BenefitId,
   type DisciplineId,
   type EmploymentType,
   type IndustryId,
@@ -29,7 +27,6 @@ export type JobFilters = {
   employment: EmploymentType[];
   salary: boolean;
   size: SizeBucket[];
-  benefits: BenefitId[];
   posted: string;
   sort: SortKey;
 };
@@ -79,7 +76,6 @@ export function parseSearchParams(params: SearchParams): JobFilters {
     ),
     salary: values(params, "salary").some((value) => value === "1" || value === "true"),
     size: values(params, "size").filter(isSizeBucket),
-    benefits: values(params, "benefits").filter(isBenefit),
     posted: POSTED_WINDOWS.some((window) => window.id === posted) ? posted : "",
     sort: first(params, "sort") === "company" ? "company" : "newest",
   };
@@ -134,12 +130,6 @@ export function matchesFilters(listing: Listing, filters: JobFilters, now = Date
   if (filters.employment.length > 0 && !filters.employment.includes(listing.employmentType)) return false;
   if (filters.salary && listing.salaryMin == null && listing.salaryMax == null) return false;
   if (filters.size.length > 0 && !filters.size.includes(listing.sizeBucket)) return false;
-  if (
-    filters.benefits.length > 0 &&
-    !listing.benefits.some((benefit) => filters.benefits.includes(benefit))
-  ) {
-    return false;
-  }
   if (filters.posted) {
     const windowMs = POSTED_MS[filters.posted];
     if (now - listingTimestamp(listing) > windowMs) return false;
@@ -196,7 +186,6 @@ export function filtersToQuery(filters: JobFilters): string {
   for (const value of filters.employment) params.append("employment", value);
   if (filters.salary) params.set("salary", "1");
   for (const value of filters.size) params.append("size", value);
-  for (const value of filters.benefits) params.append("benefits", value);
   if (filters.posted) params.set("posted", filters.posted);
   if (filters.sort !== "newest") params.set("sort", filters.sort);
   return params.toString();
@@ -214,7 +203,6 @@ export function activeFilterCount(filters: JobFilters): number {
     filters.employment.length,
     filters.salary,
     filters.size.length,
-    filters.benefits.length,
     filters.posted,
     filters.sort !== "newest",
   ].filter(Boolean).length;

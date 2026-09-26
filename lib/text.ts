@@ -1,4 +1,4 @@
-import type { BenefitId, DisciplineId } from "./taxonomy";
+import type { DisciplineId } from "./taxonomy";
 
 export function decodeHtml(value: string): string {
   let text = value;
@@ -70,25 +70,6 @@ export function disciplinesFor(title: string, description: string): DisciplineId
     if (found.size === 0) found.add(/\bproduct\b/.test(t) ? "product_design" : "ux");
   }
 
-  return [...found];
-}
-
-const BENEFIT_PATTERNS: Array<[BenefitId, RegExp]> = [
-  ["visa_sponsorship", /\b(sponsors?|sponsorship|sponsoring)\b[^.\n]{0,40}\bvisa|\bvisa\b[^.\n]{0,40}\bsponsor|\bopt\b[^.\n]{0,20}\bsponsor|\bh-?1b\b[^.\n]{0,40}\bsponsor/i],
-  ["401k_match", /401\s*\(?k\)?/i],
-  ["stock_options", /\bstock options?\b|\bISOs?\b|\bRSUs?\b|\brestricted stock units?\b/i],
-  ["equity", /\bequity\b/i],
-  ["wellness", /\bwellness\b|\bmental health\b|\bgym membership\b|\bfitness stipend\b/i],
-  ["free_meals", /\bfree (meals?|lunch(?:es)?|breakfast(?:s)?|snacks?|beverages?)\b|\bcatered meals?\b|\bstocked kitchen\b|\bmeals? (?:provided|onsite)\b/i],
-  ["pto", /\bunlimited pto\b|\bpaid time off\b|\bpto\b/i],
-];
-
-/** Best-effort keyword scan over the raw description; postings rarely use structured benefit fields. */
-export function benefitsFor(description: string): BenefitId[] {
-  const found = new Set<BenefitId>();
-  for (const [id, pattern] of BENEFIT_PATTERNS) {
-    if (pattern.test(description)) found.add(id);
-  }
   return [...found];
 }
 
