@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { CompanyLogo } from "@/components/ui/CompanyLogo";
 import { Surface } from "@/components/ui/Surface";
+import { companyWebsite } from "@/lib/company-logo";
 import { formatListingAge, formatSalary, listingHref, listingMeta, seniorityLabel, workLabel } from "@/lib/format";
 import type { Listing } from "@/lib/types";
 
@@ -39,9 +41,16 @@ export function JobCard({ listing, titleHref }: { listing: Listing; titleHref?: 
               {listing.title}
             </Link>
           </h2>
-          <p className="mt-1 text-sm text-muted">
-            {listing.company}
-            {place ? ` · ${place}` : ""}
+          <p className="mt-1.5 flex items-center gap-2 text-sm text-muted">
+            <CompanyLogo
+              name={listing.company}
+              website={companyWebsite(listing.source, listing.companyToken)}
+              size="sm"
+            />
+            <span className="min-w-0">
+              {listing.company}
+              {place ? ` · ${place}` : ""}
+            </span>
           </p>
           {listingMeta(listing) ? <p className="mt-2 text-sm leading-6 text-ink">{listingMeta(listing)}</p> : null}
           <p className="mt-2 text-sm text-muted">

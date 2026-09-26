@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { CompanyLogo } from "@/components/ui/CompanyLogo";
 import { Container } from "@/components/ui/Container";
 import { Surface } from "@/components/ui/Surface";
 import { loadListing } from "@/lib/board";
+import { companyWebsite } from "@/lib/company-logo";
 import { formatSalary, listingFacts, seniorityLabel } from "@/lib/format";
 import { pageMetadata } from "@/lib/site";
 
@@ -49,9 +51,16 @@ export default async function JobPage({ params }: { params: Promise<JobParams> }
           All roles
         </Button>
         <h1 className="mt-4 font-display text-4xl leading-tight sm:text-5xl">{listing.title}</h1>
-        <p className="mt-3 text-muted">
-          {listing.company}
-          {listing.location ? ` · ${listing.location}` : ""}
+        <p className="mt-3 flex items-center gap-3 text-muted">
+          <CompanyLogo
+            name={listing.company}
+            website={companyWebsite(listing.source, listing.companyToken)}
+            size="lg"
+          />
+          <span>
+            {listing.company}
+            {listing.location ? ` · ${listing.location}` : ""}
+          </span>
         </p>
         <ul className="mt-4 flex flex-wrap gap-1.5">
           <li>
