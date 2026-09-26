@@ -5,9 +5,13 @@ import test from "node:test";
 import {
   COLOR_ROLES,
   COLOR_TOKENS,
+  DESCRIPTION_PREVIEW,
+  ELEVATION,
   PALETTES,
   PROPORTIONS,
   THEME_STORAGE_KEY,
+  TOGGLE_COLORS,
+  TOGGLE_SIZE,
   TYPE_BODY,
   TYPE_ROLES,
   UI_PRIMITIVES,
@@ -117,8 +121,33 @@ test("the written system and the gallery route exist", () => {
   assert.match(page, /force-light/);
   assert.match(page, /force-dark/);
   assert.match(page, /<Tag /);
+  assert.match(page, /ThemeToggle/);
+  assert.match(page, /Apply now/);
   assert.equal(existsSync(join(ROOT, "components/Ticker.tsx")), false);
   assert.equal(readFileSync(join(ROOT, "app/globals.css"), "utf8").includes("ticker-track"), false);
+});
+
+test("the theme checkbox and floating apply tokens stay documented", () => {
+  const css = readFileSync(join(ROOT, "app/globals.css"), "utf8");
+  const doc = readFileSync(join(ROOT, "DESIGN_SYSTEM.md"), "utf8");
+  const toggle = readFileSync(join(ROOT, "components/ui/ThemeToggle.tsx"), "utf8");
+
+  assert.equal(TOGGLE_COLORS.light, "#efefef");
+  assert.equal(TOGGLE_COLORS.dark, "#2a2a2a");
+  assert.equal(TOGGLE_SIZE, "10px");
+  assert.equal(DESCRIPTION_PREVIEW.lines, 6);
+  assert.match(css, new RegExp(`--toggle-size:\\s*${TOGGLE_SIZE}`));
+  assert.match(css, new RegExp(TOGGLE_COLORS.light.replace("#", "#")));
+  assert.match(css, new RegExp(TOGGLE_COLORS.dark));
+  assert.match(css, /\.theme-checkbox/);
+  assert.match(css, /prefers-reduced-motion: reduce[\s\S]*\.theme-checkbox/);
+  assert.match(css, new RegExp(`--shadow-float:\\s*${ELEVATION.float.replace(/[()]/g, "\\$&")}`));
+  assert.match(toggle, /className="theme-checkbox"/);
+  assert.match(toggle, /aria-label="Dark mode"/);
+  assert.equal(toggle.includes("#"), false);
+  for (const phrase of ["theme-checkbox", "Apply now", "toggle-light", "10px"]) {
+    assert.equal(doc.includes(phrase), true, `DESIGN_SYSTEM.md should mention ${phrase}`);
+  }
 });
 
 test("body type tokens drive CSS and next/font", () => {

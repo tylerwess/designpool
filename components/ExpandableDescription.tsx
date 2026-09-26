@@ -1,44 +1,53 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useLayoutEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 
-export function ExpandableDescription({
-  preview,
-  rest,
-  empty,
-}: {
-  preview: string;
-  rest: string;
-  empty: string;
-}) {
+export function ExpandableDescription({ html, empty }: { html: string; empty: string }) {
   const [open, setOpen] = useState(false);
-  const restId = useId();
+  const [overflows, setOverflows] = useState(false);
+  const contentId = useId();
+  const contentRef = useRef<HTMLDivElement>(null);
 
-  if (!preview) {
+  useLayoutEffect(() => {
+    const node = contentRef.current;
+    if (!node) return;
+
+    function measure() {
+      if (!node || open) return;
+      setOverflows(node.scrollHeight > node.clientHeight + 1);
+    }
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [html, open]);
+
+  if (!html) {
     return <p className="mt-4 max-w-2xl text-base text-muted">{empty}</p>;
   }
 
   return (
-    <div className="mt-4 max-w-2xl text-base leading-7">
-      <div className="whitespace-pre-wrap">{preview}</div>
-      {rest ? (
-        <>
-          <div id={restId} hidden={!open} className="mt-4 whitespace-pre-wrap">
-            {rest}
-          </div>
-          <div className="mt-3">
-            <Button
-              type="button"
-              variant="ghost"
-              aria-expanded={open}
-              aria-controls={restId}
-              onClick={() => setOpen((value) => !value)}
-            >
-              {open ? "Show less" : "Read more"}
-            </Button>
-          </div>
-        </>
+    <div className="mt-4 max-w-2xl">
+      <div
+        id={contentId}
+        ref={contentRef}
+        className={`job-description${open ? " is-expanded" : ""}${!open && overflows ? " is-clamped" : ""}`}
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+      {overflows ? (
+        <div className="mt-3">
+          <Button
+            type="button"
+            variant="ghost"
+            aria-expanded={open}
+            aria-controls={contentId}
+            onClick={() => setOpen((value) => !value)}
+          >
+            {open ? "Show less" : "Read more"}
+          </Button>
+        </div>
       ) : null}
     </div>
   );

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fjalla_One, Work_Sans } from "next/font/google";
 import Script from "next/script";
 import { Footer } from "@/components/Footer";
@@ -19,6 +19,10 @@ const display = Fjalla_One({
   weight: "400",
   variable: "--font-display",
 });
+
+export const viewport: Viewport = {
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   metadataBase: siteUrl(),

@@ -113,6 +113,22 @@ export const UI_PRIMITIVES = [
   "CompanyLogo",
 ] as const;
 
+/** Theme checkbox halves. The supplied `.theme-checkbox` CSS keeps these hex values literally. */
+export const TOGGLE_COLORS = {
+  light: "#efefef",
+  dark: "#2a2a2a",
+} as const;
+
+export const TOGGLE_SIZE = "10px";
+
+export const DESCRIPTION_PREVIEW = {
+  lines: 6,
+} as const;
+
+export const ELEVATION = {
+  float: "0 10px 28px rgb(0 0 0 / 0.22)",
+} as const;
+
 export const THEME_STORAGE_KEY = "designpool-theme";
 
 /** Runs before paint. An explicit choice wins; otherwise the system preference does. */

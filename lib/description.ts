@@ -1,10 +1,38 @@
-import { htmlToText } from "./text";
+const ALLOWED_TAGS = new Set([
+  "p",
+  "br",
+  "ul",
+  "ol",
+  "li",
+  "strong",
+  "em",
+  "b",
+  "i",
+  "a",
+  "h1",
+  "h2",
+  "h3",
+  "h4",
+  "h5",
+  "h6",
+  "div",
+  "span",
+  "blockquote",
+]);
 
 export function looksLikeHtml(value: string): boolean {
   return /<\/?[a-z][\s\S]*>/i.test(value);
 }
 
-export function sanitizeDescriptionHtml(value: string): string {
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function stripDangerous(value: string): string {
   return value
     .replace(/<script[\s\S]*?<\/script>/gi, " ")
     .replace(/<style[\s\S]*?<\/style>/gi, " ")
@@ -13,29 +41,35 @@ export function sanitizeDescriptionHtml(value: string): string {
     .replace(/javascript:/gi, "");
 }
 
-function splitPlain(text: string): { preview: string; rest: string } {
-  const parts = text
+export function sanitizeDescriptionHtml(value: string): string {
+  return stripDangerous(value).replace(/<\/?([a-zA-Z][a-zA-Z0-9]*)\b[^>]*>/g, (match, rawTag: string) => {
+    const tag = rawTag.toLowerCase();
+    if (!ALLOWED_TAGS.has(tag)) return "";
+    if (tag === "br") return "<br>";
+    if (match.startsWith("</")) return `</${tag}>`;
+    if (tag === "a") {
+      const href = match.match(/href\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i);
+      const url = href?.[1] ?? href?.[2] ?? href?.[3] ?? "";
+      if (/^https?:\/\//i.test(url)) {
+        return `<a href="${url}" rel="noopener noreferrer" target="_blank">`;
+      }
+      return "<a>";
+    }
+    return `<${tag}>`;
+  });
+}
+
+function plainToHtml(text: string): string {
+  return text
     .split(/\n\s*\n/)
-    .map((part) => part.trim())
-    .filter(Boolean);
-  if (parts.length === 0) return { preview: "", rest: "" };
-  return { preview: parts[0], rest: parts.slice(1).join("\n\n") };
+    .map((block) => block.trim())
+    .filter(Boolean)
+    .map((block) => `<p>${escapeHtml(block).replace(/\n/g, "<br>")}</p>`)
+    .join("");
 }
 
-function splitHtml(html: string): { preview: string; rest: string } {
-  const sanitized = sanitizeDescriptionHtml(html);
-  const blocks = sanitized
-    .split(/<\/(?:p|div|h[1-6]|li|section|article)>|<br\s*\/?>\s*<br\s*\/?>/i)
-    .map((chunk) => htmlToText(chunk))
-    .filter(Boolean);
-  if (blocks.length >= 2) {
-    return { preview: blocks[0], rest: blocks.slice(1).join("\n\n") };
-  }
-  return splitPlain(htmlToText(sanitized));
-}
-
-/** First paragraph vs the rest. HTML is sanitized, then read as text. */
-export function splitDescription(raw: string | null | undefined): { preview: string; rest: string } {
-  if (!raw?.trim()) return { preview: "", rest: "" };
-  return looksLikeHtml(raw) ? splitHtml(raw) : splitPlain(raw.trim());
+/** Full sanitized HTML for the role description. Headings stay in the markup; CSS clamps the preview. */
+export function toDescriptionHtml(raw: string | null | undefined): string {
+  if (!raw?.trim()) return "";
+  return looksLikeHtml(raw) ? sanitizeDescriptionHtml(raw) : plainToHtml(raw.trim());
 }

@@ -42,6 +42,13 @@
   --accent-focus: var(--light-accent-focus);
   --accent-soft: var(--light-accent-soft);
 
+  --toggle-light: #efefef;
+  --toggle-dark: #2a2a2a;
+  --toggle-size: 10px;
+  --shadow-float: 0 10px 28px rgb(0 0 0 / 0.22);
+  --z-float: 40;
+  --description-preview-lines: 6;
+
   color-scheme: light;
 }
 
@@ -181,16 +188,153 @@ input.control[type="number"]::-webkit-outer-spin-button {
   appearance: none;
 }
 
-.theme-toggle .when-dark {
-  display: none;
+.theme-checkbox {
+  --toggle-size: 10px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 6.25em;
+  height: 3.125em;
+  background: -webkit-gradient(linear, left top, right top, color-stop(50%, #efefef), color-stop(50%, #2a2a2a)) no-repeat;
+  background: -o-linear-gradient(left, #efefef 50%, #2a2a2a 50%) no-repeat;
+  background: linear-gradient(to right, #efefef 50%, #2a2a2a 50%) no-repeat;
+  background-size: 205%;
+  background-position: 0;
+  -webkit-transition: 0.4s;
+  -o-transition: 0.4s;
+  transition: 0.4s;
+  border-radius: 99em;
+  position: relative;
+  cursor: pointer;
+  font-size: var(--toggle-size);
 }
 
-html.dark .theme-toggle .when-dark {
-  display: inline;
+.theme-checkbox::before {
+  content: "";
+  width: 2.25em;
+  height: 2.25em;
+  position: absolute;
+  top: 0.438em;
+  left: 0.438em;
+  background: -webkit-gradient(linear, left top, right top, color-stop(50%, #efefef), color-stop(50%, #2a2a2a)) no-repeat;
+  background: -o-linear-gradient(left, #efefef 50%, #2a2a2a 50%) no-repeat;
+  background: linear-gradient(to right, #efefef 50%, #2a2a2a 50%) no-repeat;
+  background-size: 205%;
+  background-position: 100%;
+  border-radius: 50%;
+  -webkit-transition: 0.4s;
+  -o-transition: 0.4s;
+  transition: 0.4s;
 }
 
-html.dark .theme-toggle .when-light {
-  display: none;
+.theme-checkbox:checked::before {
+  left: calc(100% - 2.25em - 0.438em);
+  background-position: 0;
+}
+
+.theme-checkbox:checked {
+  background-position: 100%;
+}
+
+.job-description {
+  position: relative;
+  max-width: 42rem;
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.job-description :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-display), "Fjalla One", "Arial Narrow", sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  font-size: 1.25rem;
+  margin: 1.1em 0 0.4em;
+}
+
+.job-description :is(h1, h2, h3, h4, h5, h6):first-child {
+  margin-top: 0;
+}
+
+.job-description p,
+.job-description ul,
+.job-description ol,
+.job-description blockquote {
+  margin: 0 0 0.85em;
+}
+
+.job-description :is(p, ul, ol, blockquote):last-child {
+  margin-bottom: 0;
+}
+
+.job-description ul,
+.job-description ol {
+  padding-left: 1.25em;
+}
+
+.job-description:not(.is-expanded) {
+  max-height: calc(1.125rem * 1.6 * var(--description-preview-lines));
+  overflow: hidden;
+}
+
+.job-description.is-expanded {
+  max-height: none;
+  overflow: visible;
+}
+
+.job-description.is-clamped::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3.5rem;
+  background: linear-gradient(to bottom, transparent, var(--bg));
+  pointer-events: none;
+}
+
+.job-detail {
+  padding-bottom: calc(7.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+.floating-apply {
+  position: fixed;
+  z-index: var(--z-float);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.75rem 1.25rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+}
+
+.floating-apply-button {
+  width: 100%;
+  box-shadow: var(--shadow-float);
+}
+
+.floating-apply-preview {
+  position: absolute;
+  z-index: 1;
+}
+
+@media (min-width: 640px) {
+  .job-detail {
+    padding-bottom: 6rem;
+  }
+
+  .floating-apply {
+    left: auto;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    width: auto;
+    padding: 0;
+    background: transparent;
+    border: 0;
+  }
+
+  .floating-apply-button {
+    width: auto;
+  }
 }
 
 .odometer {
@@ -217,6 +361,13 @@ html.dark .theme-toggle .when-light {
 
 @media (prefers-reduced-motion: reduce) {
   .odometer-reel {
+    transition: none;
+  }
+
+  .theme-checkbox,
+  .theme-checkbox::before {
+    -webkit-transition: none;
+    -o-transition: none;
     transition: none;
   }
 }

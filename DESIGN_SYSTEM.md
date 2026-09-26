@@ -18,13 +18,13 @@ Text contrast stays at WCAG AA for ink and muted on both canvases, and for `on-a
 
 OpenAI’s product and security pages (`openai.com`): black canvas, centered display type, thin-bordered cards, a rounded pill of choices, a row of large numbers with small captions, and a gray section band. Light mode uses the same structure on white.
 
-Job rows use two actions: Read more opens the role, and Apply launches the company posting. The role page and each job card put a compact byline — logo, company, location, and posted age — above the title. A row of `Tag` chips sits directly under the title on the role page — the same labels as the search filters — and omits unknown values plus location and posted age (those live in the byline). The description shows the first paragraph, then a Read more control that expands the rest. Each row and the role header show a squircle logo tile to the left of the company name (`CompanyLogo`). The tile has no fill, only a 1px `line` stroke that follows the theme. If the mark is missing, the company’s first letter sits in that outline. Landing live counts sit on a `surface` band. Search is a title-or-company field. Filters are chips that open dropdowns, including location. Buttons use Fjalla One at the same weight and letter-spacing as headings, with 1.5rem of left and right padding. Controls use a fixed height and equal inline padding, with no native select chrome. There is no scrolling marquee.
+Job rows use two actions: Read more opens the role, and Apply launches the company posting. The role page and each job card put a compact byline — logo, company, location, and posted age — above the title. A row of `Tag` chips sits directly under the title on the role page — the same labels as the search filters — and omits unknown values plus location and posted age (those live in the byline). The description renders sanitized HTML and clamps to six lines (`--description-preview-lines`) with a fade; Read more appears only when the copy overflows. The role page has one floating **Apply now** control (primary accent, Fjalla One, launch arrow): a full-width safe-area bar on small screens, and a fixed pill at the bottom-right from `640px` up. Page padding and `--shadow-float` keep it off the last line of copy. Each row and the role header show a squircle logo tile to the left of the company name (`CompanyLogo`). The tile has no fill, only a 1px `line` stroke that follows the theme. If the mark is missing, the company’s first letter sits in that outline. Landing live counts sit on a `surface` band. Search is a title-or-company field. Filters are chips that open dropdowns, including location. Buttons use Fjalla One at the same weight and letter-spacing as headings, with 1.5rem of left and right padding. Controls use a fixed height and equal inline padding, with no native select chrome. There is no scrolling marquee.
 
 ## Themes
 
 `app/globals.css` defines a light set and a dark set. Semantic tokens point at one set. `.dark` on `<html>` swaps the pointers.
 
-The first visit follows `prefers-color-scheme`. The header control writes `designpool-theme` (`light` or `dark`) to `localStorage`. `themeInitScript` runs before paint.
+The first visit follows `prefers-color-scheme`. The header control is a checkbox (`.theme-checkbox`, `aria-label="Dark mode"`). Checked is dark. It writes `designpool-theme` (`light` or `dark`) to `localStorage`. `themeInitScript` runs before paint. `--toggle-size` is `10px` so the control is 62.5×31.25px in the header. The supplied checkbox CSS keeps `#efefef` and `#2a2a2a` (`toggle-light` / `toggle-dark`) as literal hex; those values are also recorded as `TOGGLE_COLORS`. `prefers-reduced-motion` turns the slide off.
 
 `/design` shows both palettes at once with `.force-light` and `.force-dark`.
 
@@ -46,7 +46,7 @@ Headings load Fjalla One and body text loads Work Sans through `next/font/google
 
 - The 60/30/10 shares no longer add up, or a color token is missing from a role.
 - A hex value in `lib/design-tokens.ts` disagrees with `app/globals.css`.
-- A file under `app/` or `components/` (other than `globals.css`) uses a raw hex, a default Tailwind palette color, a gradient, or a heavy shadow.
+- A file under `app/` or `components/` (other than `globals.css`) uses a raw hex, a default Tailwind palette color, a gradient, or a heavy shadow. The theme checkbox hex pair lives only in `globals.css`.
 - A listed primitive file is missing, or `DESIGN_SYSTEM.md` and `/design` drop the theme previews.
 - The type roles are no longer Fjalla One and Work Sans, or the ticker returns.
 

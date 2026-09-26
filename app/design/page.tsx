@@ -3,11 +3,12 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { CompanyLogo } from "@/components/ui/CompanyLogo";
 import { Tag } from "@/components/ui/Tag";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { fieldClassName, FieldLabel } from "@/components/ui/Field";
 import { Surface } from "@/components/ui/Surface";
-import { COLOR_ROLES, COLOR_TOKENS, PROPORTIONS, TYPE_BODY, TYPE_ROLES, type ColorToken } from "@/lib/design-tokens";
+import { COLOR_ROLES, COLOR_TOKENS, PROPORTIONS, TOGGLE_SIZE, TYPE_BODY, TYPE_ROLES, type ColorToken } from "@/lib/design-tokens";
 import { pageMetadata } from "@/lib/site";
 import type { Listing } from "@/lib/types";
 
@@ -175,6 +176,19 @@ export default function DesignPage() {
           <Button href="/jobs" variant="ghost">
             Read more
           </Button>
+          <ThemeToggle />
+          <span className="text-sm text-muted">Theme checkbox · {TOGGLE_SIZE}</span>
+        </div>
+        <div className="relative mt-6 h-40 overflow-hidden rounded-xl border border-line bg-bg">
+          <p className="max-w-sm p-4 text-sm leading-6 text-muted">
+            Role pages keep one Apply now control in view: a full-width safe-area bar on small screens, bottom-right from
+            640px up.
+          </p>
+          <div className="floating-apply floating-apply-preview">
+            <Button href="/jobs" external className="floating-apply-button">
+              Apply now
+            </Button>
+          </div>
         </div>
         <div className="mt-4 flex flex-wrap gap-2">
           <Badge tone="accent">Senior</Badge>
