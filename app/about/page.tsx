@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
+import { pageMetadata } from "@/lib/site";
 import { SENIORITY_LABELS, SENIORITY_LEVELS, TYPICAL_MIN_YEARS } from "@/lib/taxonomy";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
+  path: "/about",
   title: "About",
   description: "How Designpool decides seniority and why listings disappear after 30 days.",
-};
+});
 
 const notes = [
   "Lead is an individual-contributor level (Staff) unless the description mentions people management, such as direct reports, hiring, or growing a team. Then it is Manager.",

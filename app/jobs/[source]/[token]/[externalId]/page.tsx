@@ -6,6 +6,7 @@ import { Container } from "@/components/ui/Container";
 import { Surface } from "@/components/ui/Surface";
 import { loadListing } from "@/lib/board";
 import { formatListingAge, formatSalary, listingMeta, seniorityLabel, workLabel } from "@/lib/format";
+import { pageMetadata } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
@@ -16,9 +17,15 @@ function listingId({ source, token, externalId }: JobParams): string {
 }
 
 export async function generateMetadata({ params }: { params: Promise<JobParams> }): Promise<Metadata> {
-  const result = await loadListing(listingId(await params));
-  if (!result.job) return { title: "Role" };
-  return { title: `${result.job.title} at ${result.job.company}` };
+  const resolved = await params;
+  const result = await loadListing(listingId(resolved));
+  const path = `/jobs/${resolved.source}/${encodeURIComponent(resolved.token)}/${encodeURIComponent(resolved.externalId)}`;
+  if (!result.job) return pageMetadata({ path, title: "Role" });
+  return pageMetadata({
+    path,
+    title: `${result.job.title} at ${result.job.company}`,
+    description: `${result.job.title} at ${result.job.company}. Apply on the company’s original posting.`,
+  });
 }
 
 export default async function JobPage({ params }: { params: Promise<JobParams> }) {

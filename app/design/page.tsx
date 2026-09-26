@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { JobCard } from "@/components/JobCard";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -7,12 +6,14 @@ import { Eyebrow } from "@/components/ui/Eyebrow";
 import { fieldClassName, FieldLabel } from "@/components/ui/Field";
 import { Surface } from "@/components/ui/Surface";
 import { COLOR_ROLES, COLOR_TOKENS, PROPORTIONS, TYPE_ROLES, type ColorToken } from "@/lib/design-tokens";
+import { pageMetadata } from "@/lib/site";
 import type { Listing } from "@/lib/types";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
+  path: "/design",
   title: "Design system",
   description: "Tokens, type, and components for Designpool. Light and dark share one set of names.",
-};
+});
 
 const sample: Listing = {
   id: "sample",

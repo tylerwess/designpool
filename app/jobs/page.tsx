@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { Filters } from "@/components/Filters";
 import { JobCard } from "@/components/JobCard";
 import { Button } from "@/components/ui/Button";
@@ -6,13 +5,15 @@ import { Container } from "@/components/ui/Container";
 import { Surface } from "@/components/ui/Surface";
 import { loadBoard } from "@/lib/board";
 import { applyFilters, parseSearchParams } from "@/lib/filters";
+import { pageMetadata } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
+  path: "/jobs",
   title: "Jobs",
   description: "Open design roles, filtered by seniority, years, industry, and more.",
-};
+});
 
 export default async function JobsPage({
   searchParams,

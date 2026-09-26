@@ -99,9 +99,10 @@ Filters are multi-select where it makes sense.
 - **Badges:** level, Stretch, Remote, and Salary listed.
 
 ## Environment variables
-- `DATABASE_URL` is the Postgres connection string.
+- `DATABASE_URL` is the Postgres connection string. When it is unset on Vercel, the site still builds and shows an empty state.
 - `CRON_SECRET` protects the daily cron route.
 - `LLM_CLASSIFIER_ENABLED` is optional and defaults to `false`. A matching API key is needed only if it's enabled.
+- `NEXT_PUBLIC_SITE_URL` is the canonical origin for metadata, the sitemap, and Open Graph. It defaults to `https://designpool-taupe.vercel.app`.
 
 ## Done when
 - The app runs locally, a real ingest against the live APIs fills the database, and every filter works end to end.

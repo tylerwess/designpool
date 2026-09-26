@@ -6,7 +6,10 @@ import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Surface } from "@/components/ui/Surface";
 import { loadBoard } from "@/lib/board";
 import { listingTimestamp } from "@/lib/filters";
+import { pageMetadata } from "@/lib/site";
 import { DISCIPLINES } from "@/lib/taxonomy";
+
+export const metadata = pageMetadata({ path: "/" });
 
 export const dynamic = "force-dynamic";
 

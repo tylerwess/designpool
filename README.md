@@ -72,8 +72,9 @@ Copy `.env.example` to `.env.local`.
 
 | Variable | Required | Purpose |
 | --- | --- | --- |
-| `DATABASE_URL` | On Vercel | Postgres connection string, for example Neon from the Vercel Marketplace. When it is unset outside Vercel, the app uses local SQLite. |
+| `DATABASE_URL` | For listings | Postgres connection string, for example Neon from the Vercel Marketplace. When it is unset outside Vercel, the app uses local SQLite. When it is unset on Vercel, the build still succeeds and the site shows an empty state. |
 | `CRON_SECRET` | For cron | Sent by Vercel as `Authorization: Bearer <CRON_SECRET>`. The cron route rejects every request without it. |
+| `NEXT_PUBLIC_SITE_URL` | No | Canonical origin for metadata, `/sitemap.xml`, and Open Graph. Defaults to `https://designpool-taupe.vercel.app`. |
 | `LLM_CLASSIFIER_ENABLED` | No | Defaults to `false`. The title and years rules run on their own. |
 | `LLM_API_URL`, `LLM_API_KEY`, `LLM_MODEL` | Only if the LLM flag is `true` | Optional pass for ambiguous “Lead” titles. Failures fall back to the rules. |
 
@@ -81,22 +82,24 @@ On a fresh Vercel deploy, before `DATABASE_URL` is set, the site renders an empt
 
 ## Deploy on Vercel
 
-1. Push this repo and import it as a Vercel project. The framework preset is Next.js. Node 22 is set in `package.json`.
-2. In the Vercel Marketplace, add Neon Postgres (or another Postgres provider) and connect it to the project so `DATABASE_URL` is set for Production, Preview, and Development.
-3. Add `CRON_SECRET` in Project Settings → Environment Variables. Use a long random string. Vercel Cron sends it as a bearer token when `CRON_SECRET` is set on the project.
+The Vercel project is `designpool`. Production is [https://designpool-taupe.vercel.app](https://designpool-taupe.vercel.app). Pushes and pull requests get preview deployments. Metadata, the sitemap, and Open Graph use that production origin unless `NEXT_PUBLIC_SITE_URL` is set.
+
+1. The framework preset is Next.js. Node 22 is set in `package.json`.
+2. `CRON_SECRET` is set for Production and Preview. Vercel Cron sends it as a bearer token.
+3. Add Neon Postgres from Vercel Storage and connect it so `DATABASE_URL` is set for Production, Preview, and Development. Until that variable exists, the build succeeds and `/` and `/jobs` show an empty state instead of failing.
 4. `vercel.json` already schedules `GET /api/cron` once a day (`15 8 * * *`, 08:15 UTC) and allows that function 60 seconds, which is the usual Hobby-plan ceiling. A full ingest of the seeded companies finished in well under a minute locally. On Pro you can raise `functions["app/api/cron/route.ts"].maxDuration` if a run ever times out. You can also fill the database from your machine:
 
    ```bash
    DATABASE_URL="postgres://…" npm run ingest
    ```
 
-5. Deploy. Visit the production URL. `/` and `/jobs` should load. If the database is empty, trigger ingest once:
+5. After `DATABASE_URL` is set, deploy and trigger ingest once:
 
    ```bash
-   curl -H "Authorization: Bearer $CRON_SECRET" https://your-app.vercel.app/api/cron
+   curl -H "Authorization: Bearer $CRON_SECRET" https://designpool-taupe.vercel.app/api/cron
    ```
 
-6. Confirm a later cron run in the Vercel dashboard under Cron Jobs. Each run ingests, then deletes stale and 30-day-old listings.
+6. Confirm a later cron run in the Vercel dashboard under Cron Jobs. Each run ingests, then deletes stale and 30-day-old listings. `/sitemap.xml` and `/robots.txt` use the canonical site URL, and the sitemap includes job URLs once the database has listings.
 
 Leave `LLM_CLASSIFIER_ENABLED` unset or `false` unless you want the optional model pass.
 
