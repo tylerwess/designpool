@@ -21,10 +21,15 @@ export function formatListingAge(listing: Pick<Listing, "postedAt" | "firstSeenA
 }
 
 export function formatYears(min: number | null, max: number | null): string | null {
+  return yearsFilterLabel(min, max);
+}
+
+/** Same labels the search chips use for an active years range. */
+export function yearsFilterLabel(min: number | null, max: number | null): string | null {
   if (min == null && max == null) return null;
   if (min != null && max != null) return min === max ? `${min} yrs` : `${min}–${max} yrs`;
   if (min != null) return `${min}+ yrs`;
-  return `≤${max} yrs`;
+  return `Up to ${max} yrs`;
 }
 
 function currencySymbol(code: string | null): string {

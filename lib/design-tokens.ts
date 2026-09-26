@@ -65,10 +65,25 @@ export const PALETTES: Record<"light" | "dark", Record<ColorToken, string>> = {
   },
 };
 
+export const TYPE_BODY = {
+  family: "Work Sans",
+  weight: 500,
+  size: "1.125rem",
+  tracking: "-0.01em",
+  lineHeight: 1.6,
+  scale: {
+    xs: "0.875rem",
+    sm: "1rem",
+    base: "1.125rem",
+    lg: "1.25rem",
+    xl: "1.375rem",
+  },
+} as const;
+
 export const TYPE_ROLES = {
   body: {
     share: 60,
-    family: "Lato",
+    family: TYPE_BODY.family,
     utility: "font-sans",
     use: "Body copy, navigation, filters, and meta.",
   },
@@ -89,6 +104,7 @@ export const TYPE_ROLES = {
 export const UI_PRIMITIVES = [
   "Button",
   "Badge",
+  "Tag",
   "Surface",
   "Eyebrow",
   "Field",

@@ -8,6 +8,7 @@ import {
   PALETTES,
   PROPORTIONS,
   THEME_STORAGE_KEY,
+  TYPE_BODY,
   TYPE_ROLES,
   UI_PRIMITIVES,
   themeInitScript,
@@ -103,14 +104,35 @@ test("primary accent text meets WCAG AA in both themes", () => {
 
 test("the written system and the gallery route exist", () => {
   const doc = readFileSync(join(ROOT, "DESIGN_SYSTEM.md"), "utf8");
-  for (const phrase of ["60/30/10", "/design", "Fjalla One", "Lato", "OpenAI"]) {
+  for (const phrase of ["60/30/10", "/design", "Fjalla One", "Work Sans", "OpenAI", "1.125rem", "-0.01em"]) {
     assert.equal(doc.includes(phrase), true, `DESIGN_SYSTEM.md should mention ${phrase}`);
   }
-  assert.equal(TYPE_ROLES.body.family, "Lato");
+  assert.equal(TYPE_ROLES.body.family, "Work Sans");
   assert.equal(TYPE_ROLES.structure.family, "Fjalla One");
+  assert.equal(TYPE_BODY.family, "Work Sans");
+  assert.equal(TYPE_BODY.weight, 500);
+  assert.equal(TYPE_BODY.size, "1.125rem");
+  assert.equal(TYPE_BODY.tracking, "-0.01em");
   const page = readFileSync(join(ROOT, "app/design/page.tsx"), "utf8");
   assert.match(page, /force-light/);
   assert.match(page, /force-dark/);
+  assert.match(page, /<Tag /);
   assert.equal(existsSync(join(ROOT, "components/Ticker.tsx")), false);
   assert.equal(readFileSync(join(ROOT, "app/globals.css"), "utf8").includes("ticker-track"), false);
+});
+
+test("body type tokens drive CSS and next/font", () => {
+  const css = readFileSync(join(ROOT, "app/globals.css"), "utf8");
+  assert.match(css, /font-family:\s*var\(--font-sans\),\s*"Work Sans"/);
+  assert.match(css, new RegExp(`font-weight:\\s*${TYPE_BODY.weight}`));
+  assert.match(css, new RegExp(`font-size:\\s*${TYPE_BODY.size}`));
+  assert.match(css, new RegExp(`letter-spacing:\\s*${TYPE_BODY.tracking.replace(".", "\\.")}`));
+  assert.match(css, new RegExp(`line-height:\\s*${TYPE_BODY.lineHeight}`));
+  for (const [step, size] of Object.entries(TYPE_BODY.scale)) {
+    assert.match(css, new RegExp(`--text-${step}:\\s*${size.replace(".", "\\.")}`));
+  }
+  const layout = readFileSync(join(ROOT, "app/layout.tsx"), "utf8");
+  assert.match(layout, /Work_Sans/);
+  assert.equal(layout.includes("Lato"), false);
+  assert.match(layout, /Fjalla_One/);
 });

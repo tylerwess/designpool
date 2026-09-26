@@ -2,11 +2,12 @@ import { JobCard } from "@/components/JobCard";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { CompanyLogo } from "@/components/ui/CompanyLogo";
+import { Tag } from "@/components/ui/Tag";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { fieldClassName, FieldLabel } from "@/components/ui/Field";
 import { Surface } from "@/components/ui/Surface";
-import { COLOR_ROLES, COLOR_TOKENS, PROPORTIONS, TYPE_ROLES, type ColorToken } from "@/lib/design-tokens";
+import { COLOR_ROLES, COLOR_TOKENS, PROPORTIONS, TYPE_BODY, TYPE_ROLES, type ColorToken } from "@/lib/design-tokens";
 import { pageMetadata } from "@/lib/site";
 import type { Listing } from "@/lib/types";
 
@@ -144,7 +145,8 @@ export default function DesignPage() {
               {TYPE_ROLES.body.share}% · {TYPE_ROLES.body.family}
             </p>
             <p className="mt-2 max-w-2xl text-base leading-7">
-              {TYPE_ROLES.body.use} This sentence is the body face.
+              {TYPE_ROLES.body.use} This sentence is the body face at {TYPE_BODY.weight} / {TYPE_BODY.size} /{" "}
+              {TYPE_BODY.tracking}.
             </p>
           </div>
           <div>
@@ -179,6 +181,13 @@ export default function DesignPage() {
           <Badge>Stretch</Badge>
           <Badge>Remote</Badge>
           <Badge>Salary</Badge>
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <Tag href="/jobs?seniority=senior">Senior</Tag>
+          <Tag href="/jobs?industry=productivity">Productivity</Tag>
+          <Tag href="/jobs?work=remote">Remote</Tag>
+          <Tag href="/jobs?salary=1">Has salary</Tag>
+          <Tag href="/jobs?posted=7d">Past 7 days</Tag>
         </div>
         <div className="mt-6 flex flex-wrap items-center gap-6">
           <div className="flex items-center gap-2 text-sm text-muted">
