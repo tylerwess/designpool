@@ -45,13 +45,9 @@ export default async function HomePage() {
           <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-2 font-display text-lg text-ink">
             {SOURCE_PLATFORMS.map((platform, index) => (
               <span key={platform.name} className="inline-flex items-center gap-2">
+                {index > 0 ? <span aria-hidden="true">+</span> : null}
                 <CompanyLogo name={platform.name} website={platform.website} />
                 {platform.name}
-                {index < SOURCE_PLATFORMS.length - 1
-                  ? index === SOURCE_PLATFORMS.length - 2
-                    ? ", and"
-                    : ","
-                  : ""}
               </span>
             ))}
           </p>
