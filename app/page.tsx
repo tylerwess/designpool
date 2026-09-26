@@ -1,10 +1,18 @@
 import { LandingLive } from "@/components/LandingLive";
 import { ArrowIcon, Button } from "@/components/ui/Button";
+import { CompanyLogo } from "@/components/ui/CompanyLogo";
 import { Container } from "@/components/ui/Container";
+import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Surface } from "@/components/ui/Surface";
 import { TowerLoader } from "@/components/ui/TowerLoader";
 import { loadBoard } from "@/lib/board";
 import { FILTERS_MATTER_COPY, pageMetadata } from "@/lib/site";
+
+const SOURCE_PLATFORMS = [
+  { name: "Greenhouse", website: "https://www.greenhouse.com" },
+  { name: "Ashby", website: "https://www.ashbyhq.com" },
+  { name: "Lever", website: "https://www.lever.co" },
+];
 
 export const metadata = pageMetadata({ path: "/" });
 
@@ -31,6 +39,23 @@ export default async function HomePage() {
             Browse open roles
             <ArrowIcon />
           </Button>
+        </div>
+
+        <div className="mt-10">
+          <Eyebrow>Listings powered by</Eyebrow>
+          <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-2 font-display text-lg text-ink">
+            {SOURCE_PLATFORMS.map((platform, index) => (
+              <span key={platform.name} className="inline-flex items-center gap-2">
+                <CompanyLogo name={platform.name} website={platform.website} />
+                {platform.name}
+                {index < SOURCE_PLATFORMS.length - 1
+                  ? index === SOURCE_PLATFORMS.length - 2
+                    ? ", and"
+                    : ","
+                  : ""}
+              </span>
+            ))}
+          </p>
         </div>
       </Container>
 
