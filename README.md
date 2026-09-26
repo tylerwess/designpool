@@ -2,6 +2,8 @@
 
 A minimal public job board for design roles. It pulls openings from company Greenhouse, Ashby, and Lever boards, classifies each one into one of nine seniority levels, and deletes anything older than 30 days.
 
+The interface has light and dark mode and a small design system. Tokens, type, and components are documented in [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) and rendered at [/design](/design). Change colors in `lib/design-tokens.ts` and `app/globals.css` together. `npm test` checks that they still match.
+
 ## Local setup
 
 You need Node.js 22 or newer.
@@ -107,7 +109,7 @@ If the title asks for fewer years than that level usually does, the title is kep
 ## Scripts
 
 - `npm run dev` — local site
-- `npm test` — years parser, seniority classifier, and filter tests
+- `npm test` — years parser, seniority classifier, filters, and the design-token contract
 - `npm run ingest` — fetch live boards into the configured database
 - `npm run verify-companies` — check that each configured token still returns jobs
 - `npm run lint` — ESLint

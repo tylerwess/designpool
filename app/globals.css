@@ -1,13 +1,69 @@
 @import "tailwindcss";
 
+/*
+  Color hex values are defined only in this file. Semantic tokens (--bg,
+  --ink, …) point at the light or dark set. Components use the semantic
+  names, so a theme switch does not require a second class on each element.
+*/
 :root {
-  --bg: #f4f1ea;
-  --surface: #fbfaf6;
-  --ink: #211e1a;
-  --muted: #6e685f;
-  --line: #e4ddd2;
-  --accent: #8d4e36;
-  --accent-soft: #f6ebe4;
+  --light-bg: #f4f1ea;
+  --light-surface: #fbfaf6;
+  --light-ink: #211e1a;
+  --light-muted: #6e685f;
+  --light-line: #e4ddd2;
+  --light-accent: #9d3f1f;
+  --light-accent-soft: #f6e6dc;
+
+  --dark-bg: #161412;
+  --dark-surface: #221f1c;
+  --dark-ink: #f6f1e8;
+  --dark-muted: #b3aaa0;
+  --dark-line: #3a342e;
+  --dark-accent: #f0b090;
+  --dark-accent-soft: #3c2a22;
+
+  --bg: var(--light-bg);
+  --surface: var(--light-surface);
+  --ink: var(--light-ink);
+  --muted: var(--light-muted);
+  --line: var(--light-line);
+  --accent: var(--light-accent);
+  --accent-soft: var(--light-accent-soft);
+
+  color-scheme: light;
+}
+
+.dark {
+  --bg: var(--dark-bg);
+  --surface: var(--dark-surface);
+  --ink: var(--dark-ink);
+  --muted: var(--dark-muted);
+  --line: var(--dark-line);
+  --accent: var(--dark-accent);
+  --accent-soft: var(--dark-accent-soft);
+  color-scheme: dark;
+}
+
+.force-light {
+  --bg: var(--light-bg);
+  --surface: var(--light-surface);
+  --ink: var(--light-ink);
+  --muted: var(--light-muted);
+  --line: var(--light-line);
+  --accent: var(--light-accent);
+  --accent-soft: var(--light-accent-soft);
+  color-scheme: light;
+}
+
+.force-dark {
+  --bg: var(--dark-bg);
+  --surface: var(--dark-surface);
+  --ink: var(--dark-ink);
+  --muted: var(--dark-muted);
+  --line: var(--dark-line);
+  --accent: var(--dark-accent);
+  --accent-soft: var(--dark-accent-soft);
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -42,5 +98,39 @@ h3,
 }
 
 ::selection {
-  background: #ead9cf;
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+.theme-toggle .when-dark {
+  display: none;
+}
+
+html.dark .theme-toggle .when-dark {
+  display: inline;
+}
+
+html.dark .theme-toggle .when-light {
+  display: none;
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker 48s linear infinite;
+}
+
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none;
+  }
 }

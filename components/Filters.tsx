@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useId, useState } from "react";
+import { Button } from "@/components/ui/Button";
+import { fieldClassName, FieldLabel, FieldLegend } from "@/components/ui/Field";
 import { activeFilterCount, type JobFilters } from "@/lib/filters";
 import {
   DISCIPLINES,
@@ -27,7 +28,7 @@ function CheckGroup({
 }) {
   return (
     <fieldset>
-      <legend className="text-xs uppercase tracking-[0.14em] text-muted">{legend}</legend>
+      <FieldLegend>{legend}</FieldLegend>
       <div className="mt-2 space-y-1.5">
         {options.map((option) => (
           <label key={option.id} className="flex items-center gap-2 text-sm">
@@ -54,18 +55,18 @@ export function Filters({ filters }: { filters: JobFilters }) {
   return (
     <>
       <div className="mb-4 flex items-center justify-between gap-3 lg:hidden">
-        <button
+        <Button
           type="button"
-          className="rounded-full border border-line bg-surface px-4 py-2 text-sm"
+          variant="secondary"
           aria-expanded={open}
           aria-controls={formId}
           onClick={() => setOpen(true)}
         >
           Filters{count ? ` (${count})` : ""}
-        </button>
-        <Link href="/jobs" className="text-sm text-accent">
+        </Button>
+        <Button href="/jobs" variant="ghost">
           Clear filters
-        </Link>
+        </Button>
       </div>
       {open ? (
         <button
@@ -77,13 +78,13 @@ export function Filters({ filters }: { filters: JobFilters }) {
       ) : null}
       <aside
         id={formId}
-        className={`${open ? "fixed inset-y-0 right-0 z-30 block w-[min(100%,22rem)] overflow-auto bg-bg p-5 shadow-none" : "hidden"} lg:sticky lg:top-4 lg:block lg:max-h-[calc(100vh-2rem)] lg:w-auto lg:overflow-auto lg:bg-transparent lg:p-0`}
+        className={`${open ? "fixed inset-y-0 right-0 z-30 block w-[min(100%,22rem)] overflow-auto border-l border-line bg-bg p-5" : "hidden"} lg:sticky lg:top-4 lg:block lg:max-h-[calc(100vh-2rem)] lg:w-auto lg:overflow-auto lg:border-0 lg:bg-transparent lg:p-0`}
       >
         <div className="mb-4 flex items-center justify-between lg:hidden">
           <h2 className="font-serif text-2xl">Filters</h2>
-          <button type="button" className="text-sm text-accent" onClick={() => setOpen(false)}>
+          <Button type="button" variant="ghost" onClick={() => setOpen(false)}>
             Close
-          </button>
+          </Button>
         </div>
         <form
           action="/jobs"
@@ -96,23 +97,19 @@ export function Filters({ filters }: { filters: JobFilters }) {
           }}
         >
           <label className="block text-sm">
-            <span className="text-xs uppercase tracking-[0.14em] text-muted">Search</span>
+            <FieldLabel>Search</FieldLabel>
             <input
               type="search"
               name="q"
               defaultValue={filters.q}
               placeholder="Title or company"
-              className="mt-2 w-full rounded-lg border border-line bg-surface px-3 py-2"
+              className={fieldClassName}
             />
           </label>
 
           <label className="block text-sm">
-            <span className="text-xs uppercase tracking-[0.14em] text-muted">Sort</span>
-            <select
-              name="sort"
-              defaultValue={filters.sort}
-              className="mt-2 w-full rounded-lg border border-line bg-surface px-3 py-2"
-            >
+            <FieldLabel>Sort</FieldLabel>
+            <select name="sort" defaultValue={filters.sort} className={fieldClassName}>
               <option value="newest">Newest</option>
               <option value="company">Company A–Z</option>
             </select>
@@ -126,10 +123,8 @@ export function Filters({ filters }: { filters: JobFilters }) {
           />
 
           <fieldset>
-            <legend className="text-xs uppercase tracking-[0.14em] text-muted">Years asked</legend>
-            <p className="mt-2 text-xs leading-5 text-muted">
-              Senior roles asking for 5 years or fewer: set the maximum to 5.
-            </p>
+            <FieldLegend>Years asked</FieldLegend>
+            <p className="mt-2 text-xs leading-5 text-muted">Senior roles asking for 5 years or fewer: set the maximum to 5.</p>
             <div className="mt-2 grid grid-cols-2 gap-2">
               <label className="text-sm">
                 Min
@@ -139,7 +134,7 @@ export function Filters({ filters }: { filters: JobFilters }) {
                   min={0}
                   max={40}
                   defaultValue={filters.yearsMin ?? ""}
-                  className="mt-1 w-full rounded-lg border border-line bg-surface px-3 py-2"
+                  className={fieldClassName}
                 />
               </label>
               <label className="text-sm">
@@ -150,7 +145,7 @@ export function Filters({ filters }: { filters: JobFilters }) {
                   min={0}
                   max={40}
                   defaultValue={filters.yearsMax ?? ""}
-                  className="mt-1 w-full rounded-lg border border-line bg-surface px-3 py-2"
+                  className={fieldClassName}
                 />
               </label>
             </div>
@@ -159,7 +154,7 @@ export function Filters({ filters }: { filters: JobFilters }) {
               <select
                 name="includeUnknownYears"
                 defaultValue={filters.includeUnknownYears ? "1" : "0"}
-                className="mt-1 w-full rounded-lg border border-line bg-surface px-3 py-2"
+                className={fieldClassName}
               >
                 <option value="1">Include them</option>
                 <option value="0">Hide them</option>
@@ -172,22 +167,17 @@ export function Filters({ filters }: { filters: JobFilters }) {
           <CheckGroup legend="Work type" name="work" selected={filters.work} options={[...WORK_TYPES]} />
 
           <label className="block text-sm">
-            <span className="text-xs uppercase tracking-[0.14em] text-muted">Location</span>
+            <FieldLabel>Location</FieldLabel>
             <input
               type="search"
               name="location"
               defaultValue={filters.location}
               placeholder="City or country"
-              className="mt-2 w-full rounded-lg border border-line bg-surface px-3 py-2"
+              className={fieldClassName}
             />
           </label>
 
-          <CheckGroup
-            legend="Employment"
-            name="employment"
-            selected={filters.employment}
-            options={[...EMPLOYMENT_TYPES]}
-          />
+          <CheckGroup legend="Employment" name="employment" selected={filters.employment} options={[...EMPLOYMENT_TYPES]} />
 
           <label className="flex items-center gap-2 text-sm">
             <input type="checkbox" name="salary" value="1" defaultChecked={filters.salary} className="accent-accent" />
@@ -202,12 +192,8 @@ export function Filters({ filters }: { filters: JobFilters }) {
           />
 
           <label className="block text-sm">
-            <span className="text-xs uppercase tracking-[0.14em] text-muted">Posted within</span>
-            <select
-              name="posted"
-              defaultValue={filters.posted}
-              className="mt-2 w-full rounded-lg border border-line bg-surface px-3 py-2"
-            >
+            <FieldLabel>Posted within</FieldLabel>
+            <select name="posted" defaultValue={filters.posted} className={fieldClassName}>
               <option value="">Any time</option>
               {POSTED_WINDOWS.map((window) => (
                 <option key={window.id} value={window.id}>
@@ -218,12 +204,10 @@ export function Filters({ filters }: { filters: JobFilters }) {
           </label>
 
           <div className="flex items-center gap-4">
-            <button type="submit" className="rounded-full bg-ink px-4 py-2 text-sm text-bg">
-              Apply
-            </button>
-            <Link href="/jobs" className="hidden text-sm text-accent lg:inline">
+            <Button type="submit">Apply</Button>
+            <Button href="/jobs" variant="ghost" className="hidden lg:inline-flex">
               Clear filters
-            </Link>
+            </Button>
           </div>
         </form>
       </aside>

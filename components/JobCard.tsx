@@ -1,17 +1,41 @@
 import Link from "next/link";
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
+import { Surface } from "@/components/ui/Surface";
 import { formatListingAge, formatSalary, listingHref, listingMeta, seniorityLabel, workLabel } from "@/lib/format";
 import type { Listing } from "@/lib/types";
 
-export function JobCard({ listing }: { listing: Listing }) {
+export function JobCard({ listing, titleHref }: { listing: Listing; titleHref?: string }) {
   const salary = formatSalary(listing);
   const place = [listing.location, workLabel(listing)].filter(Boolean).join(" · ");
+  const href = titleHref ?? listingHref(listing);
 
   return (
-    <article className="rounded-xl border border-line bg-surface p-5">
-      <div className="flex flex-wrap items-start justify-between gap-3">
+    <Surface className="p-5">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
-          <h2 className="font-serif text-2xl leading-snug">
-            <Link href={listingHref(listing)} className="hover:text-accent">
+          <ul className="flex flex-wrap gap-1.5">
+            <li>
+              <Badge tone="accent">{seniorityLabel(listing.seniority)}</Badge>
+            </li>
+            {listing.stretch ? (
+              <li>
+                <Badge>Stretch</Badge>
+              </li>
+            ) : null}
+            {listing.remoteType === "remote" ? (
+              <li>
+                <Badge>Remote</Badge>
+              </li>
+            ) : null}
+            {salary ? (
+              <li>
+                <Badge>Salary</Badge>
+              </li>
+            ) : null}
+          </ul>
+          <h2 className="mt-3 font-serif text-2xl leading-snug">
+            <Link href={href} className="hover:text-accent">
               {listing.title}
             </Link>
           </h2>
@@ -19,35 +43,23 @@ export function JobCard({ listing }: { listing: Listing }) {
             {listing.company}
             {place ? ` · ${place}` : ""}
           </p>
+          {listingMeta(listing) ? <p className="mt-2 text-sm leading-6 text-ink">{listingMeta(listing)}</p> : null}
+          <p className="mt-2 text-sm text-muted">
+            {formatListingAge(listing)}
+            {salary ? ` · ${salary}` : ""}
+            {listing.employmentType === "internship" ? " · Internship" : ""}
+            {listing.employmentType === "contract" ? " · Contract" : ""}
+          </p>
         </div>
-        <ul className="flex flex-wrap gap-1.5">
-          <li className="rounded-full bg-accent-soft px-2.5 py-1 text-xs text-accent">{seniorityLabel(listing.seniority)}</li>
-          {listing.stretch ? (
-            <li className="rounded-full border border-line px-2.5 py-1 text-xs">Stretch</li>
-          ) : null}
-          {listing.remoteType === "remote" ? (
-            <li className="rounded-full border border-line px-2.5 py-1 text-xs">Remote</li>
-          ) : null}
-          {salary ? <li className="rounded-full border border-line px-2.5 py-1 text-xs">Salary</li> : null}
-        </ul>
+        <div className="flex shrink-0 items-center gap-4">
+          <Button href={href} variant="ghost">
+            View →
+          </Button>
+          <Button href={listing.url} external variant="secondary">
+            Apply
+          </Button>
+        </div>
       </div>
-      {listingMeta(listing) ? <p className="mt-3 text-sm text-ink">{listingMeta(listing)}</p> : null}
-      <div className="mt-4 flex items-center justify-between gap-3 text-sm">
-        <p className="text-muted">
-          {formatListingAge(listing)}
-          {salary ? ` · ${salary}` : ""}
-          {listing.employmentType === "internship" ? " · Internship" : ""}
-          {listing.employmentType === "contract" ? " · Contract" : ""}
-        </p>
-        <a
-          href={listing.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-full border border-ink px-3 py-1.5 text-ink hover:bg-ink hover:text-bg"
-        >
-          Apply
-        </a>
-      </div>
-    </article>
+    </Surface>
   );
 }

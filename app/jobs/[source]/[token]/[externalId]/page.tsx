@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
+import { Container } from "@/components/ui/Container";
+import { Surface } from "@/components/ui/Surface";
 import { loadListing } from "@/lib/board";
 import { formatListingAge, formatSalary, listingMeta, seniorityLabel, workLabel } from "@/lib/format";
 
@@ -22,9 +25,9 @@ export default async function JobPage({ params }: { params: Promise<JobParams> }
   const result = await loadListing(listingId(await params));
   if (result.status !== "ok") {
     return (
-      <div className="mx-auto max-w-3xl px-5 py-16">
-        <p className="rounded-xl border border-line bg-surface p-5 text-sm leading-6">{result.message}</p>
-      </div>
+      <Container size="narrow" className="py-16">
+        <Surface className="p-5 text-sm leading-6">{result.message}</Surface>
+      </Container>
     );
   }
   if (!result.job) notFound();
@@ -32,39 +35,52 @@ export default async function JobPage({ params }: { params: Promise<JobParams> }
   const salary = formatSalary(listing);
 
   return (
-    <article className="mx-auto max-w-3xl px-5 py-12">
-      <Link href="/jobs" className="text-sm text-accent">
-        All roles
-      </Link>
-      <h1 className="mt-4 font-serif text-4xl leading-tight">{listing.title}</h1>
-      <p className="mt-3 text-muted">
-        {listing.company}
-        {listing.location ? ` · ${listing.location}` : ""} · {workLabel(listing)}
-      </p>
-      <ul className="mt-4 flex flex-wrap gap-1.5 text-xs">
-        <li className="rounded-full bg-accent-soft px-2.5 py-1 text-accent">{seniorityLabel(listing.seniority)}</li>
-        {listing.stretch ? <li className="rounded-full border border-line px-2.5 py-1">Stretch</li> : null}
-        {listing.remoteType === "remote" ? <li className="rounded-full border border-line px-2.5 py-1">Remote</li> : null}
-        {salary ? <li className="rounded-full border border-line px-2.5 py-1">Salary</li> : null}
-      </ul>
-      <p className="mt-4 text-sm">{listingMeta(listing)}</p>
-      <p className="mt-2 text-sm text-muted">
-        Posted {formatListingAge(listing)}
-        {salary ? ` · ${salary}` : ""}
-      </p>
-      <a
-        href={listing.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-6 inline-flex rounded-full bg-ink px-5 py-2.5 text-sm text-bg"
-      >
-        Apply on company site
-      </a>
-      {listing.description ? (
-        <div className="mt-10 whitespace-pre-wrap border-t border-line pt-8 text-sm leading-7">{listing.description}</div>
-      ) : (
-        <p className="mt-10 text-sm text-muted">The company didn’t include a description in the public feed.</p>
-      )}
-    </article>
+    <Container size="narrow" className="py-12">
+      <article>
+        <Button href="/jobs" variant="ghost">
+          All roles
+        </Button>
+        <h1 className="mt-4 font-serif text-4xl leading-tight sm:text-5xl">{listing.title}</h1>
+        <p className="mt-3 text-muted">
+          {listing.company}
+          {listing.location ? ` · ${listing.location}` : ""} · {workLabel(listing)}
+        </p>
+        <ul className="mt-4 flex flex-wrap gap-1.5">
+          <li>
+            <Badge tone="accent">{seniorityLabel(listing.seniority)}</Badge>
+          </li>
+          {listing.stretch ? (
+            <li>
+              <Badge>Stretch</Badge>
+            </li>
+          ) : null}
+          {listing.remoteType === "remote" ? (
+            <li>
+              <Badge>Remote</Badge>
+            </li>
+          ) : null}
+          {salary ? (
+            <li>
+              <Badge>Salary</Badge>
+            </li>
+          ) : null}
+        </ul>
+        <p className="mt-4 text-sm">{listingMeta(listing)}</p>
+        <p className="mt-2 text-sm text-muted">
+          Posted {formatListingAge(listing)}
+          {salary ? ` · ${salary}` : ""}
+        </p>
+        <div className="mt-6">
+          <Button href={listing.url} external>
+            Apply on company site
+          </Button>
+        </div>
+        {listing.description ? (
+          <div className="mt-10 whitespace-pre-wrap border-t border-line pt-8 text-sm leading-7">{listing.description}</div>
+        ) : (
+          <p className="mt-10 text-sm text-muted">The company didn’t include a description in the public feed.</p>
+        )}
+      </article>
+    </Container>
   );
 }

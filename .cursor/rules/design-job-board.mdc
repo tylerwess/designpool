@@ -9,10 +9,12 @@ alwaysApply: true
 A bare-bones, minimalist public job board for **design roles only** (product design, UX, UI/visual, brand, design systems, UX research, content design, motion, design engineering, design leadership). What sets it apart is **precise seniority filtering** (nine levels instead of LinkedIn's lumped "Mid-Senior") and **freshness** (no listing stays up longer than 30 days).
 
 ## Look and feel
-- Minimal and calm, in the spirit of Claude's UI: a warm off-white background, generous whitespace, and a small palette with one muted accent.
-- Headings use a clean serif or humanist sans, and body text uses a neutral sans.
+- Minimal and calm, in the spirit of Claude's UI, with a tasteful expressive share. Follow 60/30/10: about 60% canvas (`bg`), 30% structure (surfaces, ink, muted text, borders, roman serif headings), and 10% accent (one clay hue, italic serif, the discipline ticker, seniority badges).
+- Light and dark mode. The first visit follows the system preference. A header control stores an explicit choice. Components use semantic tokens, so both themes share one set of class names.
+- Headings use Newsreader. Body text uses Source Sans 3.
 - Use subtle 1px borders and soft radius, with no heavy shadows or gradients.
-- It should be fast, responsive, and accessible (keyboard-navigable filters, visible focus states, good contrast).
+- It should be fast, responsive, and accessible (keyboard-navigable filters, visible focus states, good contrast in both themes).
+- Tokens live in `app/globals.css`. The contract lives in `lib/design-tokens.ts`. Primitives live in `components/ui`. The gallery is `/design`. The write-up is `DESIGN_SYSTEM.md`. `npm test` fails if those drift or if a component introduces a raw color.
 
 ## Stack
 - Next.js (App Router) + TypeScript + Tailwind, deployed on Vercel.
