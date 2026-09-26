@@ -190,7 +190,7 @@ h1.font-display,
 }
 
 .hero-lead {
-  padding-top: calc(7.5rem + 0.375rem);
+  padding-top: calc(3.75rem + 0.375rem);
 }
 
 @media (min-width: 640px) {
@@ -210,6 +210,14 @@ h1.font-display,
   bottom: calc(100% + 0.125em + 1px);
   top: auto;
   margin: 0;
+  scale: 0.5;
+  transform-origin: left bottom;
+}
+
+@media (min-width: 640px) {
+  .hero-title .tower-loader-wrap {
+    scale: 1;
+  }
 }
 
 .fresh-sticker {

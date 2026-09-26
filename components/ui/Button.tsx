@@ -25,6 +25,21 @@ function LaunchIcon() {
   );
 }
 
+export function ArrowIcon() {
+  return (
+    <svg width="14" height="10" viewBox="0 0 14 10" aria-hidden="true" className="shrink-0">
+      <path
+        d="M0 5h10.5M7 1l4 4-4 4"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 type Variant = keyof typeof variants;
 
 type Shared = {

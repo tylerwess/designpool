@@ -1,5 +1,5 @@
 import { LandingLive } from "@/components/LandingLive";
-import { Button } from "@/components/ui/Button";
+import { ArrowIcon, Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Surface } from "@/components/ui/Surface";
 import { TowerLoader } from "@/components/ui/TowerLoader";
@@ -23,11 +23,14 @@ export default async function HomePage() {
             The <span className="text-accent">free</span> design job board that respects your time.
           </h1>
         </div>
-        <p className="mt-4 max-w-2xl text-lg leading-8 text-muted">
+        <p className="mt-4 max-w-2xl text-base text-muted">
           {FILTERS_MATTER_COPY} A role stays for 30 days, then it is deleted.
         </p>
         <div className="mt-6">
-          <Button href="/jobs">Browse open roles</Button>
+          <Button href="/jobs" className="gap-2">
+            Browse open roles
+            <ArrowIcon />
+          </Button>
         </div>
       </Container>
 
