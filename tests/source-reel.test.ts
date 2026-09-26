@@ -13,12 +13,10 @@ import {
 const ROOT = process.cwd();
 
 test("the landing page uses a source logo reel instead of live counts", () => {
-  const home = readFileSync(join(ROOT, "app/page.tsx"), "utf8");
   const live = readFileSync(join(ROOT, "components/LandingLive.tsx"), "utf8");
   const reel = readFileSync(join(ROOT, "components/SourceLogoReel.tsx"), "utf8");
   const css = readFileSync(join(ROOT, "app/globals.css"), "utf8");
 
-  assert.match(home, /SourceLogoReel/);
   assert.match(reel, /SOURCE_REEL_CAPTION/);
   assert.equal(SOURCE_REEL_CAPTION, "Listings curated from Ashby, Greenhouse, and Lever.");
   assert.match(reel, /className="source-reel"/);

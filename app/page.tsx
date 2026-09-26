@@ -1,9 +1,7 @@
 import { LandingLive } from "@/components/LandingLive";
-import { SourceLogoReel } from "@/components/SourceLogoReel";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Surface } from "@/components/ui/Surface";
-import { FreshSticker } from "@/components/ui/FreshSticker";
 import { TowerLoader } from "@/components/ui/TowerLoader";
 import { loadBoard } from "@/lib/board";
 import { FILTERS_MATTER_COPY, pageMetadata } from "@/lib/site";
@@ -22,7 +20,6 @@ export default async function HomePage() {
         <div className="hero-lead">
           <h1 className="hero-title max-w-4xl font-display text-5xl leading-[1.02] sm:text-7xl">
             <TowerLoader />
-            <FreshSticker />
             The <span className="text-accent">free</span> design job board that respects your time.
           </h1>
         </div>
@@ -35,7 +32,6 @@ export default async function HomePage() {
       </Container>
 
       <div className="source-stack pb-14">
-        <SourceLogoReel />
         {jobs.length > 0 ? (
           <Container>
             <LandingLive jobs={jobs} />
