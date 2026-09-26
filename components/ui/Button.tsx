@@ -10,6 +10,21 @@ const variants = {
     "inline-flex items-center font-display text-sm text-ink underline decoration-line underline-offset-4 hover:decoration-ink",
 } as const;
 
+function LaunchIcon() {
+  return (
+    <svg width="10" height="10" viewBox="0 0 12 12" aria-hidden="true" className="shrink-0">
+      <path
+        d="M3 9 9 3M5 3h4v4"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.4"
+        strokeLinecap="square"
+        strokeLinejoin="miter"
+      />
+    </svg>
+  );
+}
+
 type Variant = keyof typeof variants;
 
 type Shared = {
@@ -28,8 +43,9 @@ export function Button(props: LinkButton | NativeButton) {
   if ("href" in props && props.href) {
     if (props.external) {
       return (
-        <a href={props.href} className={className} target="_blank" rel="noopener noreferrer">
+        <a href={props.href} className={`${className} gap-1.5`} target="_blank" rel="noopener noreferrer">
           {props.children}
+          <LaunchIcon />
         </a>
       );
     }

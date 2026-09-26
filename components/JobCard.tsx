@@ -56,7 +56,7 @@ export function JobCard({ listing, titleHref }: { listing: Listing; titleHref?: 
             Read more
           </Button>
           <Button href={listing.url} external>
-            Apply <span aria-hidden="true">↗</span>
+            Apply
             <span className="sr-only"> (opens the company posting in a new tab)</span>
           </Button>
         </div>

@@ -108,7 +108,7 @@ export default async function HomePage() {
           </p>
           <div className="mt-8 flex justify-center">
             <Button href="/about" variant="ghost">
-              Read how seniority is decided ↗
+              Read how seniority is decided
             </Button>
           </div>
         </Container>
