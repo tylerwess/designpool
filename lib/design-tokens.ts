@@ -66,7 +66,16 @@ export const TYPE_ROLES = {
   },
 } as const;
 
-export const UI_PRIMITIVES = ["Button", "Badge", "Surface", "Eyebrow", "Field", "ThemeToggle", "Container"] as const;
+export const UI_PRIMITIVES = [
+  "Button",
+  "Badge",
+  "Surface",
+  "Eyebrow",
+  "Field",
+  "ThemeToggle",
+  "Container",
+  "CompanyLogo",
+] as const;
 
 export const THEME_STORAGE_KEY = "designpool-theme";
 

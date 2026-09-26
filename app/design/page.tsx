@@ -1,6 +1,7 @@
 import { JobCard } from "@/components/JobCard";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { CompanyLogo } from "@/components/ui/CompanyLogo";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { fieldClassName, FieldLabel } from "@/components/ui/Field";
@@ -178,6 +179,30 @@ export default function DesignPage() {
           <Badge>Stretch</Badge>
           <Badge>Remote</Badge>
           <Badge>Salary</Badge>
+        </div>
+        <div className="mt-6 flex flex-wrap items-center gap-6">
+          <div className="flex items-center gap-2 text-sm text-muted">
+            <CompanyLogo name="Figma" website="https://www.figma.com" size="sm" />
+            <span>Figma · card size</span>
+          </div>
+          <div className="flex items-center gap-3 text-muted">
+            <CompanyLogo name="Figma" website="https://www.figma.com" size="lg" />
+            <span>Figma · detail size</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-muted">
+            <CompanyLogo name="Unknown Co" size="sm" />
+            <span>Letter fallback</span>
+          </div>
+        </div>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <div className="force-light flex items-center gap-2 rounded-xl border border-line bg-bg p-4 text-sm text-ink">
+            <CompanyLogo name="Figma" website="https://www.figma.com" size="sm" />
+            <span>Light</span>
+          </div>
+          <div className="force-dark flex items-center gap-2 rounded-xl border border-line bg-bg p-4 text-sm text-ink">
+            <CompanyLogo name="Figma" website="https://www.figma.com" size="sm" />
+            <span>Dark</span>
+          </div>
         </div>
         <label className="mt-6 block max-w-sm text-sm">
           <FieldLabel>Search</FieldLabel>

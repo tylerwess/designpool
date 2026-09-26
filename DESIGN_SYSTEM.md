@@ -18,7 +18,7 @@ Text contrast stays at WCAG AA for ink and muted on both canvases.
 
 OpenAI’s product and security pages (`openai.com`): black canvas, centered display type, thin-bordered cards, a rounded pill of choices, a row of large numbers with small captions, and a gray section band. Light mode uses the same structure on white.
 
-Job rows use two actions: Read more opens the role, and Apply launches the company posting. Search is a title-or-company field. Filters are chips that open dropdowns, including location. Buttons use Fjalla One at the same weight and letter-spacing as headings, with 1.5rem of left and right padding. Controls use a fixed height and equal inline padding, with no native select chrome. There is no scrolling marquee.
+Job rows use two actions: Read more opens the role, and Apply launches the company posting. Each row and the role header show a squircle logo tile to the left of the company name (`CompanyLogo`). The tile is always the light canvas so brand marks stay visible in dark mode. If the mark is missing, the company’s first letter sits on that same tile. Search is a title-or-company field. Filters are chips that open dropdowns, including location. Buttons use Fjalla One at the same weight and letter-spacing as headings, with 1.5rem of left and right padding. Controls use a fixed height and equal inline padding, with no native select chrome. There is no scrolling marquee.
 
 ## Themes
 
@@ -34,7 +34,7 @@ The first visit follows `prefers-color-scheme`. The header control writes `desig
 | --- | --- |
 | Hex values and theme classes | `app/globals.css` |
 | Names, roles, proportions, theme script | `lib/design-tokens.ts` |
-| Primitives | `components/ui/` (`Button`, `Badge`, `Surface`, `Eyebrow`, `Field`, `ThemeToggle`, `Container`) |
+| Primitives | `components/ui/` (`Button`, `Badge`, `Surface`, `Eyebrow`, `Field`, `ThemeToggle`, `Container`, `CompanyLogo`) |
 | Living gallery | `/design` |
 | This note | `DESIGN_SYSTEM.md` |
 
