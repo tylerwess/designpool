@@ -28,14 +28,10 @@ export function LandingLive({ jobs }: { jobs: Listing[] }) {
   }, [focus, jobs]);
 
   return (
-    <div>
+    <div className="landing-live">
       {segments.length > 0 ? (
-        <div>
-          <div
-            role="tablist"
-            aria-label="Experience level"
-            className="flex max-w-full flex-wrap gap-1 rounded-3xl border border-line p-1 sm:rounded-full"
-          >
+        <div className="landing-seniority-wrap">
+          <div role="tablist" aria-label="Experience level" className="landing-seniority">
             {segments.map((level) => {
               const selected = level === focus;
               return (
@@ -46,7 +42,7 @@ export function LandingLive({ jobs }: { jobs: Listing[] }) {
                   aria-selected={selected}
                   id={`landing-seniority-${level}`}
                   aria-controls="landing-preview"
-                  className={`rounded-full px-4 py-2 text-sm ${selected ? "bg-ink text-bg" : "text-muted hover:text-ink"}`}
+                  className={`landing-seniority-tab ${selected ? "is-active" : ""}`}
                   onClick={() => setFocus(level)}
                 >
                   {SENIORITY_LABELS[level]}
@@ -61,13 +57,13 @@ export function LandingLive({ jobs }: { jobs: Listing[] }) {
         id="landing-preview"
         role="tabpanel"
         aria-labelledby={focus ? `landing-seniority-${focus}` : undefined}
-        className="mt-6 grid max-w-3xl gap-3"
+        className="landing-preview grid max-w-3xl gap-3"
       >
         {preview.map((listing) => (
           <JobCard key={listing.id} listing={listing} />
         ))}
       </div>
-      <div className="mt-6">
+      <div className="landing-preview-cta">
         <Button href={focus ? `/jobs?seniority=${focus}` : "/jobs"}>Explore more in search</Button>
       </div>
     </div>

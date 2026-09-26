@@ -16,9 +16,12 @@ test("the tower loader is credited, scoped, and token-colored", () => {
   assert.match(source, /className="loader"/);
   assert.match(source, /className="box box-1"/);
   assert.match(source, /className="side-top"/);
+  assert.equal(source.includes("<div"), false, "spans keep the tower valid inside the headline");
   assert.equal(source.includes("#"), false);
   assert.match(css, /\.tower-loader-wrap \.loader/);
   assert.match(css, /scale:\s*2\.25/);
+  assert.match(css, /transform-origin:\s*top left/);
+  assert.match(css, /--tower-paint-x:/);
   assert.match(css, /animation: from-left 4\.6s infinite/);
   assert.match(css, /animation-delay: 1\.15s/);
   assert.match(css, /animation-delay: 2\.3s/);
@@ -30,7 +33,10 @@ test("the tower loader is credited, scoped, and token-colored", () => {
   assert.equal(PALETTES.dark["tower-left"], "#4e2ad8");
   assert.equal(PALETTES.dark["tower-right"], "#7a54ff");
   assert.equal(PALETTES.dark["tower-top"], "#b089ff");
-  assert.ok(home.indexOf("TowerLoader") < home.indexOf("<h1"), "tower sits above the landing headline");
+  assert.ok(home.indexOf("TowerLoader") < home.indexOf("The <span"), "tower sits above the landing headline");
+  assert.match(home, /className="hero-lead"/);
+  assert.match(home, /className="hero-title /);
+  assert.match(css, /\.hero-title \.tower-loader-wrap\s*\{[^}]*bottom:\s*calc\(100% \+ 0\.125em \+ 1px\)/);
 });
 
 test("side-top keeps rotate and skew as separate declarations", () => {

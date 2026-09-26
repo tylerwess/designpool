@@ -29,13 +29,15 @@ export const COLOR_TOKENS = [
   "tower-left",
   "tower-right",
   "tower-top",
+  "tag-bg",
+  "tag-fg",
 ] as const;
 
 export type ColorToken = (typeof COLOR_TOKENS)[number];
 
 export const COLOR_ROLES: Record<keyof typeof PROPORTIONS, readonly ColorToken[]> = {
   canvas: ["bg"],
-  structure: ["surface", "ink", "muted", "line"],
+  structure: ["surface", "ink", "muted", "line", "tag-bg", "tag-fg"],
   expressive: [
     "accent",
     "accent-hover",
@@ -65,6 +67,8 @@ export const PALETTES: Record<"light" | "dark", Record<ColorToken, string>> = {
     "tower-left": "#4a1fcc",
     "tower-right": "#5928ed",
     "tower-top": "#8a66f5",
+    "tag-bg": "#f0f0f0",
+    "tag-fg": "#3d3d3d",
   },
   dark: {
     bg: "#000000",
@@ -81,6 +85,8 @@ export const PALETTES: Record<"light" | "dark", Record<ColorToken, string>> = {
     "tower-left": "#4e2ad8",
     "tower-right": "#7a54ff",
     "tower-top": "#b089ff",
+    "tag-bg": "#232323",
+    "tag-fg": "#c8c8c8",
   },
 };
 
@@ -159,6 +165,11 @@ export const TOGGLE_SIZE = "10px";
 
 export const DESCRIPTION_PREVIEW = {
   lines: 6,
+} as const;
+
+export const SPACE = {
+  6: "1.5rem",
+  8: "2rem",
 } as const;
 
 export const ELEVATION = {

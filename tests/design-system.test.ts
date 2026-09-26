@@ -7,6 +7,7 @@ import {
   COLOR_TOKENS,
   DESCRIPTION_PREVIEW,
   ELEVATION,
+  SPACE,
   PALETTES,
   PROPORTIONS,
   THEME_STORAGE_KEY,
@@ -133,6 +134,7 @@ test("the written system and the gallery route exist", () => {
   assert.match(page, /Apply now/);
   assert.match(page, /TowerLoader/);
   assert.match(page, /SourceLogoReel/);
+  assert.match(page, /FreshSticker/);
   assert.match(page, /<Logo /);
   assert.match(page, /shouldHideDesignGallery/);
   assert.match(page, /notFound\(\)/);
@@ -150,6 +152,10 @@ test("the theme checkbox and floating apply tokens stay documented", () => {
   assert.equal(TOGGLE_COLORS.dark, "#2a2a2a");
   assert.equal(TOGGLE_SIZE, "10px");
   assert.equal(DESCRIPTION_PREVIEW.lines, 6);
+  assert.equal(SPACE[6], "1.5rem");
+  assert.equal(SPACE[8], "2rem");
+  assert.match(css, /--space-6:\s*1\.5rem/);
+  assert.match(css, /--space-8:\s*2rem/);
   assert.match(css, new RegExp(`--toggle-size:\\s*${TOGGLE_SIZE}`));
   assert.match(css, new RegExp(TOGGLE_COLORS.light.replace("#", "#")));
   assert.match(css, new RegExp(TOGGLE_COLORS.dark));
