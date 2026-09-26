@@ -2,6 +2,7 @@ import { LandingLive } from "@/components/LandingLive";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Surface } from "@/components/ui/Surface";
+import { TowerLoader } from "@/components/ui/TowerLoader";
 import { loadBoard } from "@/lib/board";
 import { pageMetadata } from "@/lib/site";
 
@@ -16,6 +17,7 @@ export default async function HomePage() {
   return (
     <div>
       <Container className="py-16 text-center sm:py-20">
+        <TowerLoader />
         <h1 className="mx-auto max-w-4xl font-display text-5xl leading-[1.02] sm:text-7xl">
           The design job board that respects your time.
         </h1>

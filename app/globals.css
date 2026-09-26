@@ -17,6 +17,9 @@
   --light-on-accent: #ffffff;
   --light-accent-focus: #5928ed;
   --light-accent-soft: #efe8ff;
+  --light-tower-left: #4a1fcc;
+  --light-tower-right: #5928ed;
+  --light-tower-top: #8a66f5;
 
   --dark-bg: #000000;
   --dark-surface: #2c2c2c;
@@ -29,6 +32,9 @@
   --dark-on-accent: #ffffff;
   --dark-accent-focus: #7a54ff;
   --dark-accent-soft: #1c1633;
+  --dark-tower-left: #4e2ad8;
+  --dark-tower-right: #7a54ff;
+  --dark-tower-top: #b089ff;
 
   --bg: var(--light-bg);
   --surface: var(--light-surface);
@@ -41,6 +47,9 @@
   --on-accent: var(--light-on-accent);
   --accent-focus: var(--light-accent-focus);
   --accent-soft: var(--light-accent-soft);
+  --tower-left: var(--light-tower-left);
+  --tower-right: var(--light-tower-right);
+  --tower-top: var(--light-tower-top);
 
   --toggle-light: #efefef;
   --toggle-dark: #2a2a2a;
@@ -64,6 +73,9 @@
   --on-accent: var(--dark-on-accent);
   --accent-focus: var(--dark-accent-focus);
   --accent-soft: var(--dark-accent-soft);
+  --tower-left: var(--dark-tower-left);
+  --tower-right: var(--dark-tower-right);
+  --tower-top: var(--dark-tower-top);
   color-scheme: dark;
 }
 
@@ -79,6 +91,9 @@
   --on-accent: var(--light-on-accent);
   --accent-focus: var(--light-accent-focus);
   --accent-soft: var(--light-accent-soft);
+  --tower-left: var(--light-tower-left);
+  --tower-right: var(--light-tower-right);
+  --tower-top: var(--light-tower-top);
   color-scheme: light;
 }
 
@@ -94,6 +109,9 @@
   --on-accent: var(--dark-on-accent);
   --accent-focus: var(--dark-accent-focus);
   --accent-soft: var(--dark-accent-soft);
+  --tower-left: var(--dark-tower-left);
+  --tower-right: var(--dark-tower-right);
+  --tower-top: var(--dark-tower-top);
   color-scheme: dark;
 }
 
@@ -109,6 +127,9 @@
   --color-on-accent: var(--on-accent);
   --color-accent-focus: var(--accent-focus);
   --color-accent-soft: var(--accent-soft);
+  --color-tower-left: var(--tower-left);
+  --color-tower-right: var(--tower-right);
+  --color-tower-top: var(--tower-top);
   --font-sans: var(--font-sans);
   --font-display: var(--font-display);
   --text-xs: 0.875rem;
@@ -337,6 +358,139 @@ input.control[type="number"]::-webkit-outer-spin-button {
   }
 }
 
+/* 3D tower loader by csozi, www.csozi.hu — scoped, 15% slower, brand-violet faces */
+.tower-loader-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 15rem;
+  height: 16rem;
+  margin-inline: auto;
+  margin-bottom: 1.75rem;
+}
+
+.tower-loader {
+  scale: 3;
+  height: 50px;
+  width: 40px;
+}
+
+.tower-box {
+  position: relative;
+  opacity: 0;
+  left: 10px;
+}
+
+.tower-side-left {
+  position: absolute;
+  background-color: var(--tower-left);
+  width: 19px;
+  height: 5px;
+  transform: skew(0deg, -25deg);
+  top: 14px;
+  left: 10px;
+}
+
+.tower-side-right {
+  position: absolute;
+  background-color: var(--tower-right);
+  width: 19px;
+  height: 5px;
+  transform: skew(0deg, 25deg);
+  top: 14px;
+  left: -9px;
+}
+
+.tower-side-top {
+  position: absolute;
+  background-color: var(--tower-top);
+  width: 20px;
+  height: 20px;
+  rotate: 45deg;
+  transform: skew(-20deg, -20deg);
+}
+
+.tower-box-1 {
+  animation: tower-from-left 4.6s infinite;
+}
+
+.tower-box-2 {
+  animation: tower-from-right 4.6s infinite;
+  animation-delay: 1.15s;
+}
+
+.tower-box-3 {
+  animation: tower-from-left 4.6s infinite;
+  animation-delay: 2.3s;
+}
+
+.tower-box-4 {
+  animation: tower-from-right 4.6s infinite;
+  animation-delay: 3.45s;
+}
+
+@keyframes tower-from-left {
+  0% {
+    z-index: 20;
+    opacity: 0;
+    translate: -20px -6px;
+  }
+  20% {
+    z-index: 10;
+    opacity: 1;
+    translate: 0px 0px;
+  }
+  40% {
+    z-index: 9;
+    translate: 0px 4px;
+  }
+  60% {
+    z-index: 8;
+    translate: 0px 8px;
+  }
+  80% {
+    z-index: 7;
+    opacity: 1;
+    translate: 0px 12px;
+  }
+  100% {
+    z-index: 5;
+    translate: 0px 30px;
+    opacity: 0;
+  }
+}
+
+@keyframes tower-from-right {
+  0% {
+    z-index: 20;
+    opacity: 0;
+    translate: 20px -6px;
+  }
+  20% {
+    z-index: 10;
+    opacity: 1;
+    translate: 0px 0px;
+  }
+  40% {
+    z-index: 9;
+    translate: 0px 4px;
+  }
+  60% {
+    z-index: 8;
+    translate: 0px 8px;
+  }
+  80% {
+    z-index: 7;
+    opacity: 1;
+    translate: 0px 12px;
+  }
+  100% {
+    z-index: 5;
+    translate: 0px 30px;
+    opacity: 0;
+  }
+}
+
 .odometer {
   display: inline-flex;
 }
@@ -369,5 +523,30 @@ input.control[type="number"]::-webkit-outer-spin-button {
     -webkit-transition: none;
     -o-transition: none;
     transition: none;
+  }
+
+  .tower-box {
+    animation: none;
+    opacity: 1;
+  }
+
+  .tower-box-1 {
+    translate: 0 0;
+    z-index: 4;
+  }
+
+  .tower-box-2 {
+    translate: 0 8px;
+    z-index: 3;
+  }
+
+  .tower-box-3 {
+    translate: 0 16px;
+    z-index: 2;
+  }
+
+  .tower-box-4 {
+    translate: 0 24px;
+    z-index: 1;
   }
 }

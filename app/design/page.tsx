@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { CompanyLogo } from "@/components/ui/CompanyLogo";
 import { Tag } from "@/components/ui/Tag";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { TowerLoader } from "@/components/ui/TowerLoader";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { fieldClassName, FieldLabel } from "@/components/ui/Field";
@@ -235,6 +236,10 @@ export default function DesignPage() {
           <JobCard listing={sample} titleHref="/jobs" />
         </div>
         <Surface className="mt-4 p-5 text-sm leading-6">Empty and message states use this surface.</Surface>
+        <div className="mt-8">
+          <p className="text-xs uppercase tracking-[0.16em] text-muted">Tower loader</p>
+          <TowerLoader />
+        </div>
       </section>
     </Container>
   );

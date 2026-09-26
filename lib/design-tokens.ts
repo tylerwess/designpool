@@ -26,6 +26,9 @@ export const COLOR_TOKENS = [
   "on-accent",
   "accent-focus",
   "accent-soft",
+  "tower-left",
+  "tower-right",
+  "tower-top",
 ] as const;
 
 export type ColorToken = (typeof COLOR_TOKENS)[number];
@@ -33,7 +36,17 @@ export type ColorToken = (typeof COLOR_TOKENS)[number];
 export const COLOR_ROLES: Record<keyof typeof PROPORTIONS, readonly ColorToken[]> = {
   canvas: ["bg"],
   structure: ["surface", "ink", "muted", "line"],
-  expressive: ["accent", "accent-hover", "accent-active", "on-accent", "accent-focus", "accent-soft"],
+  expressive: [
+    "accent",
+    "accent-hover",
+    "accent-active",
+    "on-accent",
+    "accent-focus",
+    "accent-soft",
+    "tower-left",
+    "tower-right",
+    "tower-top",
+  ],
 };
 
 export const PALETTES: Record<"light" | "dark", Record<ColorToken, string>> = {
@@ -49,6 +62,9 @@ export const PALETTES: Record<"light" | "dark", Record<ColorToken, string>> = {
     "on-accent": "#ffffff",
     "accent-focus": "#5928ed",
     "accent-soft": "#efe8ff",
+    "tower-left": "#4a1fcc",
+    "tower-right": "#5928ed",
+    "tower-top": "#8a66f5",
   },
   dark: {
     bg: "#000000",
@@ -62,6 +78,9 @@ export const PALETTES: Record<"light" | "dark", Record<ColorToken, string>> = {
     "on-accent": "#ffffff",
     "accent-focus": "#7a54ff",
     "accent-soft": "#1c1633",
+    "tower-left": "#4e2ad8",
+    "tower-right": "#7a54ff",
+    "tower-top": "#b089ff",
   },
 };
 
@@ -111,6 +130,7 @@ export const UI_PRIMITIVES = [
   "ThemeToggle",
   "Container",
   "CompanyLogo",
+  "TowerLoader",
 ] as const;
 
 /** Theme checkbox halves. The supplied `.theme-checkbox` CSS keeps these hex values literally. */

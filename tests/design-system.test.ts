@@ -123,6 +123,7 @@ test("the written system and the gallery route exist", () => {
   assert.match(page, /<Tag /);
   assert.match(page, /ThemeToggle/);
   assert.match(page, /Apply now/);
+  assert.match(page, /TowerLoader/);
   assert.equal(existsSync(join(ROOT, "components/Ticker.tsx")), false);
   assert.equal(readFileSync(join(ROOT, "app/globals.css"), "utf8").includes("ticker-track"), false);
 });
