@@ -43,13 +43,11 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     title: SITE_NAME,
     description: SITE_DESCRIPTION,
-    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Designpool, a job board for design roles" }],
   },
   twitter: {
     card: "summary_large_image",
     title: SITE_NAME,
     description: SITE_DESCRIPTION,
-    images: ["/opengraph-image"],
   },
 };
 

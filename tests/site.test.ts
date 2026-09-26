@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import test from "node:test";
 import {
@@ -68,12 +68,14 @@ test("the design gallery is hidden in production and on Vercel", () => {
 
 test("the hero and site copy say free in the brand accent", () => {
   const home = readFileSync(join(process.cwd(), "app/page.tsx"), "utf8");
-  const og = readFileSync(join(process.cwd(), "app/opengraph-image.tsx"), "utf8");
   assert.match(home, /<span className="text-accent">free<\/span>/);
   assert.match(home, /The <span className="text-accent">free<\/span> design job board that respects your time\./);
   assert.match(SITE_DESCRIPTION, /The free design job board that respects your time/);
-  assert.match(og, /color:\s*color\.accent/);
-  assert.match(og, />free</);
+});
+
+test("the Open Graph image is a static screenshot, not a generated card", () => {
+  assert.equal(existsSync(join(process.cwd(), "app/opengraph-image.png")), true);
+  assert.equal(existsSync(join(process.cwd(), "app/opengraph-image.tsx")), false);
 });
 
 test("the landing hero keeps the more-relevant industry filter line", () => {
