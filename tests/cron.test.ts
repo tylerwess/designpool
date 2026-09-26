@@ -9,7 +9,7 @@ test("the cron route rejects requests while CRON_SECRET is unset", async () => {
   delete process.env.DATABASE_URL;
   process.env.VERCEL = "1";
 
-  const { GET, POST } = await import("../app/api/cron/route.ts");
+  const { GET, POST } = await import("../app/api/cron/route");
   for (const handler of [GET, POST]) {
     const missing = await handler(new Request("https://designpool-taupe.vercel.app/api/cron"));
     assert.equal(missing.status, 401);
