@@ -150,3 +150,31 @@ html.dark .theme-toggle .when-dark {
 html.dark .theme-toggle .when-light {
   display: none;
 }
+
+.odometer {
+  display: inline-flex;
+}
+
+.odometer-digit {
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+  line-height: 1;
+}
+
+.odometer-reel {
+  display: block;
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.odometer-face {
+  display: block;
+  height: 1em;
+  line-height: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .odometer-reel {
+    transition: none;
+  }
+}
