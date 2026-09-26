@@ -72,6 +72,35 @@ test("UI primitives exist and product views do not invent colors", () => {
   }
 });
 
+function channel(hex: string, index: number): number {
+  return parseInt(hex.slice(1 + index * 2, 3 + index * 2), 16) / 255;
+}
+
+function luminance(hex: string): number {
+  const rgb = [0, 1, 2].map((index) => {
+    const value = channel(hex, index);
+    return value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
+}
+
+function contrastRatio(a: string, b: string): number {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((left, right) => right - left);
+  return (hi + 0.05) / (lo + 0.05);
+}
+
+test("primary accent text meets WCAG AA in both themes", () => {
+  for (const theme of ["light", "dark"] as const) {
+    const on = PALETTES[theme]["on-accent"];
+    for (const token of ["accent", "accent-hover", "accent-active"] as const) {
+      const ratio = contrastRatio(on, PALETTES[theme][token]);
+      assert.ok(ratio >= 4.5, `${theme} ${token} on ${on} is ${ratio.toFixed(2)}:1`);
+    }
+  }
+  assert.equal(PALETTES.light.accent, "#5928ed");
+  assert.equal(PALETTES.light["on-accent"], "#ffffff");
+});
+
 test("the written system and the gallery route exist", () => {
   const doc = readFileSync(join(ROOT, "DESIGN_SYSTEM.md"), "utf8");
   for (const phrase of ["60/30/10", "/design", "Fjalla One", "Lato", "OpenAI"]) {

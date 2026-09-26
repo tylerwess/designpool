@@ -8,11 +8,11 @@ The interface follows the restraint of OpenAI’s product pages: a flat canvas, 
 | --- | --- | --- |
 | 60% canvas | `bg`. White in light mode, black in dark mode. | Lato for body, navigation, filters, and meta |
 | 30% structure | `surface` (the gray band), `ink`, `muted`, `line` | Fjalla One for page titles, section headings, job titles, and buttons |
-| 10% expressive | `accent` and `accent-soft`, kept to the same black or white as the ink | Fjalla One at display size: the hero and live stat numbers |
+| 10% expressive | `accent`, `accent-hover`, `accent-active`, `on-accent`, `accent-focus`, and `accent-soft`. Light base is `#5928ed`. Dark base is `#7a54ff`. | Fjalla One at display size: the hero and live stat numbers |
 
-There is no second hue and no ticker. Cards sit on the canvas with a 1px border. `surface` is the slightly lighter or darker band under a single statement, not a stack of value-prop columns.
+The brand violet is only on primary CTAs (Apply, Search, Browse, and other default buttons). Secondary and ghost stay ink. Cards sit on the canvas with a 1px border. `surface` is the slightly lighter or darker band under a single statement, not a stack of value-prop columns.
 
-Text contrast stays at WCAG AA for ink and muted on both canvases.
+Text contrast stays at WCAG AA for ink and muted on both canvases, and for `on-accent` on `accent`, `accent-hover`, and `accent-active`.
 
 ## References
 

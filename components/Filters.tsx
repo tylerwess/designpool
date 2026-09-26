@@ -65,7 +65,7 @@ function Option({
 }) {
   return (
     <label className="flex h-11 items-center gap-3 rounded-full px-3 text-sm hover:bg-surface">
-      <input type={type} name={name} value={value} defaultChecked={defaultChecked} className="size-4 shrink-0 accent-accent" />
+      <input type={type} name={name} value={value} defaultChecked={defaultChecked} className="size-4 shrink-0 accent-ink" />
       <span>{children}</span>
     </label>
   );
