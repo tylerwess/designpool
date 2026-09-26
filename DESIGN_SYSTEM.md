@@ -6,8 +6,8 @@ The interface follows the restraint of OpenAI’s product pages: a flat canvas, 
 
 | Share | Color | Type |
 | --- | --- | --- |
-| 60% canvas | `bg`. White in light mode, black in dark mode. | Lato for body, navigation, filters, meta, and buttons |
-| 30% structure | `surface` (the gray band), `ink`, `muted`, `line` | Fjalla One for page titles, section headings, and job titles |
+| 60% canvas | `bg`. White in light mode, black in dark mode. | Lato for body, navigation, filters, and meta |
+| 30% structure | `surface` (the gray band), `ink`, `muted`, `line` | Fjalla One for page titles, section headings, job titles, and buttons |
 | 10% expressive | `accent` and `accent-soft`, kept to the same black or white as the ink | Fjalla One at display size: the hero and live stat numbers |
 
 There is no second hue and no ticker. Cards sit on the canvas with a 1px border. `surface` is the slightly lighter or darker band under a single statement, not a stack of value-prop columns.
@@ -18,7 +18,7 @@ Text contrast stays at WCAG AA for ink and muted on both canvases.
 
 OpenAI’s product and security pages (`openai.com`): black canvas, centered display type, thin-bordered cards, a rounded pill of choices, a row of large numbers with small captions, and a gray section band. Light mode uses the same structure on white.
 
-Job rows use two actions: Read more opens the role, and Apply launches the company posting. Search and filters are a field row plus chips that open dropdowns. Controls use a fixed height and equal inline padding, with no native select chrome. There is no scrolling marquee.
+Job rows use two actions: Read more opens the role, and Apply launches the company posting. Search is a title-or-company field. Filters are chips that open dropdowns, including location. Buttons use Fjalla One at the same weight and letter-spacing as headings, with 1.5rem of left and right padding. Controls use a fixed height and equal inline padding, with no native select chrome. There is no scrolling marquee.
 
 ## Themes
 

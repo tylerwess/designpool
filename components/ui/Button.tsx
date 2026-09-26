@@ -3,10 +3,11 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 const variants = {
   primary:
-    "inline-flex h-11 items-center justify-center rounded-full bg-ink px-4 text-sm text-bg hover:opacity-90",
+    "inline-flex h-11 items-center justify-center rounded-full bg-ink px-6 font-display text-sm text-bg hover:opacity-90",
   secondary:
-    "inline-flex h-11 items-center justify-center rounded-full border border-ink px-4 text-sm text-ink hover:bg-ink hover:text-bg",
-  ghost: "inline-flex items-center text-sm text-ink underline decoration-line underline-offset-4 hover:decoration-ink",
+    "inline-flex h-11 items-center justify-center rounded-full border border-ink px-6 font-display text-sm text-ink hover:bg-ink hover:text-bg",
+  ghost:
+    "inline-flex items-center font-display text-sm text-ink underline decoration-line underline-offset-4 hover:decoration-ink",
 } as const;
 
 type Variant = keyof typeof variants;

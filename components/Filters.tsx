@@ -181,16 +181,6 @@ function FilterForm({ filters }: { filters: JobFilters }) {
             className={controlClassName}
           />
         </label>
-        <label className="min-w-0 flex-1">
-          <span className="sr-only">Location</span>
-          <input
-            type="search"
-            name="location"
-            defaultValue={filters.location}
-            placeholder="City or country"
-            className={controlClassName}
-          />
-        </label>
         <Button type="submit" className="w-full shrink-0 sm:w-auto">
           Search
         </Button>
@@ -232,6 +222,26 @@ function FilterForm({ filters }: { filters: JobFilters }) {
               {SENIORITY_LABELS[level]}
             </Option>
           ))}
+        </Menu>
+
+        <Menu
+          id={`${baseId}-location`}
+          open={open === "location"}
+          label={filters.location ? filters.location : "Location"}
+          active={Boolean(filters.location)}
+          clearHref={hrefFor({ ...filters, location: "" })}
+          onToggle={() => toggle("location")}
+        >
+          <label className="block px-1 pb-2 text-sm">
+            <span className="mb-1.5 block px-1 text-muted">City or country</span>
+            <input
+              type="search"
+              name="location"
+              defaultValue={filters.location}
+              placeholder="City or country"
+              className={controlClassName}
+            />
+          </label>
         </Menu>
 
         <Menu

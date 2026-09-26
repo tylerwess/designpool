@@ -50,13 +50,13 @@ export const TYPE_ROLES = {
     share: 60,
     family: "Lato",
     utility: "font-sans",
-    use: "Body copy, navigation, filters, meta, and buttons.",
+    use: "Body copy, navigation, filters, and meta.",
   },
   structure: {
     share: 30,
     family: "Fjalla One",
     utility: "font-display",
-    use: "Page titles, section headings, and job titles.",
+    use: "Page titles, section headings, job titles, and buttons.",
   },
   expressive: {
     share: 10,
