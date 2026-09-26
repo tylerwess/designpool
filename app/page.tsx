@@ -18,10 +18,12 @@ export default async function HomePage() {
   return (
     <div>
       <Container className="py-16 sm:py-20">
-        <TowerLoader />
-        <h1 className="max-w-4xl font-display text-5xl leading-[1.02] sm:text-7xl">
-          The <span className="text-accent">free</span> design job board that respects your time.
-        </h1>
+        <div className="hero-lead">
+          <h1 className="hero-title max-w-4xl font-display text-5xl leading-[1.02] sm:text-7xl">
+            <TowerLoader />
+            The <span className="text-accent">free</span> design job board that respects your time.
+          </h1>
+        </div>
         <p className="mt-4 max-w-2xl text-lg leading-8 text-muted">
           Filters that actually matter. Nine seniority levels, years of experience, and industry. A role stays for 30
           days, then it is deleted.
@@ -31,15 +33,15 @@ export default async function HomePage() {
         </div>
       </Container>
 
-      <div className="pb-14">
-        <SourceLogoReel jobs={jobs} />
+      <div className="source-stack pb-14">
+        <SourceLogoReel />
         {jobs.length > 0 ? (
-          <Container className="mt-10">
+          <Container>
             <LandingLive jobs={jobs} />
           </Container>
         ) : (
-          <Container className="mt-10">
-            <Surface className="max-w-xl p-5 text-sm leading-6">
+          <Container>
+            <Surface className="landing-live max-w-xl p-5 text-sm leading-6">
               {board.status === "ok" ? "No roles yet. Listings show up after the first ingest." : board.message}
             </Surface>
           </Container>

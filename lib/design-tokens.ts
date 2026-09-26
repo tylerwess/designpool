@@ -161,6 +161,11 @@ export const DESCRIPTION_PREVIEW = {
   lines: 6,
 } as const;
 
+export const SPACE = {
+  6: "1.5rem",
+  8: "2rem",
+} as const;
+
 export const ELEVATION = {
   float: "0 10px 28px rgb(0 0 0 / 0.22)",
 } as const;
