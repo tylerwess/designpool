@@ -1,6 +1,6 @@
 # Designpool design system
 
-The interface follows the restraint of OpenAI’s product pages: a flat canvas, large centered headlines, thin 1px borders, pill controls, and generous space. Color and type still follow **60/30/10**. Light and dark mode use the same class names.
+The interface follows the restraint of OpenAI’s product pages: a flat canvas, large left-aligned headlines, thin 1px borders, pill controls, and generous space. Color and type still follow **60/30/10**. Light and dark mode use the same class names. The landing page is left-aligned to the header’s content column; the page container stays centered on wide screens.
 
 ## 60 / 30 / 10
 
@@ -16,7 +16,7 @@ Text contrast stays at WCAG AA for ink and muted on both canvases, and for `on-a
 
 ## References
 
-OpenAI’s product and security pages (`openai.com`): black canvas, centered display type, thin-bordered cards, a rounded pill of choices, a row of large numbers with small captions, and a gray section band. Light mode uses the same structure on white.
+OpenAI’s product and security pages (`openai.com`): black canvas, display type, thin-bordered cards, a rounded pill of choices, and a gray section band. Designpool’s landing keeps that restraint but left-aligns the tower, headline, subcopy, source reel caption, preview list, and CTAs to the same container edge as the header logo. Light mode uses the same structure on white.
 
 Job rows use two actions: Read more opens the role, and Apply launches the company posting. The role page and each job card put a compact byline — logo, company, location, and posted age — above the title. A row of `Tag` chips sits directly under the title on the role page — the same labels as the search filters — and omits unknown values plus location and posted age (those live in the byline). The description renders sanitized HTML and clamps to six lines (`--description-preview-lines`) with a fade; Read more appears only when the copy overflows. The role page has one floating **Apply now** control (primary accent, Fjalla One, launch arrow): a full-width safe-area bar on small screens, and a fixed pill at the bottom-right from `640px` up. Page padding and `--shadow-float` keep it off the last line of copy. Each row and the role header show a squircle logo tile to the left of the company name (`CompanyLogo`). The tile has no fill, only a 1px `line` stroke that follows the theme. If the mark is missing, the company’s first letter sits in that outline. The landing hero sits a decorative `TowerLoader` (3D tower by csozi) above the headline. Faces use `tower-left`, `tower-right`, and `tower-top`. Under the hero, body copy says listings are curated from Ashby, Greenhouse, and Lever, above a horizontal `source-reel` of company logo tiles. `prefers-reduced-motion` stops the scroll. Search is a title-or-company field. Filters are chips that open dropdowns, including location. Buttons use Fjalla One at the same weight and letter-spacing as headings, with 1.5rem of left and right padding. Controls use a fixed height and equal inline padding, with no native select chrome. There is no scrolling marquee.
 

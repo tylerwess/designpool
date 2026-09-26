@@ -393,7 +393,7 @@ input.control[type="number"]::-webkit-outer-spin-button {
 .tower-loader-wrap {
   width: 11.25rem;
   height: 12rem;
-  margin: 0 auto 0.875rem;
+  margin: 0 0 0.875rem;
 }
 
 .tower-loader-wrap,
@@ -608,7 +608,7 @@ input.control[type="number"]::-webkit-outer-spin-button {
   .source-reel-track {
     animation: none;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
     width: auto;
     row-gap: 0.75rem;
   }

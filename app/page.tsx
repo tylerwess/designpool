@@ -17,12 +17,12 @@ export default async function HomePage() {
 
   return (
     <div>
-      <Container className="py-16 text-center sm:py-20">
+      <Container className="py-16 sm:py-20">
         <TowerLoader />
-        <h1 className="mx-auto max-w-4xl font-display text-5xl leading-[1.02] sm:text-7xl">
+        <h1 className="max-w-4xl font-display text-5xl leading-[1.02] sm:text-7xl">
           The <span className="text-accent">free</span> design job board that respects your time.
         </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-lg leading-8 text-muted">
+        <p className="mt-4 max-w-2xl text-lg leading-8 text-muted">
           Filters that actually matter. Nine seniority levels, years of experience, and industry. A role stays for 30
           days, then it is deleted.
         </p>
@@ -39,7 +39,7 @@ export default async function HomePage() {
           </Container>
         ) : (
           <Container className="mt-10">
-            <Surface className="mx-auto max-w-xl p-5 text-center text-sm leading-6">
+            <Surface className="max-w-xl p-5 text-sm leading-6">
               {board.status === "ok" ? "No roles yet. Listings show up after the first ingest." : board.message}
             </Surface>
           </Container>
@@ -47,12 +47,12 @@ export default async function HomePage() {
       </div>
 
       <section className="bg-surface">
-        <Container className="py-14 text-center sm:py-16">
-          <h2 className="mx-auto max-w-3xl font-display text-4xl leading-tight sm:text-5xl">Nine levels, not one bucket.</h2>
-          <p className="mx-auto mt-3 max-w-xl text-base leading-7 text-muted">
+        <Container className="py-14 sm:py-16">
+          <h2 className="max-w-3xl font-display text-4xl leading-tight sm:text-5xl">Nine levels, not one bucket.</h2>
+          <p className="mt-3 max-w-xl text-base leading-7 text-muted">
             Title first, years second. Lead stays an individual contributor unless the role manages people.
           </p>
-          <div className="mt-5 flex justify-center">
+          <div className="mt-5">
             <Button href="/about" variant="ghost">
               Read how seniority is decided
             </Button>

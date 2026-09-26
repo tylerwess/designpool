@@ -30,11 +30,11 @@ export function LandingLive({ jobs }: { jobs: Listing[] }) {
   return (
     <div>
       {segments.length > 0 ? (
-        <div className="flex justify-center">
+        <div>
           <div
             role="tablist"
             aria-label="Experience level"
-            className="flex max-w-full flex-wrap justify-center gap-1 rounded-3xl border border-line p-1 sm:rounded-full"
+            className="flex max-w-full flex-wrap gap-1 rounded-3xl border border-line p-1 sm:rounded-full"
           >
             {segments.map((level) => {
               const selected = level === focus;
@@ -61,13 +61,13 @@ export function LandingLive({ jobs }: { jobs: Listing[] }) {
         id="landing-preview"
         role="tabpanel"
         aria-labelledby={focus ? `landing-seniority-${focus}` : undefined}
-        className="mx-auto mt-6 grid max-w-3xl gap-3 text-left"
+        className="mt-6 grid max-w-3xl gap-3"
       >
         {preview.map((listing) => (
           <JobCard key={listing.id} listing={listing} />
         ))}
       </div>
-      <div className="mt-6 flex justify-center">
+      <div className="mt-6">
         <Button href={focus ? `/jobs?seniority=${focus}` : "/jobs"}>Explore more in search</Button>
       </div>
     </div>
