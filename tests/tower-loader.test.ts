@@ -35,9 +35,13 @@ test("the tower loader is credited, scoped, and token-colored", () => {
 
 test("side-top keeps rotate and skew as separate declarations", () => {
   const css = readFileSync(join(ROOT, "app/globals.css"), "utf8");
-  const block = css.match(/\.tower-loader-wrap \.side-top\s*\{[^}]+\}/);
-  assert.ok(block, "scoped .side-top rule exists");
-  assert.match(block[0], /rotate:\s*45deg;/);
-  assert.match(block[0], /transform:\s*skew\(-20deg,\s*-20deg\);/);
-  assert.equal(/transform:\s*rotate\(/i.test(block[0]), false);
+  const rotateRule = css.match(/\.tower-loader-wrap \.side-top\s*\{[^}]+\}/);
+  const skewRule = css.match(/\.tower-loader-wrap \.box\s*>\s*\.side-top\s*\{[^}]+\}/);
+  assert.ok(rotateRule, "scoped .side-top rule exists");
+  assert.match(rotateRule[0], /rotate:\s*45deg;/);
+  assert.equal(/transform:/i.test(rotateRule[0]), false, "rotate rule must not also set transform");
+  assert.ok(skewRule, "separate .side-top transform rule exists");
+  assert.match(skewRule[0], /transform:\s*skew\(-20deg,\s*-20deg\);/);
+  assert.equal(/rotate:/i.test(skewRule[0]), false, "transform rule must not also set rotate");
+  assert.equal(/transform:\s*rotate\(/i.test(css), false);
 });

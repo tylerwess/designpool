@@ -420,6 +420,9 @@ input.control[type="number"]::-webkit-outer-spin-button {
   width: 20px;
   height: 20px;
   rotate: 45deg;
+}
+
+.tower-loader-wrap .box > .side-top {
   transform: skew(-20deg, -20deg);
 }
 
