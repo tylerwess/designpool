@@ -20,7 +20,7 @@ export default function AboutPage() {
   return (
     <Container size="narrow" className="py-14">
       <Eyebrow>About</Eyebrow>
-      <h1 className="mt-3 font-serif text-4xl sm:text-5xl">How this board works</h1>
+      <h1 className="mt-3 font-display text-4xl sm:text-5xl">How this board works</h1>
       <div className="mt-8 space-y-4 text-sm leading-7 text-ink">
         <p>
           Designpool lists design roles only: product design, UX, UI and visual, brand, design systems, UX research,
@@ -33,7 +33,7 @@ export default function AboutPage() {
         </p>
       </div>
 
-      <h2 className="mt-12 font-serif text-3xl">Only 30 days</h2>
+      <h2 className="mt-12 font-display text-3xl">Only 30 days</h2>
       <div className="mt-4 space-y-4 text-sm leading-7">
         <p>
           A role’s age is the date the company posted it, when that date exists. Otherwise it is the day Designpool first
@@ -42,7 +42,7 @@ export default function AboutPage() {
         </p>
       </div>
 
-      <h2 className="mt-12 font-serif text-3xl">Nine seniority levels</h2>
+      <h2 className="mt-12 font-display text-3xl">Nine seniority levels</h2>
       <p className="mt-4 text-sm leading-7">Each role gets exactly one level, from the title first and the years asked for second.</p>
       <table className="mt-6 w-full border-collapse text-left text-sm">
         <thead>

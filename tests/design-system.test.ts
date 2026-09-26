@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync, readdirSync, statSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import test from "node:test";
 import {
@@ -74,10 +74,14 @@ test("UI primitives exist and product views do not invent colors", () => {
 
 test("the written system and the gallery route exist", () => {
   const doc = readFileSync(join(ROOT, "DESIGN_SYSTEM.md"), "utf8");
-  for (const phrase of ["60/30/10", "/design", "Open Doors", "Designjoy", "Claude"]) {
+  for (const phrase of ["60/30/10", "/design", "Fjalla One", "Lato", "OpenAI"]) {
     assert.equal(doc.includes(phrase), true, `DESIGN_SYSTEM.md should mention ${phrase}`);
   }
+  assert.equal(TYPE_ROLES.body.family, "Lato");
+  assert.equal(TYPE_ROLES.structure.family, "Fjalla One");
   const page = readFileSync(join(ROOT, "app/design/page.tsx"), "utf8");
   assert.match(page, /force-light/);
   assert.match(page, /force-dark/);
+  assert.equal(existsSync(join(ROOT, "components/Ticker.tsx")), false);
+  assert.equal(readFileSync(join(ROOT, "app/globals.css"), "utf8").includes("ticker-track"), false);
 });

@@ -9,9 +9,9 @@ alwaysApply: true
 A bare-bones, minimalist public job board for **design roles only** (product design, UX, UI/visual, brand, design systems, UX research, content design, motion, design engineering, design leadership). What sets it apart is **precise seniority filtering** (nine levels instead of LinkedIn's lumped "Mid-Senior") and **freshness** (no listing stays up longer than 30 days).
 
 ## Look and feel
-- Minimal and calm, in the spirit of Claude's UI, with a tasteful expressive share. Follow 60/30/10: about 60% canvas (`bg`), 30% structure (surfaces, ink, muted text, borders, roman serif headings), and 10% accent (one clay hue, italic serif, the discipline ticker, seniority badges).
+- Restrained, in the spirit of OpenAI’s product pages: flat canvas (white in light mode, black in dark mode), large centered headlines, thin 1px borders, pill controls, and generous space. Follow 60/30/10: about 60% canvas (`bg`), 30% structure (the gray band, ink, muted text, borders), and 10% display type. No second hue and no scrolling ticker.
 - Light and dark mode. The first visit follows the system preference. A header control stores an explicit choice. Components use semantic tokens, so both themes share one set of class names.
-- Headings use Newsreader. Body text uses Source Sans 3.
+- Headings use Fjalla One. Body text uses Lato.
 - Use subtle 1px borders and soft radius, with no heavy shadows or gradients.
 - It should be fast, responsive, and accessible (keyboard-navigable filters, visible focus states, good contrast in both themes).
 - Tokens live in `app/globals.css`. The contract lives in `lib/design-tokens.ts`. Primitives live in `components/ui`. The gallery is `/design`. The write-up is `DESIGN_SYSTEM.md`. `npm test` fails if those drift or if a component introduces a raw color.
@@ -23,9 +23,8 @@ A bare-bones, minimalist public job board for **design roles only** (product des
 
 ## Pages
 1. **Landing (`/`)**
-   - A hero with a one-line pitch.
-   - Value props: **"We keep jobs fresh"**, **"Only 30 days allowed on here"**, and **"Better filters to find roles"** (nine real seniority levels, years of experience, industry).
-   - A call to action to browse jobs, plus an optional preview of the latest listings.
+   - A centered hero: the design job board that respects your time, with filters that actually matter. The 30-day freshness rule is part of that message, not a separate card column.
+   - A call to action to browse jobs. When the database has listings, show real counts and a short live preview. Do not invent stats, and do not use a three-column value-prop layout.
 2. **Jobs (`/jobs`)**
    - A filter sidebar (a drawer on mobile) with a result count and a "Clear filters" control.
    - Filter state lives in URL query params so views are shareable.

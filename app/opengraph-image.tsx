@@ -22,17 +22,11 @@ export default function OpenGraphImage() {
           padding: "72px",
         }}
       >
-        <div style={{ display: "flex", fontSize: 28, letterSpacing: "0.14em", color: color.muted }}>
-          A JOB BOARD FOR DESIGN
+        <div style={{ display: "flex", fontSize: 28, letterSpacing: "0.08em", color: color.muted }}>DESIGNPOOL</div>
+        <div style={{ display: "flex", fontSize: 64, lineHeight: 1.05, maxWidth: 920 }}>
+          The design job board that respects your time.
         </div>
-        <div style={{ display: "flex", flexDirection: "column", fontSize: 68, lineHeight: 1.05, maxWidth: 900 }}>
-          <span>Design roles, with filters</span>
-          <div style={{ display: "flex" }}>
-            <span>that respect the</span>
-            <span style={{ color: color.accent, marginLeft: 16 }}>craft.</span>
-          </div>
-        </div>
-        <div style={{ display: "flex", fontSize: 28, color: color.muted }}>Nine levels · 30 days · {siteUrl().host}</div>
+        <div style={{ display: "flex", fontSize: 28, color: color.muted }}>Filters that matter · 30 days · {siteUrl().host}</div>
       </div>
     ),
     { ...size },

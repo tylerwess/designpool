@@ -1,36 +1,32 @@
 # Designpool design system
 
-The interface is a calm Claude-like board with a small expressive share. Color and type follow **60/30/10**. Light and dark mode use the same class names. Change the tokens, and the pages follow.
+The interface follows the restraint of OpenAI’s product pages: a flat canvas, large centered headlines, thin 1px borders, pill controls, and generous space. Color and type still follow **60/30/10**. Light and dark mode use the same class names.
 
 ## 60 / 30 / 10
 
-Proportion of a page, not a pile of extra colors.
-
 | Share | Color | Type |
 | --- | --- | --- |
-| 60% canvas | `bg`, the warm paper or warm near-black | Source Sans 3 for body, navigation, filters, meta, and buttons |
-| 30% structure | `surface`, `ink`, `muted`, `line` | Newsreader roman for page titles, section headings, and job titles |
-| 10% expressive | `accent` and `accent-soft` | Newsreader italic in the accent color: one headline phrase, the discipline ticker, seniority badges |
+| 60% canvas | `bg`. White in light mode, black in dark mode. | Lato for body, navigation, filters, meta, and buttons |
+| 30% structure | `surface` (the gray band), `ink`, `muted`, `line` | Fjalla One for page titles, section headings, and job titles |
+| 10% expressive | `accent` and `accent-soft`, kept to the same black or white as the ink | Fjalla One at display size: the hero and live stat numbers |
 
-The primary button is ink on canvas. It belongs to the structural 30%. Accent is not a fill for large regions.
+There is no second hue and no ticker. Cards sit on the canvas with a 1px border. `surface` is the slightly lighter or darker band under a single statement, not a stack of value-prop columns.
 
-Both themes keep text contrast at WCAG AA for the accent, ink, and muted pairs.
+Text contrast stays at WCAG AA for ink and muted on both canvases.
 
-## What the references contributed
+## References
 
-**Claude enterprise** (`claude.com/solutions/enterprise`), without photography: warm paper, an eyebrow, a large serif headline, one primary action, ruled sections, and generous whitespace. No gradients and no heavy shadows.
+OpenAI’s product and security pages (`openai.com`): black canvas, centered display type, thin-bordered cards, a rounded pill of choices, a row of large numbers with small captions, and a gray section band. Light mode uses the same structure on white.
 
-**Open Doors** (`opendoorscareers.com/jobs`): a jobs list that reads as rows, a “View →” action, filters beside the list, a live count of open roles, and a footer split into Navigate and Sources.
-
-**Designjoy** (`designjoy.co`): an oversized headline, three short value props, and a scrolling strip of disciplines in place of their service marquee. The ink pill is the main action.
+Job rows, the filter sidebar, and the “View ↗” action stay, without a scrolling marquee.
 
 ## Themes
 
-`app/globals.css` defines a light set and a dark set. Semantic tokens (`--bg`, `--ink`, and the rest) point at one set. `.dark` on `<html>` swaps the pointers.
+`app/globals.css` defines a light set and a dark set. Semantic tokens point at one set. `.dark` on `<html>` swaps the pointers.
 
-The first visit follows `prefers-color-scheme`. The header control writes `designpool-theme` (`light` or `dark`) to `localStorage`. `themeInitScript` in `lib/design-tokens.ts` runs before paint, so the page does not flash the wrong theme.
+The first visit follows `prefers-color-scheme`. The header control writes `designpool-theme` (`light` or `dark`) to `localStorage`. `themeInitScript` runs before paint.
 
-`/design` shows both palettes at once with `.force-light` and `.force-dark`, which set the same pointers on a subtree.
+`/design` shows both palettes at once with `.force-light` and `.force-dark`.
 
 ## Where things live
 
@@ -42,7 +38,7 @@ The first visit follows `prefers-color-scheme`. The header control writes `desig
 | Living gallery | `/design` |
 | This note | `DESIGN_SYSTEM.md` |
 
-Product pages compose those primitives. They do not introduce new colors.
+Headings load Fjalla One and body text loads Lato through `next/font/google` in `app/layout.tsx`.
 
 ## How this stays durable
 
@@ -52,5 +48,6 @@ Product pages compose those primitives. They do not introduce new colors.
 - A hex value in `lib/design-tokens.ts` disagrees with `app/globals.css`.
 - A file under `app/` or `components/` (other than `globals.css`) uses a raw hex, a default Tailwind palette color, a gradient, or a heavy shadow.
 - A listed primitive file is missing, or `DESIGN_SYSTEM.md` and `/design` drop the theme previews.
+- The type roles are no longer Fjalla One and Lato, or the ticker returns.
 
-To change a color, edit the hex in both `lib/design-tokens.ts` and `app/globals.css`, then run `npm test`. To add a component, put it in `components/ui/` and use the semantic tokens.
+To change a color, edit the hex in both `lib/design-tokens.ts` and `app/globals.css`, then run `npm test`.

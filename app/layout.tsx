@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
-import { Newsreader, Source_Sans_3 } from "next/font/google";
+import { Fjalla_One, Lato } from "next/font/google";
 import Script from "next/script";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -8,14 +8,16 @@ import { themeInitScript } from "@/lib/design-tokens";
 import { SITE_DESCRIPTION, SITE_NAME, siteUrl } from "@/lib/site";
 import "./globals.css";
 
-const sans = Source_Sans_3({
+const sans = Lato({
   subsets: ["latin"],
+  weight: ["400", "700"],
   variable: "--font-sans",
 });
 
-const serif = Newsreader({
+const display = Fjalla_One({
   subsets: ["latin"],
-  variable: "--font-serif",
+  weight: "400",
+  variable: "--font-display",
 });
 
 export const metadata: Metadata = {
@@ -46,7 +48,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${serif.variable} h-full antialiased`} suppressHydrationWarning>
+    <html lang="en" className={`${sans.variable} ${display.variable} h-full antialiased`} suppressHydrationWarning>
       <body className="flex min-h-full flex-col bg-bg text-ink">
         <Script id="designpool-theme" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <Header />

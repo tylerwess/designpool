@@ -93,11 +93,13 @@ The Vercel project is `designpool`. Production is [https://designpool-taupe.verc
    DATABASE_URL="postgres://…" npm run ingest
    ```
 
-5. After both `DATABASE_URL` and `CRON_SECRET` are set, deploy and trigger ingest once:
+5. After both `DATABASE_URL` and `CRON_SECRET` are set, merge so production deploys, then trigger ingest once. There is no separate migration. The first successful cron call creates the `listings` table with `CREATE TABLE IF NOT EXISTS` before it writes rows.
 
    ```bash
    curl -H "Authorization: Bearer $CRON_SECRET" https://designpool-taupe.vercel.app/api/cron
    ```
+
+   That single request ingests every company in `data/companies.ts`. It is not split across calls. The route allows 60 seconds. A local run of this company list finished in well under a minute, so one call is the expected path. If the function hits that limit, run the same curl again. Each company is saved as it finishes, and a repeat is safe.
 
 6. Confirm a later cron run in the Vercel dashboard under Cron Jobs. Each run ingests, then deletes stale and 30-day-old listings. `/sitemap.xml` and `/robots.txt` use the canonical site URL, and the sitemap includes job URLs once the database has listings.
 

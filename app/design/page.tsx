@@ -56,10 +56,8 @@ function ThemePreview({ mode, label }: { mode: "force-light" | "force-dark"; lab
   return (
     <div className={`${mode} rounded-xl border border-line bg-bg p-6 text-ink`}>
       <p className="text-xs uppercase tracking-[0.16em] text-muted">{label}</p>
-      <p className="mt-3 font-serif text-3xl leading-tight">
-        Filters that respect the <span className="italic text-accent">craft.</span>
-      </p>
-      <p className="mt-3 text-sm leading-6 text-muted">Canvas, ink, and one accent. The same class names in both themes.</p>
+      <p className="mt-3 font-display text-3xl leading-tight">The design job board that respects your time.</p>
+      <p className="mt-3 text-sm leading-6 text-muted">Black or white canvas, thin borders, the same class names in both themes.</p>
       <div className="mt-4 flex flex-wrap items-center gap-3">
         <span className="rounded-full bg-ink px-4 py-2 text-sm text-bg">Browse</span>
         <span className="rounded-full bg-accent-soft px-2.5 py-1 text-xs text-accent">Staff</span>
@@ -72,8 +70,8 @@ export default function DesignPage() {
   return (
     <Container className="py-14">
       <Eyebrow>Design system</Eyebrow>
-      <h1 className="mt-3 max-w-3xl font-serif text-4xl leading-tight sm:text-6xl">
-        One palette, two themes, a small expressive share.
+      <h1 className="mt-3 max-w-3xl font-display text-4xl leading-tight sm:text-6xl">
+        Flat surfaces, thin borders, two themes.
       </h1>
       <p className="mt-5 max-w-2xl text-base leading-7 text-muted">
         Pages are built from the primitives on this page. Color and type follow 60/30/10. The header control switches
@@ -81,7 +79,7 @@ export default function DesignPage() {
       </p>
 
       <section className="mt-12">
-        <h2 className="font-serif text-3xl">60 / 30 / 10</h2>
+        <h2 className="font-display text-3xl">60 / 30 / 10</h2>
         <div className="mt-5 flex h-28 overflow-hidden rounded-xl border border-line text-xs">
           <div className="flex items-end bg-bg p-3 text-ink" style={{ width: `${PROPORTIONS.canvas}%` }}>
             Canvas {PROPORTIONS.canvas}
@@ -95,26 +93,26 @@ export default function DesignPage() {
         </div>
         <dl className="mt-6 grid gap-6 md:grid-cols-3">
           <div>
-            <dt className="font-serif text-xl">Canvas · {PROPORTIONS.canvas}%</dt>
+            <dt className="font-display text-xl">Canvas · {PROPORTIONS.canvas}%</dt>
             <dd className="mt-2 text-sm leading-6 text-muted">The page background. Most of what you see.</dd>
           </div>
           <div>
-            <dt className="font-serif text-xl">Structure · {PROPORTIONS.structure}%</dt>
+            <dt className="font-display text-xl">Structure · {PROPORTIONS.structure}%</dt>
             <dd className="mt-2 text-sm leading-6 text-muted">
               Surfaces, ink, muted text, and 1px rules. Headings in roman serif sit in this share too.
             </dd>
           </div>
           <div>
-            <dt className="font-serif text-xl">Expressive · {PROPORTIONS.expressive}%</dt>
+            <dt className="font-display text-xl">Expressive · {PROPORTIONS.expressive}%</dt>
             <dd className="mt-2 text-sm leading-6 text-muted">
-              Accent clay, italic serif, the discipline ticker, and seniority badges. Not large fills.
+              Display-size Fjalla One: the hero and the live stat numbers. No second hue and no ticker.
             </dd>
           </div>
         </dl>
       </section>
 
       <section className="mt-16">
-        <h2 className="font-serif text-3xl">Color</h2>
+        <h2 className="font-display text-3xl">Color</h2>
         <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">
           Roles: canvas {COLOR_ROLES.canvas.join(", ")}; structure {COLOR_ROLES.structure.join(", ")}; expressive{" "}
           {COLOR_ROLES.expressive.join(", ")}.
@@ -122,7 +120,7 @@ export default function DesignPage() {
         <div className="mt-6 grid gap-8 md:grid-cols-2">
           {(["light", "dark"] as const).map((theme) => (
             <div key={theme}>
-              <h3 className="font-serif text-xl capitalize">{theme}</h3>
+              <h3 className="font-display text-xl capitalize">{theme}</h3>
               <div className="mt-3 grid grid-cols-2 gap-3">
                 {COLOR_TOKENS.map((token) => (
                   <Swatch key={token} theme={theme} token={token} />
@@ -138,7 +136,7 @@ export default function DesignPage() {
       </section>
 
       <section className="mt-16">
-        <h2 className="font-serif text-3xl">Type</h2>
+        <h2 className="font-display text-3xl">Type</h2>
         <div className="mt-6 grid gap-8">
           <div>
             <p className="text-xs uppercase tracking-[0.16em] text-muted">
@@ -152,26 +150,27 @@ export default function DesignPage() {
             <p className="text-xs uppercase tracking-[0.16em] text-muted">
               {TYPE_ROLES.structure.share}% · {TYPE_ROLES.structure.family}
             </p>
-            <p className="mt-2 font-serif text-4xl">Open roles, kept for 30 days.</p>
+            <p className="mt-2 font-display text-4xl">The design job board that respects your time.</p>
           </div>
           <div>
             <p className="text-xs uppercase tracking-[0.16em] text-muted">
               {TYPE_ROLES.expressive.share}% · {TYPE_ROLES.expressive.family}
             </p>
-            <p className="mt-2 font-serif text-4xl italic text-accent">craft.</p>
+            <p className="mt-2 font-display text-6xl">Aa</p>
+            <p className="mt-2 text-sm text-muted">Display size. Live counts on the site come from the database.</p>
           </div>
         </div>
       </section>
 
       <section className="mt-16">
-        <h2 className="font-serif text-3xl">Components</h2>
+        <h2 className="font-display text-3xl">Components</h2>
         <div className="mt-6 flex flex-wrap items-center gap-4">
           <Button href="/jobs">Primary</Button>
           <Button href="/jobs" variant="secondary">
             Secondary
           </Button>
           <Button href="/jobs" variant="ghost">
-            View →
+            View ↗
           </Button>
         </div>
         <div className="mt-4 flex flex-wrap gap-2">

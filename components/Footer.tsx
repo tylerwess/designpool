@@ -4,31 +4,29 @@ import { Eyebrow } from "@/components/ui/Eyebrow";
 
 export function Footer() {
   return (
-    <footer className="mt-20 border-t border-line">
+    <footer className="border-t border-line">
       <Container className="grid gap-8 py-10 sm:grid-cols-3">
         <div>
-          <p className="font-serif text-lg">
-            Designpool<span className="text-accent">.</span>
-          </p>
+          <p className="font-display text-lg tracking-wide">Designpool</p>
           <p className="mt-2 max-w-xs text-sm leading-6 text-muted">
-            Design roles, kept for 30 days. Made for people who hire and practice the craft.
+            The design job board that respects your time. Roles stay for 30 days.
           </p>
         </div>
         <div>
           <Eyebrow>Navigate</Eyebrow>
           <ul className="mt-3 space-y-2 text-sm">
             <li>
-              <Link href="/jobs" className="hover:text-accent">
+              <Link href="/jobs" className="hover:underline">
                 Jobs
               </Link>
             </li>
             <li>
-              <Link href="/about" className="hover:text-accent">
+              <Link href="/about" className="hover:underline">
                 About
               </Link>
             </li>
             <li>
-              <Link href="/design" className="hover:text-accent">
+              <Link href="/design" className="hover:underline">
                 Design system
               </Link>
             </li>

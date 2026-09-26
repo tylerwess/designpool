@@ -26,7 +26,7 @@ export default async function JobsPage({
 
   return (
     <Container className="py-10">
-      <h1 className="font-serif text-4xl sm:text-5xl">Open roles</h1>
+      <h1 className="font-display text-4xl sm:text-5xl">Open roles</h1>
       <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">
         Design roles from public company boards. Each one is at most 30 days old.
       </p>

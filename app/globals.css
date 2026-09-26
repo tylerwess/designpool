@@ -6,21 +6,21 @@
   names, so a theme switch does not require a second class on each element.
 */
 :root {
-  --light-bg: #f4f1ea;
-  --light-surface: #fbfaf6;
-  --light-ink: #211e1a;
-  --light-muted: #6e685f;
-  --light-line: #e4ddd2;
-  --light-accent: #9d3f1f;
-  --light-accent-soft: #f6e6dc;
+  --light-bg: #ffffff;
+  --light-surface: #f3f3f3;
+  --light-ink: #111111;
+  --light-muted: #5c5c5c;
+  --light-line: #e4e4e4;
+  --light-accent: #111111;
+  --light-accent-soft: #ececec;
 
-  --dark-bg: #161412;
-  --dark-surface: #221f1c;
-  --dark-ink: #f6f1e8;
-  --dark-muted: #b3aaa0;
-  --dark-line: #3a342e;
-  --dark-accent: #f0b090;
-  --dark-accent-soft: #3c2a22;
+  --dark-bg: #000000;
+  --dark-surface: #2c2c2c;
+  --dark-ink: #ffffff;
+  --dark-muted: #a3a3a3;
+  --dark-line: #333333;
+  --dark-accent: #ffffff;
+  --dark-accent-soft: #1c1c1c;
 
   --bg: var(--light-bg);
   --surface: var(--light-surface);
@@ -75,21 +75,22 @@
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
   --font-sans: var(--font-sans);
-  --font-serif: var(--font-serif);
+  --font-display: var(--font-display);
 }
 
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: var(--font-sans), "Source Sans 3", "Segoe UI", sans-serif;
+  font-family: var(--font-sans), Lato, "Segoe UI", sans-serif;
 }
 
 h1,
 h2,
 h3,
-.font-serif {
-  font-family: var(--font-serif), Newsreader, Georgia, serif;
-  font-weight: 450;
+.font-display {
+  font-family: var(--font-display), "Fjalla One", "Arial Narrow", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.01em;
 }
 
 :focus-visible {
@@ -112,25 +113,4 @@ html.dark .theme-toggle .when-dark {
 
 html.dark .theme-toggle .when-light {
   display: none;
-}
-
-.ticker-track {
-  display: flex;
-  width: max-content;
-  animation: ticker 48s linear infinite;
-}
-
-@keyframes ticker {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ticker-track {
-    animation: none;
-  }
 }

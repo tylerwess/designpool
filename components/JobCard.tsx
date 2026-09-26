@@ -34,8 +34,8 @@ export function JobCard({ listing, titleHref }: { listing: Listing; titleHref?: 
               </li>
             ) : null}
           </ul>
-          <h2 className="mt-3 font-serif text-2xl leading-snug">
-            <Link href={href} className="hover:text-accent">
+          <h2 className="mt-3 font-display text-2xl leading-snug">
+            <Link href={href} className="hover:underline">
               {listing.title}
             </Link>
           </h2>
@@ -53,7 +53,7 @@ export function JobCard({ listing, titleHref }: { listing: Listing; titleHref?: 
         </div>
         <div className="flex shrink-0 items-center gap-4">
           <Button href={href} variant="ghost">
-            View →
+            View ↗
           </Button>
           <Button href={listing.url} external variant="secondary">
             Apply

@@ -81,7 +81,7 @@ export function Filters({ filters }: { filters: JobFilters }) {
         className={`${open ? "fixed inset-y-0 right-0 z-30 block w-[min(100%,22rem)] overflow-auto border-l border-line bg-bg p-5" : "hidden"} lg:sticky lg:top-4 lg:block lg:max-h-[calc(100vh-2rem)] lg:w-auto lg:overflow-auto lg:border-0 lg:bg-transparent lg:p-0`}
       >
         <div className="mb-4 flex items-center justify-between lg:hidden">
-          <h2 className="font-serif text-2xl">Filters</h2>
+          <h2 className="font-display text-2xl">Filters</h2>
           <Button type="button" variant="ghost" onClick={() => setOpen(false)}>
             Close
           </Button>

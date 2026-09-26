@@ -26,43 +26,43 @@ export const COLOR_ROLES: Record<keyof typeof PROPORTIONS, readonly ColorToken[]
 
 export const PALETTES: Record<"light" | "dark", Record<ColorToken, string>> = {
   light: {
-    bg: "#f4f1ea",
-    surface: "#fbfaf6",
-    ink: "#211e1a",
-    muted: "#6e685f",
-    line: "#e4ddd2",
-    accent: "#9d3f1f",
-    "accent-soft": "#f6e6dc",
+    bg: "#ffffff",
+    surface: "#f3f3f3",
+    ink: "#111111",
+    muted: "#5c5c5c",
+    line: "#e4e4e4",
+    accent: "#111111",
+    "accent-soft": "#ececec",
   },
   dark: {
-    bg: "#161412",
-    surface: "#221f1c",
-    ink: "#f6f1e8",
-    muted: "#b3aaa0",
-    line: "#3a342e",
-    accent: "#f0b090",
-    "accent-soft": "#3c2a22",
+    bg: "#000000",
+    surface: "#2c2c2c",
+    ink: "#ffffff",
+    muted: "#a3a3a3",
+    line: "#333333",
+    accent: "#ffffff",
+    "accent-soft": "#1c1c1c",
   },
 };
 
 export const TYPE_ROLES = {
   body: {
     share: 60,
-    family: "Source Sans 3",
+    family: "Lato",
     utility: "font-sans",
     use: "Body copy, navigation, filters, meta, and buttons.",
   },
   structure: {
     share: 30,
-    family: "Newsreader",
-    utility: "font-serif",
+    family: "Fjalla One",
+    utility: "font-display",
     use: "Page titles, section headings, and job titles.",
   },
   expressive: {
     share: 10,
-    family: "Newsreader italic, accent color",
-    utility: "font-serif italic text-accent",
-    use: "One phrase in a headline, the discipline ticker, and seniority badges.",
+    family: "Fjalla One at display size",
+    utility: "font-display",
+    use: "The hero headline and the live stat numbers. No second hue and no ticker.",
   },
 } as const;
 

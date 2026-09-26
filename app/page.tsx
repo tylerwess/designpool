@@ -1,112 +1,118 @@
+import Link from "next/link";
 import { JobCard } from "@/components/JobCard";
-import { Ticker } from "@/components/Ticker";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Surface } from "@/components/ui/Surface";
 import { loadBoard } from "@/lib/board";
 import { listingTimestamp } from "@/lib/filters";
 import { pageMetadata } from "@/lib/site";
-import { DISCIPLINES } from "@/lib/taxonomy";
+import { SENIORITY_LABELS, SENIORITY_LEVELS, type Seniority } from "@/lib/taxonomy";
 
 export const metadata = pageMetadata({ path: "/" });
 
 export const dynamic = "force-dynamic";
 
-const values = [
-  {
-    title: "We keep jobs fresh",
-    body: "Every listing is checked against the company’s public board. When a role leaves the feed, it leaves here too.",
-  },
-  {
-    title: "Only 30 days allowed on here",
-    body: "Age starts at the source posted date, or the day we first see the role. On day 31 it is deleted.",
-  },
-  {
-    title: "Better filters to find roles",
-    body: "Nine seniority levels, a years-of-experience range, and industry. Not another lumped “Mid-Senior” bucket.",
-  },
-];
+function Stat({ value, label }: { value: string; label: string }) {
+  return (
+    <div>
+      <p className="font-display text-4xl tracking-tight sm:text-6xl">{value}</p>
+      <p className="mt-2 text-sm text-muted">{label}</p>
+    </div>
+  );
+}
 
 export default async function HomePage() {
   const board = await loadBoard();
-  const latest =
-    board.status === "ok"
-      ? [...board.jobs].sort((a, b) => listingTimestamp(b) - listingTimestamp(a)).slice(0, 4)
-      : [];
+  const jobs = board.status === "ok" ? board.jobs : [];
+  const companyCount = new Set(jobs.map((job) => job.company)).size;
+  const salaryCount = jobs.filter((job) => job.salaryMin != null || job.salaryMax != null).length;
+  const counts = new Map<Seniority, number>();
+  for (const job of jobs) counts.set(job.seniority, (counts.get(job.seniority) ?? 0) + 1);
+  const segments = SENIORITY_LEVELS.filter((level) => (counts.get(level) ?? 0) > 0);
+  const focus = segments.reduce<Seniority | null>((best, level) => {
+    if (!best) return level;
+    return (counts.get(level) ?? 0) > (counts.get(best) ?? 0) ? level : best;
+  }, null);
+  const preview = focus
+    ? jobs
+        .filter((job) => job.seniority === focus)
+        .sort((a, b) => listingTimestamp(b) - listingTimestamp(a))
+        .slice(0, 3)
+    : [];
 
   return (
     <div>
-      <Container className="py-16 sm:py-24">
-        <Eyebrow>A job board for design</Eyebrow>
-        <h1 className="mt-4 max-w-3xl font-serif text-5xl leading-[1.02] tracking-tight sm:text-7xl">
-          Design roles, with filters that respect the <span className="italic text-accent">craft.</span>
+      <Container className="py-24 text-center sm:py-36">
+        <h1 className="mx-auto max-w-4xl font-display text-5xl leading-[1.02] sm:text-7xl">
+          The design job board that respects your time.
         </h1>
-        <p className="mt-6 max-w-2xl text-lg leading-8 text-muted">
-          Product design, UX, research, brand, and design engineering. Nine real seniority levels, and nothing that has
-          been sitting here longer than 30 days.
+        <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-muted">
+          Filters that actually matter. Nine seniority levels, years of experience, and industry. A role stays for 30
+          days, then it is deleted.
         </p>
-        <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+        <div className="mt-10">
           <Button href="/jobs">Browse open roles</Button>
-          {board.status === "ok" ? (
-            <p className="text-sm text-muted">
-              {board.jobs.length} open {board.jobs.length === 1 ? "role" : "roles"}. None older than 30 days.
-            </p>
-          ) : null}
         </div>
       </Container>
 
-      <Ticker items={DISCIPLINES.map((discipline) => discipline.label)} />
-
-      <Container className="py-16">
-        <section className="grid gap-10 border-t border-line pt-10 md:grid-cols-3">
-          {values.map((value, index) => (
-            <article key={value.title}>
-              <p className="font-serif text-sm italic text-accent">{String(index + 1).padStart(2, "0")}</p>
-              <h2 className="mt-3 font-serif text-2xl">{value.title}</h2>
-              <p className="mt-3 text-sm leading-6 text-muted">{value.body}</p>
-            </article>
-          ))}
-        </section>
-
-        {board.status !== "ok" ? (
-          <Surface className="mt-16 p-5 text-sm leading-6">{board.message}</Surface>
-        ) : latest.length > 0 ? (
-          <section className="mt-16">
-            <div className="mb-5 flex items-baseline justify-between gap-4">
-              <h2 className="font-serif text-3xl">Latest roles</h2>
-              <Button href="/jobs" variant="ghost">
-                See all
-              </Button>
-            </div>
-            <div className="grid gap-4">
-              {latest.map((listing) => (
-                <JobCard key={listing.id} listing={listing} />
-              ))}
-            </div>
-          </section>
-        ) : (
-          <p className="mt-16 max-w-xl text-sm leading-6 text-muted">No roles yet. Listings show up after the first ingest.</p>
-        )}
-
-        <section className="mt-16 grid gap-6 border-t border-line pt-10 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:items-end">
-          <div>
-            <Eyebrow>How a level is chosen</Eyebrow>
-            <h2 className="mt-3 max-w-xl font-serif text-3xl leading-tight sm:text-4xl">Nine levels, not one bucket.</h2>
+      {jobs.length > 0 ? (
+        <Container className="pb-24">
+          <div className="grid grid-cols-3 gap-4 text-center">
+            <Stat value={String(jobs.length)} label={jobs.length === 1 ? "open role" : "open roles"} />
+            <Stat value={String(companyCount)} label={companyCount === 1 ? "company" : "companies"} />
+            <Stat value={String(salaryCount)} label="with salary" />
           </div>
-          <div>
-            <p className="text-sm leading-6 text-muted">
-              Title first, years second. Lead stays an individual contributor unless the role manages people. A title that
-              asks for fewer years than usual keeps its level and wears a Stretch badge.
-            </p>
-            <div className="mt-4">
-              <Button href="/about" variant="secondary">
-                Read the rules
-              </Button>
+
+          <div className="mt-16 flex justify-center">
+            <div className="flex max-w-full flex-wrap justify-center gap-1 rounded-3xl border border-line p-1 sm:rounded-full">
+              {segments.map((level) => {
+                const selected = level === focus;
+                return (
+                  <Link
+                    key={level}
+                    href={`/jobs?seniority=${level}`}
+                    aria-current={selected ? "true" : undefined}
+                    className={`rounded-full px-4 py-2 text-sm ${selected ? "bg-ink text-bg" : "text-muted hover:text-ink"}`}
+                  >
+                    {SENIORITY_LABELS[level]}
+                  </Link>
+                );
+              })}
             </div>
           </div>
-        </section>
-      </Container>
+
+          <div className="mx-auto mt-10 grid max-w-3xl gap-4 text-left">
+            {preview.map((listing) => (
+              <JobCard key={listing.id} listing={listing} />
+            ))}
+          </div>
+          <div className="mt-8 flex justify-center">
+            <Button href={focus ? `/jobs?seniority=${focus}` : "/jobs"} variant="ghost">
+              See these roles ↗
+            </Button>
+          </div>
+        </Container>
+      ) : (
+        <Container className="pb-24">
+          <Surface className="mx-auto max-w-xl p-6 text-center text-sm leading-6">
+            {board.status === "ok" ? "No roles yet. Listings show up after the first ingest." : board.message}
+          </Surface>
+        </Container>
+      )}
+
+      <section className="bg-surface">
+        <Container className="py-20 text-center sm:py-28">
+          <h2 className="mx-auto max-w-3xl font-display text-4xl leading-tight sm:text-5xl">Nine levels, not one bucket.</h2>
+          <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-muted">
+            Title first, years second. Lead stays an individual contributor unless the role manages people.
+          </p>
+          <div className="mt-8 flex justify-center">
+            <Button href="/about" variant="ghost">
+              Read how seniority is decided ↗
+            </Button>
+          </div>
+        </Container>
+      </section>
     </div>
   );
 }

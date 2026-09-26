@@ -47,7 +47,7 @@ export default async function JobPage({ params }: { params: Promise<JobParams> }
         <Button href="/jobs" variant="ghost">
           All roles
         </Button>
-        <h1 className="mt-4 font-serif text-4xl leading-tight sm:text-5xl">{listing.title}</h1>
+        <h1 className="mt-4 font-display text-4xl leading-tight sm:text-5xl">{listing.title}</h1>
         <p className="mt-3 text-muted">
           {listing.company}
           {listing.location ? ` · ${listing.location}` : ""} · {workLabel(listing)}
