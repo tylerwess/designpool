@@ -36,7 +36,7 @@ CRON_SECRET=dev-secret npm run dev
 curl -H "Authorization: Bearer dev-secret" http://localhost:3000/api/cron
 ```
 
-The route ingests the boards named in `INGEST_SOURCES` (Greenhouse only when that variable is unset). For each company whose feed was fetched successfully, it deletes roles that disappeared from that feed. It does not treat listings from a disabled source as stale. It then deletes anything older than 30 days. With `CRON_SECRET` unset, or with a missing or wrong bearer token, the route returns 401 and does not ingest.
+The route ingests the boards named in `INGEST_SOURCES` (Greenhouse, Ashby, and Lever when that variable is unset). For each company whose feed was fetched successfully, it deletes roles that disappeared from that feed. It does not treat listings from a disabled source as stale. It then deletes anything older than 30 days. With `CRON_SECRET` unset, or with a missing or wrong bearer token, the route returns 401 and does not ingest.
 
 ## Adding a company
 
@@ -74,7 +74,7 @@ Copy `.env.example` to `.env.local`.
 | --- | --- | --- |
 | `DATABASE_URL` | For listings | Postgres connection string, for example Neon from the Vercel Marketplace. When it is unset outside Vercel, the app uses local SQLite. When it is unset on Vercel, the build still succeeds and the site shows an empty state. |
 | `CRON_SECRET` | For cron | Bearer token for `/api/cron`. While it is unset, every request to that route returns 401. Pages and the build do not read it. |
-| `INGEST_SOURCES` | No | Comma-separated boards to fetch: `greenhouse`, `ashby`, `lever`. Unset or blank means `greenhouse` only. Ashby and Lever fetchers stay in the repo. Set `greenhouse,ashby,lever` to ingest every seeded company again. |
+| `INGEST_SOURCES` | No | Comma-separated boards to fetch: `greenhouse`, `ashby`, `lever`. Unset or blank means all three. Set `greenhouse` to narrow a run back down to Greenhouse only. |
 | `NEXT_PUBLIC_SITE_URL` | No | Canonical origin for metadata, `/sitemap.xml`, and Open Graph. Defaults to `https://designpool-taupe.vercel.app`. |
 | `LLM_CLASSIFIER_ENABLED` | No | Defaults to `false`. The title and years rules run on their own. |
 | `LLM_API_URL`, `LLM_API_KEY`, `LLM_MODEL` | Only if the LLM flag is `true` | Optional pass for ambiguous “Lead” titles. Failures fall back to the rules. |
@@ -94,13 +94,13 @@ The Vercel project is `designpool`. Production is [https://designpool-taupe.verc
    DATABASE_URL="postgres://…" npm run ingest
    ```
 
-5. After both `DATABASE_URL` and `CRON_SECRET` are set, merge so production deploys, then trigger ingest once. There is no separate migration. The first successful cron call creates the `listings` table with `CREATE TABLE IF NOT EXISTS` before it writes rows. Leave `INGEST_SOURCES` unset for the Greenhouse-only pass, or set it to `greenhouse`.
+5. After both `DATABASE_URL` and `CRON_SECRET` are set, merge so production deploys, then trigger ingest once. There is no separate migration. The first successful cron call creates the `listings` table with `CREATE TABLE IF NOT EXISTS` before it writes rows. Leave `INGEST_SOURCES` unset to ingest Greenhouse, Ashby, and Lever together, or set it to a subset such as `greenhouse` to narrow a run.
 
    ```bash
    curl -H "Authorization: Bearer $CRON_SECRET" https://designpool-taupe.vercel.app/api/cron
    ```
 
-   That single request ingests every company whose ATS is enabled. With the default, that is the Greenhouse rows in `data/companies.ts`, not the Ashby or Lever rows. It is not split across calls. The route allows 60 seconds. A local run of the full company list, Greenhouse plus the other boards, finished in well under a minute, so the Greenhouse subset fits in one call. If the function hits that limit, run the same curl again. Each company is saved as it finishes, and a repeat is safe. Stale deletion runs only for a company that was fetched successfully in that run. Listings from a source that was not fetched are left in place. Roles older than 30 days are still deleted.
+   That single request ingests every company whose ATS is enabled. With the default, that is the full `data/companies.ts` list across Greenhouse, Ashby, and Lever. It is not split across calls. The route allows 60 seconds. A local run of the full company list finished in well under a minute, so it fits in one call. If the function hits that limit, run the same curl again. Each company is saved as it finishes, and a repeat is safe. Stale deletion runs only for a company that was fetched successfully in that run. Listings from a source that was not fetched are left in place. Roles older than 30 days are still deleted.
 
 6. Confirm a later cron run in the Vercel dashboard under Cron Jobs. Each run ingests, then deletes stale and 30-day-old listings. `/sitemap.xml` and `/robots.txt` use the canonical site URL, and the sitemap includes job URLs once the database has listings.
 
