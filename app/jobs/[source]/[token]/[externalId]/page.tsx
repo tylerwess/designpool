@@ -75,7 +75,7 @@ export default async function JobPage({ params }: { params: Promise<JobParams> }
         </ul>
         <div className="mt-6">
           <Button href={listing.url} external>
-            Apply <span aria-hidden="true">↗</span>
+            Apply
             <span className="sr-only"> (opens the company posting in a new tab)</span>
           </Button>
         </div>
@@ -98,7 +98,7 @@ export default async function JobPage({ params }: { params: Promise<JobParams> }
         )}
         <div className="mt-8">
           <Button href={listing.url} external>
-            Apply <span aria-hidden="true">↗</span>
+            Apply
             <span className="sr-only"> (opens the company posting in a new tab)</span>
           </Button>
         </div>
