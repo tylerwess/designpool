@@ -1,6 +1,6 @@
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
-import { pageMetadata } from "@/lib/site";
+import { FILTERS_MATTER_COPY, pageMetadata } from "@/lib/site";
 import { SENIORITY_LABELS, SENIORITY_LEVELS, TYPICAL_MIN_YEARS } from "@/lib/taxonomy";
 
 export const metadata = pageMetadata({
@@ -32,6 +32,9 @@ export default function AboutPage() {
           original posting. Nothing here is an application form.
         </p>
       </div>
+
+      <h2 className="mt-12 font-display text-3xl">Filters that actually matter</h2>
+      <p className="mt-4 text-sm leading-7">{FILTERS_MATTER_COPY}</p>
 
       <h2 className="mt-12 font-display text-3xl">Only 30 days</h2>
       <div className="mt-4 space-y-4 text-sm leading-7">

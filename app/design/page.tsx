@@ -7,6 +7,7 @@ import { Logo } from "@/components/ui/Logo";
 import { Tag } from "@/components/ui/Tag";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { SourceLogoReel } from "@/components/SourceLogoReel";
+import { FreshSticker } from "@/components/ui/FreshSticker";
 import { TowerLoader } from "@/components/ui/TowerLoader";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
@@ -269,6 +270,12 @@ export default function DesignPage() {
         <div className="mt-8">
           <p className="text-xs uppercase tracking-[0.16em] text-muted">Tower loader</p>
           <TowerLoader />
+        </div>
+        <div className="mt-8">
+          <p className="text-xs uppercase tracking-[0.16em] text-muted">Fresh sticker</p>
+          <div className="relative h-28">
+            <FreshSticker />
+          </div>
         </div>
       </section>
     </Container>

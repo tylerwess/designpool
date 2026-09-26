@@ -198,6 +198,73 @@ h1.font-display,
   margin: 0;
 }
 
+.fresh-sticker {
+  position: absolute;
+  top: -0.85rem;
+  right: 0;
+  z-index: 2;
+  display: block;
+  width: 5.25rem;
+  height: 5.25rem;
+  rotate: 15deg;
+  transform-origin: 50% 50%;
+  filter: drop-shadow(0 5px 8px rgb(0 0 0 / 0.2));
+  transition: rotate 0.22s ease;
+}
+
+@media (min-width: 640px) {
+  .fresh-sticker {
+    top: -1.35rem;
+    right: 0.4rem;
+    width: 7.25rem;
+    height: 7.25rem;
+  }
+}
+
+.fresh-sticker:hover {
+  rotate: 19deg;
+}
+
+.fresh-sticker-back {
+  fill: var(--on-accent);
+}
+
+.fresh-sticker-face {
+  fill: var(--accent);
+}
+
+.fresh-sticker-ring {
+  fill: none;
+  stroke: var(--on-accent);
+  stroke-width: 1.5;
+}
+
+.fresh-sticker-type {
+  fill: var(--on-accent);
+  font-family: var(--font-display), "Fjalla One", "Arial Narrow", sans-serif;
+  font-weight: 400;
+}
+
+.fresh-sticker-arc {
+  font-size: 8px;
+  letter-spacing: 0.12em;
+}
+
+.fresh-sticker-plu {
+  font-size: 18px;
+  letter-spacing: 0.02em;
+}
+
+.fresh-sticker-day {
+  font-size: 7px;
+  letter-spacing: 0.22em;
+}
+
+.fresh-sticker-gloss {
+  fill: var(--on-accent);
+  opacity: 0.22;
+}
+
 @layer base {
   .text-xs,
   .text-sm {
@@ -724,5 +791,11 @@ input.control[type="number"]::-webkit-outer-spin-button {
 
   .source-reel-group img:nth-child(n + 4) {
     display: none;
+  }
+
+  .fresh-sticker,
+  .fresh-sticker:hover {
+    transition: none;
+    rotate: 15deg;
   }
 }
