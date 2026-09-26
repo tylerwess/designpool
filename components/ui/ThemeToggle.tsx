@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, type ChangeEvent } from "react";
 import { THEME_STORAGE_KEY } from "@/lib/design-tokens";
 
 function preferredDark(): boolean {
@@ -8,36 +8,33 @@ function preferredDark(): boolean {
   return stored === "dark" || (stored !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
 }
 
-function applyTheme(next: boolean, button: HTMLButtonElement | null) {
+function applyTheme(next: boolean) {
   document.documentElement.classList.toggle("dark", next);
   document.documentElement.style.colorScheme = next ? "dark" : "light";
-  button?.setAttribute("aria-pressed", next ? "true" : "false");
 }
 
 export function ThemeToggle() {
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useLayoutEffect(() => {
-    applyTheme(preferredDark(), buttonRef.current);
+    const dark = preferredDark();
+    applyTheme(dark);
+    if (inputRef.current) inputRef.current.checked = dark;
   }, []);
 
-  function toggle() {
-    const next = !document.documentElement.classList.contains("dark");
-    applyTheme(next, buttonRef.current);
+  function onChange(event: ChangeEvent<HTMLInputElement>) {
+    const next = event.target.checked;
+    applyTheme(next);
     localStorage.setItem(THEME_STORAGE_KEY, next ? "dark" : "light");
   }
 
   return (
-    <button
-      ref={buttonRef}
-      type="button"
-      className="theme-toggle inline-flex h-9 items-center rounded-full border border-line px-3.5 text-sm text-ink"
-      onClick={toggle}
-      aria-pressed="false"
-      aria-label="Toggle color theme"
-    >
-      <span className="when-light">Light</span>
-      <span className="when-dark">Dark</span>
-    </button>
+    <input
+      ref={inputRef}
+      type="checkbox"
+      className="theme-checkbox"
+      aria-label="Dark mode"
+      onChange={onChange}
+    />
   );
 }

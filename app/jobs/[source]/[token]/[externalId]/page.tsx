@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ExpandableDescription } from "@/components/ExpandableDescription";
+import { FloatingApply } from "@/components/FloatingApply";
 import { ListingByline } from "@/components/ListingByline";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Surface } from "@/components/ui/Surface";
 import { Tag } from "@/components/ui/Tag";
 import { loadListing } from "@/lib/board";
-import { splitDescription } from "@/lib/description";
+import { toDescriptionHtml } from "@/lib/description";
 import { listingTags } from "@/lib/listing-tags";
 import { pageMetadata } from "@/lib/site";
 
@@ -43,10 +44,9 @@ export default async function JobPage({ params }: { params: Promise<JobParams> }
   if (!result.job) notFound();
   const listing = result.job;
   const tags = listingTags(listing);
-  const description = splitDescription(listing.description);
 
   return (
-    <Container size="narrow" className="py-12">
+    <Container size="narrow" className="job-detail pt-12">
       <article>
         <Button href="/jobs" variant="ghost">
           All roles
@@ -64,26 +64,14 @@ export default async function JobPage({ params }: { params: Promise<JobParams> }
             ))}
           </ul>
         ) : null}
-        <div className="mt-6">
-          <Button href={listing.url} external>
-            Apply
-            <span className="sr-only"> (opens the company posting in a new tab)</span>
-          </Button>
-        </div>
 
         <h2 className="mt-10 font-display text-2xl">Description</h2>
         <ExpandableDescription
-          preview={description.preview}
-          rest={description.rest}
+          html={toDescriptionHtml(listing.description)}
           empty="The company didn’t include a description in the public feed."
         />
-        <div className="mt-8">
-          <Button href={listing.url} external>
-            Apply
-            <span className="sr-only"> (opens the company posting in a new tab)</span>
-          </Button>
-        </div>
       </article>
+      <FloatingApply href={listing.url} />
     </Container>
   );
 }

@@ -6,7 +6,7 @@ export const PRODUCTION_SITE_URL = "https://designpool-taupe.vercel.app";
 export const SITE_NAME = "Designpool";
 
 export const SITE_DESCRIPTION =
-  "The design job board that respects your time. Filters that actually matter, and nothing older than 30 days.";
+  "The free design job board that respects your time. Filters that actually matter, and nothing older than 30 days.";
 
 export function siteUrl(): URL {
   const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim();
@@ -20,6 +20,13 @@ export function siteUrl(): URL {
   } catch {
     return new URL(PRODUCTION_SITE_URL);
   }
+}
+
+/** Local `npm run dev` only. Production, `next start`, and any Vercel env 404. */
+export function shouldHideDesignGallery(
+  env: { NODE_ENV?: string; VERCEL_ENV?: string } = process.env,
+): boolean {
+  return env.NODE_ENV === "production" || Boolean(env.VERCEL_ENV);
 }
 
 export function absoluteUrl(path: string): string {

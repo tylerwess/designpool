@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import test from "node:test";
-import { PRODUCTION_SITE_URL, absoluteUrl, siteUrl } from "../lib/site";
+import { PRODUCTION_SITE_URL, SITE_DESCRIPTION, absoluteUrl, shouldHideDesignGallery, siteUrl } from "../lib/site";
 
 const ORIGINAL = process.env.NEXT_PUBLIC_SITE_URL;
 
@@ -40,10 +42,36 @@ test("sitemap uses the canonical origin when the database is not configured", as
     `${PRODUCTION_SITE_URL}/`,
     `${PRODUCTION_SITE_URL}/jobs`,
     `${PRODUCTION_SITE_URL}/about`,
-    `${PRODUCTION_SITE_URL}/design`,
   ]);
+  assert.equal(urls.includes(`${PRODUCTION_SITE_URL}/design`), false);
   if (previousDb === undefined) delete process.env.DATABASE_URL;
   else process.env.DATABASE_URL = previousDb;
   if (previousVercel === undefined) delete process.env.VERCEL;
   else process.env.VERCEL = previousVercel;
+});
+
+test("the design gallery is hidden in production and on Vercel", () => {
+  assert.equal(shouldHideDesignGallery({ NODE_ENV: "development" }), false);
+  assert.equal(shouldHideDesignGallery({ NODE_ENV: "test" }), false);
+  assert.equal(shouldHideDesignGallery({ NODE_ENV: "production" }), true);
+  assert.equal(shouldHideDesignGallery({ NODE_ENV: "development", VERCEL_ENV: "preview" }), true);
+  assert.equal(shouldHideDesignGallery({ NODE_ENV: "development", VERCEL_ENV: "production" }), true);
+  assert.equal(shouldHideDesignGallery({ VERCEL_ENV: "development" }), true);
+});
+
+test("the hero and site copy say free in the brand accent", () => {
+  const home = readFileSync(join(process.cwd(), "app/page.tsx"), "utf8");
+  const og = readFileSync(join(process.cwd(), "app/opengraph-image.tsx"), "utf8");
+  assert.match(home, /<span className="text-accent">free<\/span>/);
+  assert.match(home, /The <span className="text-accent">free<\/span> design job board that respects your time\./);
+  assert.match(SITE_DESCRIPTION, /The free design job board that respects your time/);
+  assert.match(og, /color:\s*color\.accent/);
+  assert.match(og, />free</);
+});
+
+test("robots disallows /design", async () => {
+  const { default: robots } = await import("../app/robots");
+  const result = robots();
+  const rules = Array.isArray(result.rules) ? result.rules[0] : result.rules;
+  assert.deepEqual(rules?.disallow, ["/design"]);
 });

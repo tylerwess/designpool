@@ -1,21 +1,31 @@
+import { notFound } from "next/navigation";
 import { JobCard } from "@/components/JobCard";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { CompanyLogo } from "@/components/ui/CompanyLogo";
+import { Logo } from "@/components/ui/Logo";
 import { Tag } from "@/components/ui/Tag";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { SourceLogoReel } from "@/components/SourceLogoReel";
+import { TowerLoader } from "@/components/ui/TowerLoader";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { fieldClassName, FieldLabel } from "@/components/ui/Field";
 import { Surface } from "@/components/ui/Surface";
-import { COLOR_ROLES, COLOR_TOKENS, PROPORTIONS, TYPE_BODY, TYPE_ROLES, type ColorToken } from "@/lib/design-tokens";
-import { pageMetadata } from "@/lib/site";
+import { COLOR_ROLES, COLOR_TOKENS, PROPORTIONS, TOGGLE_SIZE, TYPE_BODY, TYPE_ROLES, type ColorToken } from "@/lib/design-tokens";
+import { pageMetadata, shouldHideDesignGallery } from "@/lib/site";
 import type { Listing } from "@/lib/types";
 
-export const metadata = pageMetadata({
-  path: "/design",
-  title: "Design system",
-  description: "Tokens, type, and components for Designpool. Light and dark share one set of names.",
-});
+export const dynamic = "force-dynamic";
+
+export const metadata = {
+  ...pageMetadata({
+    path: "/design",
+    title: "Design system",
+    description: "Tokens, type, and components for Designpool. Light and dark share one set of names.",
+  }),
+  robots: { index: false, follow: false },
+};
 
 const sample: Listing = {
   id: "sample",
@@ -58,7 +68,9 @@ function ThemePreview({ mode, label }: { mode: "force-light" | "force-dark"; lab
   return (
     <div className={`${mode} rounded-xl border border-line bg-bg p-6 text-ink`}>
       <p className="text-xs uppercase tracking-[0.16em] text-muted">{label}</p>
-      <p className="mt-3 font-display text-3xl leading-tight">The design job board that respects your time.</p>
+      <p className="mt-3 font-display text-3xl leading-tight">
+        The <span className="text-accent">free</span> design job board that respects your time.
+      </p>
       <p className="mt-3 text-sm leading-6 text-muted">Black or white canvas, thin borders, the same class names in both themes.</p>
       <div className="mt-4 flex flex-wrap items-center gap-3">
         <span className="rounded-full bg-accent px-4 py-2 text-sm text-on-accent">Browse</span>
@@ -69,6 +81,8 @@ function ThemePreview({ mode, label }: { mode: "force-light" | "force-dark"; lab
 }
 
 export default function DesignPage() {
+  if (shouldHideDesignGallery()) notFound();
+
   return (
     <Container className="py-14">
       <Eyebrow>Design system</Eyebrow>
@@ -153,7 +167,9 @@ export default function DesignPage() {
             <p className="text-xs uppercase tracking-[0.16em] text-muted">
               {TYPE_ROLES.structure.share}% · {TYPE_ROLES.structure.family}
             </p>
-            <p className="mt-2 font-display text-4xl">The design job board that respects your time.</p>
+            <p className="mt-2 font-display text-4xl">
+              The <span className="text-accent">free</span> design job board that respects your time.
+            </p>
           </div>
           <div>
             <p className="text-xs uppercase tracking-[0.16em] text-muted">
@@ -167,6 +183,18 @@ export default function DesignPage() {
 
       <section className="mt-16">
         <h2 className="font-display text-3xl">Components</h2>
+        <div className="mt-6 flex flex-wrap items-center gap-6">
+          <Logo className="text-3xl" />
+          <Logo className="text-xl" />
+        </div>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <div className="force-light rounded-xl border border-line bg-bg p-4">
+            <Logo className="text-2xl" />
+          </div>
+          <div className="force-dark rounded-xl border border-line bg-bg p-4">
+            <Logo className="text-2xl" />
+          </div>
+        </div>
         <div className="mt-6 flex flex-wrap items-center gap-4">
           <Button href="/jobs">Primary</Button>
           <Button href="/jobs" variant="secondary">
@@ -175,6 +203,19 @@ export default function DesignPage() {
           <Button href="/jobs" variant="ghost">
             Read more
           </Button>
+          <ThemeToggle />
+          <span className="text-sm text-muted">Theme checkbox · {TOGGLE_SIZE}</span>
+        </div>
+        <div className="relative mt-6 h-40 overflow-hidden rounded-xl border border-line bg-bg">
+          <p className="max-w-sm p-4 text-sm leading-6 text-muted">
+            Role pages keep one Apply now control in view: a full-width safe-area bar on small screens, bottom-right from
+            640px up.
+          </p>
+          <div className="floating-apply floating-apply-preview">
+            <Button href="/jobs" external className="floating-apply-button">
+              Apply now
+            </Button>
+          </div>
         </div>
         <div className="mt-4 flex flex-wrap gap-2">
           <Badge tone="accent">Senior</Badge>
@@ -221,6 +262,14 @@ export default function DesignPage() {
           <JobCard listing={sample} titleHref="/jobs" />
         </div>
         <Surface className="mt-4 p-5 text-sm leading-6">Empty and message states use this surface.</Surface>
+        <div className="mt-8">
+          <p className="text-xs uppercase tracking-[0.16em] text-muted">Source logo reel</p>
+          <SourceLogoReel />
+        </div>
+        <div className="mt-8">
+          <p className="text-xs uppercase tracking-[0.16em] text-muted">Tower loader</p>
+          <TowerLoader />
+        </div>
       </section>
     </Container>
   );

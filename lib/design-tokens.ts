@@ -26,6 +26,9 @@ export const COLOR_TOKENS = [
   "on-accent",
   "accent-focus",
   "accent-soft",
+  "tower-left",
+  "tower-right",
+  "tower-top",
 ] as const;
 
 export type ColorToken = (typeof COLOR_TOKENS)[number];
@@ -33,7 +36,17 @@ export type ColorToken = (typeof COLOR_TOKENS)[number];
 export const COLOR_ROLES: Record<keyof typeof PROPORTIONS, readonly ColorToken[]> = {
   canvas: ["bg"],
   structure: ["surface", "ink", "muted", "line"],
-  expressive: ["accent", "accent-hover", "accent-active", "on-accent", "accent-focus", "accent-soft"],
+  expressive: [
+    "accent",
+    "accent-hover",
+    "accent-active",
+    "on-accent",
+    "accent-focus",
+    "accent-soft",
+    "tower-left",
+    "tower-right",
+    "tower-top",
+  ],
 };
 
 export const PALETTES: Record<"light" | "dark", Record<ColorToken, string>> = {
@@ -49,6 +62,9 @@ export const PALETTES: Record<"light" | "dark", Record<ColorToken, string>> = {
     "on-accent": "#ffffff",
     "accent-focus": "#5928ed",
     "accent-soft": "#efe8ff",
+    "tower-left": "#4a1fcc",
+    "tower-right": "#5928ed",
+    "tower-top": "#8a66f5",
   },
   dark: {
     bg: "#000000",
@@ -62,14 +78,25 @@ export const PALETTES: Record<"light" | "dark", Record<ColorToken, string>> = {
     "on-accent": "#ffffff",
     "accent-focus": "#7a54ff",
     "accent-soft": "#1c1633",
+    "tower-left": "#4e2ad8",
+    "tower-right": "#7a54ff",
+    "tower-top": "#b089ff",
   },
 };
+
+export const TRACKING = {
+  body: "-0.02em",
+  meta: "-0.01em",
+  display: "-0.02em",
+  hero: "-0.035em",
+} as const;
 
 export const TYPE_BODY = {
   family: "Work Sans",
   weight: 500,
   size: "1.125rem",
-  tracking: "-0.01em",
+  tracking: TRACKING.body,
+  metaTracking: TRACKING.meta,
   lineHeight: 1.6,
   scale: {
     xs: "0.875rem",
@@ -78,6 +105,13 @@ export const TYPE_BODY = {
     lg: "1.25rem",
     xl: "1.375rem",
   },
+} as const;
+
+export const TYPE_DISPLAY = {
+  family: "Fjalla One",
+  weight: 400,
+  tracking: TRACKING.display,
+  heroTracking: TRACKING.hero,
 } as const;
 
 export const TYPE_ROLES = {
@@ -111,7 +145,25 @@ export const UI_PRIMITIVES = [
   "ThemeToggle",
   "Container",
   "CompanyLogo",
+  "TowerLoader",
+  "Logo",
 ] as const;
+
+/** Theme checkbox halves. The supplied `.theme-checkbox` CSS keeps these hex values literally. */
+export const TOGGLE_COLORS = {
+  light: "#efefef",
+  dark: "#2a2a2a",
+} as const;
+
+export const TOGGLE_SIZE = "10px";
+
+export const DESCRIPTION_PREVIEW = {
+  lines: 6,
+} as const;
+
+export const ELEVATION = {
+  float: "0 10px 28px rgb(0 0 0 / 0.22)",
+} as const;
 
 export const THEME_STORAGE_KEY = "designpool-theme";
 

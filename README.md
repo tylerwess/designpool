@@ -2,7 +2,7 @@
 
 A minimal public job board for design roles. It pulls openings from company Greenhouse, Ashby, and Lever boards, classifies each one into one of nine seniority levels, and deletes anything older than 30 days.
 
-The interface has light and dark mode and a small design system. Tokens, type, and components are documented in [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) and rendered at [/design](/design). Change colors in `lib/design-tokens.ts` and `app/globals.css` together. `npm test` checks that they still match.
+The interface has light and dark mode and a small design system. Tokens, type, and components are documented in [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md). The living gallery at `/design` is local `npm run dev` only; production and Vercel preview return 404. Change colors in `lib/design-tokens.ts` and `app/globals.css` together. `npm test` checks that they still match.
 
 ## Local setup
 

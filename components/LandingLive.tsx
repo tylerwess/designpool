@@ -2,25 +2,12 @@
 
 import { useMemo, useState } from "react";
 import { JobCard } from "@/components/JobCard";
-import { Odometer } from "@/components/Odometer";
 import { Button } from "@/components/ui/Button";
 import { listingTimestamp } from "@/lib/filters";
 import { SENIORITY_LABELS, SENIORITY_LEVELS, type Seniority } from "@/lib/taxonomy";
 import type { Listing } from "@/lib/types";
 
-function Stat({ value, label }: { value: number; label: string }) {
-  return (
-    <div>
-      <p className="font-display text-4xl leading-none sm:text-6xl">
-        <Odometer value={value} />
-      </p>
-      <p className="mt-1.5 text-sm text-muted">{label}</p>
-    </div>
-  );
-}
-
 export function LandingLive({ jobs }: { jobs: Listing[] }) {
-  const companyCount = useMemo(() => new Set(jobs.map((job) => job.company)).size, [jobs]);
   const { segments, initial } = useMemo(() => {
     const counts = new Map<Seniority, number>();
     for (const job of jobs) counts.set(job.seniority, (counts.get(job.seniority) ?? 0) + 1);
@@ -42,19 +29,12 @@ export function LandingLive({ jobs }: { jobs: Listing[] }) {
 
   return (
     <div>
-      <div className="mx-auto max-w-lg rounded-2xl bg-surface px-6 py-8 sm:px-10 sm:py-10">
-        <div className="grid grid-cols-2 gap-8 text-center sm:gap-16">
-          <Stat value={jobs.length} label={jobs.length === 1 ? "open role" : "open roles"} />
-          <Stat value={companyCount} label={companyCount === 1 ? "company" : "companies"} />
-        </div>
-      </div>
-
       {segments.length > 0 ? (
-        <div className="mt-8 flex justify-center">
+        <div>
           <div
             role="tablist"
             aria-label="Experience level"
-            className="flex max-w-full flex-wrap justify-center gap-1 rounded-3xl border border-line p-1 sm:rounded-full"
+            className="flex max-w-full flex-wrap gap-1 rounded-3xl border border-line p-1 sm:rounded-full"
           >
             {segments.map((level) => {
               const selected = level === focus;
@@ -81,13 +61,13 @@ export function LandingLive({ jobs }: { jobs: Listing[] }) {
         id="landing-preview"
         role="tabpanel"
         aria-labelledby={focus ? `landing-seniority-${focus}` : undefined}
-        className="mx-auto mt-6 grid max-w-3xl gap-3 text-left"
+        className="mt-6 grid max-w-3xl gap-3"
       >
         {preview.map((listing) => (
           <JobCard key={listing.id} listing={listing} />
         ))}
       </div>
-      <div className="mt-6 flex justify-center">
+      <div className="mt-6">
         <Button href={focus ? `/jobs?seniority=${focus}` : "/jobs"}>Explore more in search</Button>
       </div>
     </div>

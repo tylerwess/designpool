@@ -5,10 +5,16 @@ import test from "node:test";
 import {
   COLOR_ROLES,
   COLOR_TOKENS,
+  DESCRIPTION_PREVIEW,
+  ELEVATION,
   PALETTES,
   PROPORTIONS,
   THEME_STORAGE_KEY,
+  TOGGLE_COLORS,
+  TOGGLE_SIZE,
+  TRACKING,
   TYPE_BODY,
+  TYPE_DISPLAY,
   TYPE_ROLES,
   UI_PRIMITIVES,
   themeInitScript,
@@ -97,6 +103,8 @@ test("primary accent text meets WCAG AA in both themes", () => {
       const ratio = contrastRatio(on, PALETTES[theme][token]);
       assert.ok(ratio >= 4.5, `${theme} ${token} on ${on} is ${ratio.toFixed(2)}:1`);
     }
+    const accentOnBg = contrastRatio(PALETTES[theme].accent, PALETTES[theme].bg);
+    assert.ok(accentOnBg >= 3, `${theme} accent on bg is ${accentOnBg.toFixed(2)}:1`);
   }
   assert.equal(PALETTES.light.accent, "#5928ed");
   assert.equal(PALETTES.light["on-accent"], "#ffffff");
@@ -104,7 +112,7 @@ test("primary accent text meets WCAG AA in both themes", () => {
 
 test("the written system and the gallery route exist", () => {
   const doc = readFileSync(join(ROOT, "DESIGN_SYSTEM.md"), "utf8");
-  for (const phrase of ["60/30/10", "/design", "Fjalla One", "Work Sans", "OpenAI", "1.125rem", "-0.01em"]) {
+  for (const phrase of ["60/30/10", "/design", "Fjalla One", "Work Sans", "OpenAI", "1.125rem", "-0.02em", "-0.01em"]) {
     assert.equal(doc.includes(phrase), true, `DESIGN_SYSTEM.md should mention ${phrase}`);
   }
   assert.equal(TYPE_ROLES.body.family, "Work Sans");
@@ -112,13 +120,48 @@ test("the written system and the gallery route exist", () => {
   assert.equal(TYPE_BODY.family, "Work Sans");
   assert.equal(TYPE_BODY.weight, 500);
   assert.equal(TYPE_BODY.size, "1.125rem");
-  assert.equal(TYPE_BODY.tracking, "-0.01em");
+  assert.equal(TYPE_BODY.tracking, TRACKING.body);
+  assert.equal(TYPE_BODY.tracking, "-0.02em");
+  assert.equal(TYPE_BODY.metaTracking, "-0.01em");
+  assert.equal(TYPE_DISPLAY.family, "Fjalla One");
+  assert.equal(TYPE_DISPLAY.heroTracking, "-0.035em");
   const page = readFileSync(join(ROOT, "app/design/page.tsx"), "utf8");
   assert.match(page, /force-light/);
   assert.match(page, /force-dark/);
   assert.match(page, /<Tag /);
+  assert.match(page, /ThemeToggle/);
+  assert.match(page, /Apply now/);
+  assert.match(page, /TowerLoader/);
+  assert.match(page, /SourceLogoReel/);
+  assert.match(page, /<Logo /);
+  assert.match(page, /shouldHideDesignGallery/);
+  assert.match(page, /notFound\(\)/);
+  assert.match(page, /robots:\s*\{\s*index:\s*false/);
   assert.equal(existsSync(join(ROOT, "components/Ticker.tsx")), false);
   assert.equal(readFileSync(join(ROOT, "app/globals.css"), "utf8").includes("ticker-track"), false);
+});
+
+test("the theme checkbox and floating apply tokens stay documented", () => {
+  const css = readFileSync(join(ROOT, "app/globals.css"), "utf8");
+  const doc = readFileSync(join(ROOT, "DESIGN_SYSTEM.md"), "utf8");
+  const toggle = readFileSync(join(ROOT, "components/ui/ThemeToggle.tsx"), "utf8");
+
+  assert.equal(TOGGLE_COLORS.light, "#efefef");
+  assert.equal(TOGGLE_COLORS.dark, "#2a2a2a");
+  assert.equal(TOGGLE_SIZE, "10px");
+  assert.equal(DESCRIPTION_PREVIEW.lines, 6);
+  assert.match(css, new RegExp(`--toggle-size:\\s*${TOGGLE_SIZE}`));
+  assert.match(css, new RegExp(TOGGLE_COLORS.light.replace("#", "#")));
+  assert.match(css, new RegExp(TOGGLE_COLORS.dark));
+  assert.match(css, /\.theme-checkbox/);
+  assert.match(css, /prefers-reduced-motion: reduce[\s\S]*\.theme-checkbox/);
+  assert.match(css, new RegExp(`--shadow-float:\\s*${ELEVATION.float.replace(/[()]/g, "\\$&")}`));
+  assert.match(toggle, /className="theme-checkbox"/);
+  assert.match(toggle, /aria-label="Dark mode"/);
+  assert.equal(toggle.includes("#"), false);
+  for (const phrase of ["theme-checkbox", "Apply now", "toggle-light", "10px"]) {
+    assert.equal(doc.includes(phrase), true, `DESIGN_SYSTEM.md should mention ${phrase}`);
+  }
 });
 
 test("body type tokens drive CSS and next/font", () => {
@@ -126,7 +169,13 @@ test("body type tokens drive CSS and next/font", () => {
   assert.match(css, /font-family:\s*var\(--font-sans\),\s*"Work Sans"/);
   assert.match(css, new RegExp(`font-weight:\\s*${TYPE_BODY.weight}`));
   assert.match(css, new RegExp(`font-size:\\s*${TYPE_BODY.size}`));
-  assert.match(css, new RegExp(`letter-spacing:\\s*${TYPE_BODY.tracking.replace(".", "\\.")}`));
+  assert.match(css, new RegExp(`--tracking-body:\\s*${TYPE_BODY.tracking.replace(".", "\\.")}`));
+  assert.match(css, new RegExp(`--tracking-meta:\\s*${TYPE_BODY.metaTracking.replace(".", "\\.")}`));
+  assert.match(css, new RegExp(`--tracking-display:\\s*${TYPE_DISPLAY.tracking.replace(".", "\\.")}`));
+  assert.match(css, new RegExp(`--tracking-hero:\\s*${TYPE_DISPLAY.heroTracking.replace(".", "\\.")}`));
+  assert.match(css, /letter-spacing:\s*var\(--tracking-body\)/);
+  assert.match(css, /letter-spacing:\s*var\(--tracking-meta\)/);
+  assert.match(css, /letter-spacing:\s*var\(--tracking-hero\)/);
   assert.match(css, new RegExp(`line-height:\\s*${TYPE_BODY.lineHeight}`));
   for (const [step, size] of Object.entries(TYPE_BODY.scale)) {
     assert.match(css, new RegExp(`--text-${step}:\\s*${size.replace(".", "\\.")}`));
