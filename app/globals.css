@@ -175,44 +175,6 @@ body {
   line-height: 1.6;
 }
 
-.grid-wrapper {
-  min-height: 100%;
-  width: 100%;
-  position: relative;
-  background-color: #f8fafc;
-}
-
-.grid-background {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 0;
-  background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px),
-    linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
-  background-size: 20px 30px;
-  -webkit-mask-image: radial-gradient(ellipse 70% 15% at 50% 0%, #000 60%, transparent 100%);
-  mask-image: radial-gradient(ellipse 70% 15% at 50% 0%, #000 60%, transparent 100%);
-}
-
-.dark .grid-wrapper {
-  background-color: #000000;
-}
-
-.dark .grid-background {
-  background-image: linear-gradient(to right, rgba(139, 92, 246, 0.12) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(139, 92, 246, 0.12) 1px, transparent 1px);
-}
-
-@media (max-width: 639px) {
-  .grid-background {
-    background-size: 16px 24px;
-    -webkit-mask-image: radial-gradient(ellipse 100% 11.25% at 50% 0%, #000 55%, transparent 100%);
-    mask-image: radial-gradient(ellipse 100% 11.25% at 50% 0%, #000 55%, transparent 100%);
-  }
-}
-
 h1,
 h2,
 h3,
