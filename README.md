@@ -87,7 +87,7 @@ The Vercel project is `designpool`. Production is [https://designpool-taupe.verc
 1. The framework preset is Next.js. Node 22 is set in `package.json`.
 2. `CRON_SECRET` is set for Production and Preview. Vercel Cron sends it as a bearer token.
 3. Add Neon Postgres from Vercel Storage and connect it so `DATABASE_URL` is set for Production, Preview, and Development. Until that variable exists, the build succeeds and `/` and `/jobs` show an empty state instead of failing.
-4. `vercel.json` already schedules `GET /api/cron` once a day (`15 8 * * *`, 08:15 UTC) and allows that function 60 seconds, which is the usual Hobby-plan ceiling. A full ingest of the seeded companies finished in well under a minute locally. On Pro you can raise `functions["app/api/cron/route.ts"].maxDuration` if a run ever times out. You can also fill the database from your machine:
+4. `vercel.json` schedules `GET /api/cron` once a day (`15 8 * * *`, 08:15 UTC). The route exports `maxDuration` of 60 seconds, the usual Hobby-plan ceiling. A full ingest of the seeded companies finished in well under a minute locally. On Pro you can raise that export if a run ever times out. You can also fill the database from your machine:
 
    ```bash
    DATABASE_URL="postgres://…" npm run ingest
