@@ -56,7 +56,7 @@ export default async function JobPage({ params }: { params: Promise<JobParams> }
         </div>
         <h1 className="mt-4 font-display text-4xl leading-tight sm:text-5xl">{listing.title}</h1>
         {tags.length > 0 ? (
-          <ul className="mt-4 flex flex-wrap gap-2">
+          <ul className="tag-row mt-4">
             {tags.map((tag) => (
               <li key={tag.key}>
                 <Tag href={tag.href}>{tag.label}</Tag>

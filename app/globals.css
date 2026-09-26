@@ -20,6 +20,8 @@
   --light-tower-left: #4a1fcc;
   --light-tower-right: #5928ed;
   --light-tower-top: #8a66f5;
+  --light-tag-bg: #f0f0f0;
+  --light-tag-fg: #3d3d3d;
 
   --dark-bg: #000000;
   --dark-surface: #2c2c2c;
@@ -35,6 +37,8 @@
   --dark-tower-left: #4e2ad8;
   --dark-tower-right: #7a54ff;
   --dark-tower-top: #b089ff;
+  --dark-tag-bg: #232323;
+  --dark-tag-fg: #c8c8c8;
 
   --bg: var(--light-bg);
   --surface: var(--light-surface);
@@ -50,6 +54,8 @@
   --tower-left: var(--light-tower-left);
   --tower-right: var(--light-tower-right);
   --tower-top: var(--light-tower-top);
+  --tag-bg: var(--light-tag-bg);
+  --tag-fg: var(--light-tag-fg);
 
   --toggle-light: #efefef;
   --toggle-dark: #2a2a2a;
@@ -82,6 +88,8 @@
   --tower-left: var(--dark-tower-left);
   --tower-right: var(--dark-tower-right);
   --tower-top: var(--dark-tower-top);
+  --tag-bg: var(--dark-tag-bg);
+  --tag-fg: var(--dark-tag-fg);
   color-scheme: dark;
 }
 
@@ -100,6 +108,8 @@
   --tower-left: var(--light-tower-left);
   --tower-right: var(--light-tower-right);
   --tower-top: var(--light-tower-top);
+  --tag-bg: var(--light-tag-bg);
+  --tag-fg: var(--light-tag-fg);
   color-scheme: light;
 }
 
@@ -118,6 +128,8 @@
   --tower-left: var(--dark-tower-left);
   --tower-right: var(--dark-tower-right);
   --tower-top: var(--dark-tower-top);
+  --tag-bg: var(--dark-tag-bg);
+  --tag-fg: var(--dark-tag-fg);
   color-scheme: dark;
 }
 
@@ -136,6 +148,8 @@
   --color-tower-left: var(--tower-left);
   --color-tower-right: var(--tower-right);
   --color-tower-top: var(--tower-top);
+  --color-tag-bg: var(--tag-bg);
+  --color-tag-fg: var(--tag-fg);
   --font-sans: var(--font-sans);
   --font-display: var(--font-display);
   --text-xs: 0.875rem;
@@ -278,6 +292,29 @@ h1.font-display,
   font-family: var(--font-display), "Fjalla One", "Arial Narrow", sans-serif;
   font-weight: 400;
   color: var(--ink);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  border: 0;
+  border-radius: 4px;
+  background: var(--tag-bg);
+  color: var(--tag-fg);
+  padding: 6px 12px;
+  font-family: var(--font-sans), "Work Sans", "Segoe UI", sans-serif;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  letter-spacing: var(--tracking-meta);
+  line-height: 1.2;
+  white-space: nowrap;
+  box-shadow: none;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .logo-pool {

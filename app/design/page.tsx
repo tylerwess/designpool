@@ -75,7 +75,7 @@ function ThemePreview({ mode, label }: { mode: "force-light" | "force-dark"; lab
       <p className="mt-3 text-sm leading-6 text-muted">Black or white canvas, thin borders, the same class names in both themes.</p>
       <div className="mt-4 flex flex-wrap items-center gap-3">
         <span className="rounded-full bg-accent px-4 py-2 text-sm text-on-accent">Browse</span>
-        <span className="rounded-full bg-surface px-2.5 py-1 text-xs text-ink">Staff</span>
+        <Tag>Staff</Tag>
       </div>
     </div>
   );
@@ -218,13 +218,13 @@ export default function DesignPage() {
             </Button>
           </div>
         </div>
-        <div className="mt-4 flex flex-wrap gap-2">
-          <Badge tone="accent">Senior</Badge>
+        <div className="tag-row mt-4">
+          <Badge>Senior</Badge>
           <Badge>Stretch</Badge>
           <Badge>Remote</Badge>
           <Badge>Salary</Badge>
         </div>
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="tag-row mt-4">
           <Tag href="/jobs?seniority=senior">Senior</Tag>
           <Tag href="/jobs?industry=productivity">Productivity</Tag>
           <Tag href="/jobs?work=remote">Remote</Tag>

@@ -24,7 +24,7 @@ export function JobCard({ listing, titleHref }: { listing: Listing; titleHref?: 
               {listing.title}
             </Link>
           </h2>
-          <ul className="mt-3 flex flex-wrap gap-1.5">
+          <ul className="tag-row mt-3">
             <li>
               <Badge tone="accent">{seniorityLabel(listing.seniority)}</Badge>
             </li>
