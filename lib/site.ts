@@ -24,7 +24,7 @@ export function siteUrl(): URL {
 
 /** Local `npm run dev` only. Production, `next start`, and any Vercel env 404. */
 export function shouldHideDesignGallery(
-  env: Pick<NodeJS.ProcessEnv, "NODE_ENV" | "VERCEL_ENV"> = process.env,
+  env: { NODE_ENV?: string; VERCEL_ENV?: string } = process.env,
 ): boolean {
   return env.NODE_ENV === "production" || Boolean(env.VERCEL_ENV);
 }
