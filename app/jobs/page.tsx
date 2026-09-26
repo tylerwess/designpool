@@ -1,10 +1,11 @@
 import { Filters } from "@/components/Filters";
 import { JobCard } from "@/components/JobCard";
+import { Pagination } from "@/components/Pagination";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Surface } from "@/components/ui/Surface";
 import { loadBoard } from "@/lib/board";
-import { applyFilters, parseSearchParams } from "@/lib/filters";
+import { JOBS_PAGE_SIZE, applyFilters, clampPage, parseSearchParams } from "@/lib/filters";
 import { pageMetadata } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
@@ -20,9 +21,14 @@ export default async function JobsPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const filters = parseSearchParams(await searchParams);
+  const rawParams = await searchParams;
+  const filters = parseSearchParams(rawParams);
   const board = await loadBoard();
   const jobs = board.status === "ok" ? applyFilters(board.jobs, filters) : [];
+  const totalPages = Math.max(1, Math.ceil(jobs.length / JOBS_PAGE_SIZE));
+  const rawPage = Array.isArray(rawParams.page) ? rawParams.page[0] : rawParams.page;
+  const page = clampPage(Number(rawPage ?? 1), totalPages);
+  const pageJobs = jobs.slice((page - 1) * JOBS_PAGE_SIZE, page * JOBS_PAGE_SIZE);
 
   return (
     <Container className="py-10">
@@ -48,11 +54,14 @@ export default async function JobsPage({
                   </Button>
                 </Surface>
               ) : (
-                <div className="grid gap-4">
-                  {jobs.map((listing) => (
-                    <JobCard key={listing.id} listing={listing} />
-                  ))}
-                </div>
+                <>
+                  <div className="grid gap-4">
+                    {pageJobs.map((listing) => (
+                      <JobCard key={listing.id} listing={listing} />
+                    ))}
+                  </div>
+                  <Pagination filters={filters} page={page} totalPages={totalPages} />
+                </>
               )}
             </>
           )}

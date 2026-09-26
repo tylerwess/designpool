@@ -134,7 +134,7 @@ export function workTypeFrom(input: {
 
 export function employmentFrom(raw: string | null | undefined, title: string): "full_time" | "contract" | "internship" {
   const blob = `${raw ?? ""} ${title}`.toLowerCase();
-  if (/intern/.test(blob)) return "internship";
+  if (/\bintern(?:ship)?s?\b/.test(blob)) return "internship";
   if (/contract|temporary|freelance|part[\s-]?time/.test(blob)) return "contract";
   return "full_time";
 }

@@ -158,6 +158,20 @@ export function jobsHref(partial: Partial<JobFilters>): string {
   return query ? `/jobs?${query}` : "/jobs";
 }
 
+export const JOBS_PAGE_SIZE = 12;
+
+export function clampPage(page: number, totalPages: number): number {
+  if (!Number.isFinite(page) || page < 1) return 1;
+  return Math.min(Math.trunc(page), Math.max(totalPages, 1));
+}
+
+export function pageHref(filters: JobFilters, page: number): string {
+  const params = new URLSearchParams(filtersToQuery(filters));
+  if (page > 1) params.set("page", String(page));
+  const query = params.toString();
+  return query ? `/jobs?${query}` : "/jobs";
+}
+
 export function filtersToQuery(filters: JobFilters): string {
   const params = new URLSearchParams();
   if (filters.q) params.set("q", filters.q);
