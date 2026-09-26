@@ -358,30 +358,43 @@ input.control[type="number"]::-webkit-outer-spin-button {
   }
 }
 
-/* 3D tower loader by csozi, www.csozi.hu — scoped, 15% slower, brand-violet faces */
+/* 3D tower loader by csozi, www.csozi.hu — original CSS, scoped, tokens, 4.6s, scale 2.25 */
 .tower-loader-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 15rem;
-  height: 16rem;
-  margin-inline: auto;
-  margin-bottom: 1.75rem;
+  width: 11.25rem;
+  height: 12rem;
+  margin: 0 auto 0.875rem;
 }
 
-.tower-loader {
-  scale: 3;
+.tower-loader-wrap,
+.tower-loader-wrap * {
+  box-sizing: content-box;
+  display: block;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+  min-height: 0;
+  max-width: none;
+  max-height: none;
+  line-height: 0;
+  font-size: 0;
+  gap: 0;
+  background-image: none;
+}
+
+.tower-loader-wrap .loader {
+  scale: 2.25;
   height: 50px;
   width: 40px;
+  margin: 2.75rem auto 0;
 }
 
-.tower-box {
+.tower-loader-wrap .box {
   position: relative;
   opacity: 0;
   left: 10px;
 }
 
-.tower-side-left {
+.tower-loader-wrap .side-left {
   position: absolute;
   background-color: var(--tower-left);
   width: 19px;
@@ -391,7 +404,7 @@ input.control[type="number"]::-webkit-outer-spin-button {
   left: 10px;
 }
 
-.tower-side-right {
+.tower-loader-wrap .side-right {
   position: absolute;
   background-color: var(--tower-right);
   width: 19px;
@@ -401,7 +414,7 @@ input.control[type="number"]::-webkit-outer-spin-button {
   left: -9px;
 }
 
-.tower-side-top {
+.tower-loader-wrap .side-top {
   position: absolute;
   background-color: var(--tower-top);
   width: 20px;
@@ -410,26 +423,26 @@ input.control[type="number"]::-webkit-outer-spin-button {
   transform: skew(-20deg, -20deg);
 }
 
-.tower-box-1 {
-  animation: tower-from-left 4.6s infinite;
+.tower-loader-wrap .box-1 {
+  animation: from-left 4.6s infinite;
 }
 
-.tower-box-2 {
-  animation: tower-from-right 4.6s infinite;
+.tower-loader-wrap .box-2 {
+  animation: from-right 4.6s infinite;
   animation-delay: 1.15s;
 }
 
-.tower-box-3 {
-  animation: tower-from-left 4.6s infinite;
+.tower-loader-wrap .box-3 {
+  animation: from-left 4.6s infinite;
   animation-delay: 2.3s;
 }
 
-.tower-box-4 {
-  animation: tower-from-right 4.6s infinite;
+.tower-loader-wrap .box-4 {
+  animation: from-right 4.6s infinite;
   animation-delay: 3.45s;
 }
 
-@keyframes tower-from-left {
+@keyframes from-left {
   0% {
     z-index: 20;
     opacity: 0;
@@ -460,7 +473,7 @@ input.control[type="number"]::-webkit-outer-spin-button {
   }
 }
 
-@keyframes tower-from-right {
+@keyframes from-right {
   0% {
     z-index: 20;
     opacity: 0;
@@ -525,27 +538,27 @@ input.control[type="number"]::-webkit-outer-spin-button {
     transition: none;
   }
 
-  .tower-box {
+  .tower-loader-wrap .box {
     animation: none;
     opacity: 1;
   }
 
-  .tower-box-1 {
+  .tower-loader-wrap .box-1 {
     translate: 0 0;
     z-index: 4;
   }
 
-  .tower-box-2 {
+  .tower-loader-wrap .box-2 {
     translate: 0 8px;
     z-index: 3;
   }
 
-  .tower-box-3 {
+  .tower-loader-wrap .box-3 {
     translate: 0 16px;
     z-index: 2;
   }
 
-  .tower-box-4 {
+  .tower-loader-wrap .box-4 {
     translate: 0 24px;
     z-index: 1;
   }
