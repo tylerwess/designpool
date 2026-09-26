@@ -12,7 +12,9 @@ import {
   THEME_STORAGE_KEY,
   TOGGLE_COLORS,
   TOGGLE_SIZE,
+  TRACKING,
   TYPE_BODY,
+  TYPE_DISPLAY,
   TYPE_ROLES,
   UI_PRIMITIVES,
   themeInitScript,
@@ -108,7 +110,7 @@ test("primary accent text meets WCAG AA in both themes", () => {
 
 test("the written system and the gallery route exist", () => {
   const doc = readFileSync(join(ROOT, "DESIGN_SYSTEM.md"), "utf8");
-  for (const phrase of ["60/30/10", "/design", "Fjalla One", "Work Sans", "OpenAI", "1.125rem", "-0.01em"]) {
+  for (const phrase of ["60/30/10", "/design", "Fjalla One", "Work Sans", "OpenAI", "1.125rem", "-0.02em", "-0.01em"]) {
     assert.equal(doc.includes(phrase), true, `DESIGN_SYSTEM.md should mention ${phrase}`);
   }
   assert.equal(TYPE_ROLES.body.family, "Work Sans");
@@ -116,7 +118,11 @@ test("the written system and the gallery route exist", () => {
   assert.equal(TYPE_BODY.family, "Work Sans");
   assert.equal(TYPE_BODY.weight, 500);
   assert.equal(TYPE_BODY.size, "1.125rem");
-  assert.equal(TYPE_BODY.tracking, "-0.01em");
+  assert.equal(TYPE_BODY.tracking, TRACKING.body);
+  assert.equal(TYPE_BODY.tracking, "-0.02em");
+  assert.equal(TYPE_BODY.metaTracking, "-0.01em");
+  assert.equal(TYPE_DISPLAY.family, "Fjalla One");
+  assert.equal(TYPE_DISPLAY.heroTracking, "-0.035em");
   const page = readFileSync(join(ROOT, "app/design/page.tsx"), "utf8");
   assert.match(page, /force-light/);
   assert.match(page, /force-dark/);
@@ -124,6 +130,10 @@ test("the written system and the gallery route exist", () => {
   assert.match(page, /ThemeToggle/);
   assert.match(page, /Apply now/);
   assert.match(page, /TowerLoader/);
+  assert.match(page, /<Logo /);
+  assert.match(page, /shouldHideDesignGallery/);
+  assert.match(page, /notFound\(\)/);
+  assert.match(page, /robots:\s*\{\s*index:\s*false/);
   assert.equal(existsSync(join(ROOT, "components/Ticker.tsx")), false);
   assert.equal(readFileSync(join(ROOT, "app/globals.css"), "utf8").includes("ticker-track"), false);
 });
@@ -156,7 +166,13 @@ test("body type tokens drive CSS and next/font", () => {
   assert.match(css, /font-family:\s*var\(--font-sans\),\s*"Work Sans"/);
   assert.match(css, new RegExp(`font-weight:\\s*${TYPE_BODY.weight}`));
   assert.match(css, new RegExp(`font-size:\\s*${TYPE_BODY.size}`));
-  assert.match(css, new RegExp(`letter-spacing:\\s*${TYPE_BODY.tracking.replace(".", "\\.")}`));
+  assert.match(css, new RegExp(`--tracking-body:\\s*${TYPE_BODY.tracking.replace(".", "\\.")}`));
+  assert.match(css, new RegExp(`--tracking-meta:\\s*${TYPE_BODY.metaTracking.replace(".", "\\.")}`));
+  assert.match(css, new RegExp(`--tracking-display:\\s*${TYPE_DISPLAY.tracking.replace(".", "\\.")}`));
+  assert.match(css, new RegExp(`--tracking-hero:\\s*${TYPE_DISPLAY.heroTracking.replace(".", "\\.")}`));
+  assert.match(css, /letter-spacing:\s*var\(--tracking-body\)/);
+  assert.match(css, /letter-spacing:\s*var\(--tracking-meta\)/);
+  assert.match(css, /letter-spacing:\s*var\(--tracking-hero\)/);
   assert.match(css, new RegExp(`line-height:\\s*${TYPE_BODY.lineHeight}`));
   for (const [step, size] of Object.entries(TYPE_BODY.scale)) {
     assert.match(css, new RegExp(`--text-${step}:\\s*${size.replace(".", "\\.")}`));

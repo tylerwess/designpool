@@ -1,4 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="8" fill="#f4f1ea"/>
-  <text x="16" y="22" text-anchor="middle" font-family="Georgia, serif" font-size="16" fill="#9d3f1f">D</text>
+  <style>
+    .mark { fill: #5928ed; }
+    .word {
+      fill: #ffffff;
+      font-family: "Fjalla One", "Arial Narrow", sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      letter-spacing: -0.525px;
+    }
+    @media (prefers-color-scheme: dark) {
+      .mark { fill: #7a54ff; }
+    }
+  </style>
+  <rect class="mark" width="32" height="32" rx="8" />
+  <text class="word" x="16" y="21.2" text-anchor="middle">pool</text>
 </svg>

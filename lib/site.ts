@@ -22,6 +22,13 @@ export function siteUrl(): URL {
   }
 }
 
+/** Local `npm run dev` only. Production, `next start`, and any Vercel env 404. */
+export function shouldHideDesignGallery(
+  env: Pick<NodeJS.ProcessEnv, "NODE_ENV" | "VERCEL_ENV"> = process.env,
+): boolean {
+  return env.NODE_ENV === "production" || Boolean(env.VERCEL_ENV);
+}
+
 export function absoluteUrl(path: string): string {
   const normalized = path.startsWith("/") ? path : `/${path}`;
   return new URL(normalized, siteUrl()).href;

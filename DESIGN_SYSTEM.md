@@ -26,7 +26,7 @@ Job rows use two actions: Read more opens the role, and Apply launches the compa
 
 The first visit follows `prefers-color-scheme`. The header control is a checkbox (`.theme-checkbox`, `aria-label="Dark mode"`). Checked is dark. It writes `designpool-theme` (`light` or `dark`) to `localStorage`. `themeInitScript` runs before paint. `--toggle-size` is `10px` so the control is 62.5×31.25px in the header. The supplied checkbox CSS keeps `#efefef` and `#2a2a2a` (`toggle-light` / `toggle-dark`) as literal hex; those values are also recorded as `TOGGLE_COLORS`. `prefers-reduced-motion` turns the slide off.
 
-`/design` shows both palettes at once with `.force-light` and `.force-dark`.
+`/design` is a local-only gallery (`npm run dev`). It 404s when `NODE_ENV === "production"` or `VERCEL_ENV` is set, is omitted from the sitemap and robots, and sends `noindex`. The page still shows both palettes at once with `.force-light` and `.force-dark`.
 
 ## Where things live
 
@@ -34,11 +34,11 @@ The first visit follows `prefers-color-scheme`. The header control is a checkbox
 | --- | --- |
 | Hex values and theme classes | `app/globals.css` |
 | Names, roles, proportions, theme script | `lib/design-tokens.ts` |
-| Primitives | `components/ui/` (`Button`, `Badge`, `Tag`, `Surface`, `Eyebrow`, `Field`, `ThemeToggle`, `Container`, `CompanyLogo`, `TowerLoader`) |
-| Living gallery | `/design` |
+| Primitives | `components/ui/` (`Button`, `Badge`, `Tag`, `Surface`, `Eyebrow`, `Field`, `ThemeToggle`, `Container`, `CompanyLogo`, `TowerLoader`, `Logo`) |
+| Living gallery | `/design` (local `npm run dev` only) |
 | This note | `DESIGN_SYSTEM.md` |
 
-Headings load Fjalla One and body text loads Work Sans through `next/font/google` in `app/layout.tsx`. Body tokens (`TYPE_BODY` in `lib/design-tokens.ts`) set Work Sans at weight 500, `1.125rem`, letter-spacing `-0.01em`, and line-height 1.6. The body scale (`xs`–`xl`) is one step larger than Tailwind’s defaults so copy reads a bit bigger without changing display sizes. Headings use a slight negative letter-spacing (`-0.02em`, and `-0.035em` on `h1`) so large Fjalla One lines sit tighter without crowding. Body measure stays around `max-w-2xl` on reading blocks.
+Headings load Fjalla One and body text loads Work Sans through `next/font/google` in `app/layout.tsx`. Body tokens (`TYPE_BODY` in `lib/design-tokens.ts`) set Work Sans at weight 500, `1.125rem`, letter-spacing `-0.02em` (`--tracking-body`), and line-height 1.6. Small copy (`xs` / `sm`, tags and meta) stays at `-0.01em` (`--tracking-meta`). The body scale (`xs`–`xl`) is one step larger than Tailwind’s defaults so copy reads a bit bigger without changing display sizes. Headings use a slight negative letter-spacing (`-0.02em`, and `-0.035em` on `h1` and the `Logo` wordmark) so large Fjalla One lines sit tighter without crowding. The wordmark keeps “Design” in ink and sits “pool” on the accent pill with `on-accent` type. Body measure stays around `max-w-2xl` on reading blocks.
 
 ## How this stays durable
 

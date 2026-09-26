@@ -5,7 +5,7 @@ import { absoluteUrl } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
-const PAGES = ["/", "/jobs", "/about", "/design"] as const;
+const PAGES = ["/", "/jobs", "/about"] as const;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();

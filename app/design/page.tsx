@@ -1,7 +1,9 @@
+import { notFound } from "next/navigation";
 import { JobCard } from "@/components/JobCard";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { CompanyLogo } from "@/components/ui/CompanyLogo";
+import { Logo } from "@/components/ui/Logo";
 import { Tag } from "@/components/ui/Tag";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { TowerLoader } from "@/components/ui/TowerLoader";
@@ -10,14 +12,19 @@ import { Eyebrow } from "@/components/ui/Eyebrow";
 import { fieldClassName, FieldLabel } from "@/components/ui/Field";
 import { Surface } from "@/components/ui/Surface";
 import { COLOR_ROLES, COLOR_TOKENS, PROPORTIONS, TOGGLE_SIZE, TYPE_BODY, TYPE_ROLES, type ColorToken } from "@/lib/design-tokens";
-import { pageMetadata } from "@/lib/site";
+import { pageMetadata, shouldHideDesignGallery } from "@/lib/site";
 import type { Listing } from "@/lib/types";
 
-export const metadata = pageMetadata({
-  path: "/design",
-  title: "Design system",
-  description: "Tokens, type, and components for Designpool. Light and dark share one set of names.",
-});
+export const dynamic = "force-dynamic";
+
+export const metadata = {
+  ...pageMetadata({
+    path: "/design",
+    title: "Design system",
+    description: "Tokens, type, and components for Designpool. Light and dark share one set of names.",
+  }),
+  robots: { index: false, follow: false },
+};
 
 const sample: Listing = {
   id: "sample",
@@ -71,6 +78,8 @@ function ThemePreview({ mode, label }: { mode: "force-light" | "force-dark"; lab
 }
 
 export default function DesignPage() {
+  if (shouldHideDesignGallery()) notFound();
+
   return (
     <Container className="py-14">
       <Eyebrow>Design system</Eyebrow>
@@ -169,6 +178,18 @@ export default function DesignPage() {
 
       <section className="mt-16">
         <h2 className="font-display text-3xl">Components</h2>
+        <div className="mt-6 flex flex-wrap items-center gap-6">
+          <Logo className="text-3xl" />
+          <Logo className="text-xl" />
+        </div>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <div className="force-light rounded-xl border border-line bg-bg p-4">
+            <Logo className="text-2xl" />
+          </div>
+          <div className="force-dark rounded-xl border border-line bg-bg p-4">
+            <Logo className="text-2xl" />
+          </div>
+        </div>
         <div className="mt-6 flex flex-wrap items-center gap-4">
           <Button href="/jobs">Primary</Button>
           <Button href="/jobs" variant="secondary">

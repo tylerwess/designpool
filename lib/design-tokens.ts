@@ -84,11 +84,19 @@ export const PALETTES: Record<"light" | "dark", Record<ColorToken, string>> = {
   },
 };
 
+export const TRACKING = {
+  body: "-0.02em",
+  meta: "-0.01em",
+  display: "-0.02em",
+  hero: "-0.035em",
+} as const;
+
 export const TYPE_BODY = {
   family: "Work Sans",
   weight: 500,
   size: "1.125rem",
-  tracking: "-0.01em",
+  tracking: TRACKING.body,
+  metaTracking: TRACKING.meta,
   lineHeight: 1.6,
   scale: {
     xs: "0.875rem",
@@ -97,6 +105,13 @@ export const TYPE_BODY = {
     lg: "1.25rem",
     xl: "1.375rem",
   },
+} as const;
+
+export const TYPE_DISPLAY = {
+  family: "Fjalla One",
+  weight: 400,
+  tracking: TRACKING.display,
+  heroTracking: TRACKING.hero,
 } as const;
 
 export const TYPE_ROLES = {
@@ -131,6 +146,7 @@ export const UI_PRIMITIVES = [
   "Container",
   "CompanyLogo",
   "TowerLoader",
+  "Logo",
 ] as const;
 
 /** Theme checkbox halves. The supplied `.theme-checkbox` CSS keeps these hex values literally. */

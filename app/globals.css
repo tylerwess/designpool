@@ -57,6 +57,10 @@
   --shadow-float: 0 10px 28px rgb(0 0 0 / 0.22);
   --z-float: 40;
   --description-preview-lines: 6;
+  --tracking-body: -0.02em;
+  --tracking-meta: -0.01em;
+  --tracking-display: -0.02em;
+  --tracking-hero: -0.035em;
 
   color-scheme: light;
 }
@@ -150,7 +154,7 @@ body {
   font-family: var(--font-sans), "Work Sans", "Segoe UI", sans-serif;
   font-weight: 500;
   font-size: 1.125rem;
-  letter-spacing: -0.01em;
+  letter-spacing: var(--tracking-body);
   line-height: 1.6;
 }
 
@@ -160,12 +164,39 @@ h3,
 .font-display {
   font-family: var(--font-display), "Fjalla One", "Arial Narrow", sans-serif;
   font-weight: 400;
-  letter-spacing: -0.02em;
+  letter-spacing: var(--tracking-display);
 }
 
 h1,
-h1.font-display {
-  letter-spacing: -0.035em;
+h1.font-display,
+.logo {
+  letter-spacing: var(--tracking-hero);
+}
+
+@layer base {
+  .text-xs,
+  .text-sm {
+    letter-spacing: var(--tracking-meta);
+  }
+}
+
+.logo {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--font-display), "Fjalla One", "Arial Narrow", sans-serif;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.logo-pool {
+  display: inline-block;
+  margin-left: 0.08em;
+  padding: 0.1em 0.32em 0.14em;
+  border-radius: 0.28em;
+  background: var(--accent);
+  color: var(--on-accent);
+  letter-spacing: var(--tracking-hero);
+  line-height: 1;
 }
 
 :focus-visible {
