@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Badge } from "@/components/ui/Badge";
+import { ExpandableDescription } from "@/components/ExpandableDescription";
+import { ListingByline } from "@/components/ListingByline";
 import { Button } from "@/components/ui/Button";
-import { CompanyLogo } from "@/components/ui/CompanyLogo";
 import { Container } from "@/components/ui/Container";
 import { Surface } from "@/components/ui/Surface";
+import { Tag } from "@/components/ui/Tag";
 import { loadListing } from "@/lib/board";
-import { companyWebsite } from "@/lib/company-logo";
-import { formatSalary, listingFacts, seniorityLabel } from "@/lib/format";
+import { splitDescription } from "@/lib/description";
+import { listingTags } from "@/lib/listing-tags";
 import { pageMetadata } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
@@ -41,8 +42,8 @@ export default async function JobPage({ params }: { params: Promise<JobParams> }
   }
   if (!result.job) notFound();
   const listing = result.job;
-  const salary = formatSalary(listing);
-  const facts = listingFacts(listing);
+  const tags = listingTags(listing);
+  const description = splitDescription(listing.description);
 
   return (
     <Container size="narrow" className="py-12">
@@ -50,38 +51,19 @@ export default async function JobPage({ params }: { params: Promise<JobParams> }
         <Button href="/jobs" variant="ghost">
           All roles
         </Button>
+        <div className="mt-6">
+          <ListingByline listing={listing} size="lg" />
+        </div>
         <h1 className="mt-4 font-display text-4xl leading-tight sm:text-5xl">{listing.title}</h1>
-        <p className="mt-3 flex items-center gap-3 text-muted">
-          <CompanyLogo
-            name={listing.company}
-            website={companyWebsite(listing.source, listing.companyToken)}
-            size="lg"
-          />
-          <span>
-            {listing.company}
-            {listing.location ? ` · ${listing.location}` : ""}
-          </span>
-        </p>
-        <ul className="mt-4 flex flex-wrap gap-1.5">
-          <li>
-            <Badge tone="accent">{seniorityLabel(listing.seniority)}</Badge>
-          </li>
-          {listing.stretch ? (
-            <li>
-              <Badge>Stretch</Badge>
-            </li>
-          ) : null}
-          {listing.remoteType === "remote" ? (
-            <li>
-              <Badge>Remote</Badge>
-            </li>
-          ) : null}
-          {salary ? (
-            <li>
-              <Badge>Salary</Badge>
-            </li>
-          ) : null}
-        </ul>
+        {tags.length > 0 ? (
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {tags.map((tag) => (
+              <li key={tag.key}>
+                <Tag href={tag.href}>{tag.label}</Tag>
+              </li>
+            ))}
+          </ul>
+        ) : null}
         <div className="mt-6">
           <Button href={listing.url} external>
             Apply
@@ -89,22 +71,12 @@ export default async function JobPage({ params }: { params: Promise<JobParams> }
           </Button>
         </div>
 
-        <h2 className="mt-10 font-display text-2xl">Characteristics</h2>
-        <dl className="mt-4 divide-y divide-line border-y border-line">
-          {facts.map((fact) => (
-            <div key={fact.label} className="grid grid-cols-[9rem_minmax(0,1fr)] items-baseline gap-4 py-3 text-sm">
-              <dt className="text-muted">{fact.label}</dt>
-              <dd>{fact.value}</dd>
-            </div>
-          ))}
-        </dl>
-
         <h2 className="mt-10 font-display text-2xl">Description</h2>
-        {listing.description ? (
-          <div className="mt-4 whitespace-pre-wrap text-sm leading-7">{listing.description}</div>
-        ) : (
-          <p className="mt-4 text-sm text-muted">The company didn’t include a description in the public feed.</p>
-        )}
+        <ExpandableDescription
+          preview={description.preview}
+          rest={description.rest}
+          empty="The company didn’t include a description in the public feed."
+        />
         <div className="mt-8">
           <Button href={listing.url} external>
             Apply

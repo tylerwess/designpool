@@ -11,16 +11,24 @@
   --light-ink: #111111;
   --light-muted: #5c5c5c;
   --light-line: #e4e4e4;
-  --light-accent: #111111;
-  --light-accent-soft: #ececec;
+  --light-accent: #5928ed;
+  --light-accent-hover: #4b1fd4;
+  --light-accent-active: #3f1ab8;
+  --light-on-accent: #ffffff;
+  --light-accent-focus: #5928ed;
+  --light-accent-soft: #efe8ff;
 
   --dark-bg: #000000;
   --dark-surface: #2c2c2c;
   --dark-ink: #ffffff;
   --dark-muted: #a3a3a3;
   --dark-line: #333333;
-  --dark-accent: #ffffff;
-  --dark-accent-soft: #1c1c1c;
+  --dark-accent: #7a54ff;
+  --dark-accent-hover: #6b42f5;
+  --dark-accent-active: #5c36e8;
+  --dark-on-accent: #ffffff;
+  --dark-accent-focus: #7a54ff;
+  --dark-accent-soft: #1c1633;
 
   --bg: var(--light-bg);
   --surface: var(--light-surface);
@@ -28,6 +36,10 @@
   --muted: var(--light-muted);
   --line: var(--light-line);
   --accent: var(--light-accent);
+  --accent-hover: var(--light-accent-hover);
+  --accent-active: var(--light-accent-active);
+  --on-accent: var(--light-on-accent);
+  --accent-focus: var(--light-accent-focus);
   --accent-soft: var(--light-accent-soft);
 
   color-scheme: light;
@@ -40,6 +52,10 @@
   --muted: var(--dark-muted);
   --line: var(--dark-line);
   --accent: var(--dark-accent);
+  --accent-hover: var(--dark-accent-hover);
+  --accent-active: var(--dark-accent-active);
+  --on-accent: var(--dark-on-accent);
+  --accent-focus: var(--dark-accent-focus);
   --accent-soft: var(--dark-accent-soft);
   color-scheme: dark;
 }
@@ -51,6 +67,10 @@
   --muted: var(--light-muted);
   --line: var(--light-line);
   --accent: var(--light-accent);
+  --accent-hover: var(--light-accent-hover);
+  --accent-active: var(--light-accent-active);
+  --on-accent: var(--light-on-accent);
+  --accent-focus: var(--light-accent-focus);
   --accent-soft: var(--light-accent-soft);
   color-scheme: light;
 }
@@ -62,6 +82,10 @@
   --muted: var(--dark-muted);
   --line: var(--dark-line);
   --accent: var(--dark-accent);
+  --accent-hover: var(--dark-accent-hover);
+  --accent-active: var(--dark-accent-active);
+  --on-accent: var(--dark-on-accent);
+  --accent-focus: var(--dark-accent-focus);
   --accent-soft: var(--dark-accent-soft);
   color-scheme: dark;
 }
@@ -73,15 +97,33 @@
   --color-muted: var(--muted);
   --color-line: var(--line);
   --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-active: var(--accent-active);
+  --color-on-accent: var(--on-accent);
+  --color-accent-focus: var(--accent-focus);
   --color-accent-soft: var(--accent-soft);
   --font-sans: var(--font-sans);
   --font-display: var(--font-display);
+  --text-xs: 0.875rem;
+  --text-xs--line-height: 1.4;
+  --text-sm: 1rem;
+  --text-sm--line-height: 1.55;
+  --text-base: 1.125rem;
+  --text-base--line-height: 1.6;
+  --text-lg: 1.25rem;
+  --text-lg--line-height: 1.55;
+  --text-xl: 1.375rem;
+  --text-xl--line-height: 1.45;
 }
 
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: var(--font-sans), Lato, "Segoe UI", sans-serif;
+  font-family: var(--font-sans), "Work Sans", "Segoe UI", sans-serif;
+  font-weight: 500;
+  font-size: 1.125rem;
+  letter-spacing: -0.01em;
+  line-height: 1.6;
 }
 
 h1,
@@ -99,7 +141,7 @@ h1.font-display {
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--accent-focus);
   outline-offset: 2px;
 }
 

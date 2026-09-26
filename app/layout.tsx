@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
-import { Fjalla_One, Lato } from "next/font/google";
+import { Fjalla_One, Work_Sans } from "next/font/google";
 import Script from "next/script";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -8,9 +8,9 @@ import { themeInitScript } from "@/lib/design-tokens";
 import { SITE_DESCRIPTION, SITE_NAME, siteUrl } from "@/lib/site";
 import "./globals.css";
 
-const sans = Lato({
+const sans = Work_Sans({
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: ["500", "700"],
   variable: "--font-sans",
 });
 

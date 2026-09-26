@@ -8,6 +8,7 @@ import {
   PALETTES,
   PROPORTIONS,
   THEME_STORAGE_KEY,
+  TYPE_BODY,
   TYPE_ROLES,
   UI_PRIMITIVES,
   themeInitScript,
@@ -72,16 +73,66 @@ test("UI primitives exist and product views do not invent colors", () => {
   }
 });
 
+function channel(hex: string, index: number): number {
+  return parseInt(hex.slice(1 + index * 2, 3 + index * 2), 16) / 255;
+}
+
+function luminance(hex: string): number {
+  const rgb = [0, 1, 2].map((index) => {
+    const value = channel(hex, index);
+    return value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
+}
+
+function contrastRatio(a: string, b: string): number {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((left, right) => right - left);
+  return (hi + 0.05) / (lo + 0.05);
+}
+
+test("primary accent text meets WCAG AA in both themes", () => {
+  for (const theme of ["light", "dark"] as const) {
+    const on = PALETTES[theme]["on-accent"];
+    for (const token of ["accent", "accent-hover", "accent-active"] as const) {
+      const ratio = contrastRatio(on, PALETTES[theme][token]);
+      assert.ok(ratio >= 4.5, `${theme} ${token} on ${on} is ${ratio.toFixed(2)}:1`);
+    }
+  }
+  assert.equal(PALETTES.light.accent, "#5928ed");
+  assert.equal(PALETTES.light["on-accent"], "#ffffff");
+});
+
 test("the written system and the gallery route exist", () => {
   const doc = readFileSync(join(ROOT, "DESIGN_SYSTEM.md"), "utf8");
-  for (const phrase of ["60/30/10", "/design", "Fjalla One", "Lato", "OpenAI"]) {
+  for (const phrase of ["60/30/10", "/design", "Fjalla One", "Work Sans", "OpenAI", "1.125rem", "-0.01em"]) {
     assert.equal(doc.includes(phrase), true, `DESIGN_SYSTEM.md should mention ${phrase}`);
   }
-  assert.equal(TYPE_ROLES.body.family, "Lato");
+  assert.equal(TYPE_ROLES.body.family, "Work Sans");
   assert.equal(TYPE_ROLES.structure.family, "Fjalla One");
+  assert.equal(TYPE_BODY.family, "Work Sans");
+  assert.equal(TYPE_BODY.weight, 500);
+  assert.equal(TYPE_BODY.size, "1.125rem");
+  assert.equal(TYPE_BODY.tracking, "-0.01em");
   const page = readFileSync(join(ROOT, "app/design/page.tsx"), "utf8");
   assert.match(page, /force-light/);
   assert.match(page, /force-dark/);
+  assert.match(page, /<Tag /);
   assert.equal(existsSync(join(ROOT, "components/Ticker.tsx")), false);
   assert.equal(readFileSync(join(ROOT, "app/globals.css"), "utf8").includes("ticker-track"), false);
+});
+
+test("body type tokens drive CSS and next/font", () => {
+  const css = readFileSync(join(ROOT, "app/globals.css"), "utf8");
+  assert.match(css, /font-family:\s*var\(--font-sans\),\s*"Work Sans"/);
+  assert.match(css, new RegExp(`font-weight:\\s*${TYPE_BODY.weight}`));
+  assert.match(css, new RegExp(`font-size:\\s*${TYPE_BODY.size}`));
+  assert.match(css, new RegExp(`letter-spacing:\\s*${TYPE_BODY.tracking.replace(".", "\\.")}`));
+  assert.match(css, new RegExp(`line-height:\\s*${TYPE_BODY.lineHeight}`));
+  for (const [step, size] of Object.entries(TYPE_BODY.scale)) {
+    assert.match(css, new RegExp(`--text-${step}:\\s*${size.replace(".", "\\.")}`));
+  }
+  const layout = readFileSync(join(ROOT, "app/layout.tsx"), "utf8");
+  assert.match(layout, /Work_Sans/);
+  assert.equal(layout.includes("Lato"), false);
+  assert.match(layout, /Fjalla_One/);
 });

@@ -2,11 +2,12 @@ import { JobCard } from "@/components/JobCard";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { CompanyLogo } from "@/components/ui/CompanyLogo";
+import { Tag } from "@/components/ui/Tag";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { fieldClassName, FieldLabel } from "@/components/ui/Field";
 import { Surface } from "@/components/ui/Surface";
-import { COLOR_ROLES, COLOR_TOKENS, PROPORTIONS, TYPE_ROLES, type ColorToken } from "@/lib/design-tokens";
+import { COLOR_ROLES, COLOR_TOKENS, PROPORTIONS, TYPE_BODY, TYPE_ROLES, type ColorToken } from "@/lib/design-tokens";
 import { pageMetadata } from "@/lib/site";
 import type { Listing } from "@/lib/types";
 
@@ -60,8 +61,8 @@ function ThemePreview({ mode, label }: { mode: "force-light" | "force-dark"; lab
       <p className="mt-3 font-display text-3xl leading-tight">The design job board that respects your time.</p>
       <p className="mt-3 text-sm leading-6 text-muted">Black or white canvas, thin borders, the same class names in both themes.</p>
       <div className="mt-4 flex flex-wrap items-center gap-3">
-        <span className="rounded-full bg-ink px-4 py-2 text-sm text-bg">Browse</span>
-        <span className="rounded-full bg-accent-soft px-2.5 py-1 text-xs text-accent">Staff</span>
+        <span className="rounded-full bg-accent px-4 py-2 text-sm text-on-accent">Browse</span>
+        <span className="rounded-full bg-surface px-2.5 py-1 text-xs text-ink">Staff</span>
       </div>
     </div>
   );
@@ -88,7 +89,7 @@ export default function DesignPage() {
           <div className="flex items-end border-l border-line bg-surface p-3 text-ink" style={{ width: `${PROPORTIONS.structure}%` }}>
             Structure {PROPORTIONS.structure}
           </div>
-          <div className="flex items-end bg-accent p-3 text-bg" style={{ width: `${PROPORTIONS.expressive}%` }}>
+          <div className="flex items-end bg-accent p-3 text-on-accent" style={{ width: `${PROPORTIONS.expressive}%` }}>
             {PROPORTIONS.expressive}
           </div>
         </div>
@@ -106,7 +107,7 @@ export default function DesignPage() {
           <div>
             <dt className="font-display text-xl">Expressive · {PROPORTIONS.expressive}%</dt>
             <dd className="mt-2 text-sm leading-6 text-muted">
-              Display-size Fjalla One: the hero and the live stat numbers. No second hue and no ticker.
+              Primary CTAs use the brand accent. Display-size Fjalla One is the hero and the live stat numbers.
             </dd>
           </div>
         </dl>
@@ -144,7 +145,8 @@ export default function DesignPage() {
               {TYPE_ROLES.body.share}% · {TYPE_ROLES.body.family}
             </p>
             <p className="mt-2 max-w-2xl text-base leading-7">
-              {TYPE_ROLES.body.use} This sentence is the body face.
+              {TYPE_ROLES.body.use} This sentence is the body face at {TYPE_BODY.weight} / {TYPE_BODY.size} /{" "}
+              {TYPE_BODY.tracking}.
             </p>
           </div>
           <div>
@@ -179,6 +181,13 @@ export default function DesignPage() {
           <Badge>Stretch</Badge>
           <Badge>Remote</Badge>
           <Badge>Salary</Badge>
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <Tag href="/jobs?seniority=senior">Senior</Tag>
+          <Tag href="/jobs?industry=productivity">Productivity</Tag>
+          <Tag href="/jobs?work=remote">Remote</Tag>
+          <Tag href="/jobs?salary=1">Has salary</Tag>
+          <Tag href="/jobs?employment=full_time">Full-time</Tag>
         </div>
         <div className="mt-6 flex flex-wrap items-center gap-6">
           <div className="flex items-center gap-2 text-sm text-muted">

@@ -19,7 +19,7 @@ export default async function HomePage() {
         <h1 className="mx-auto max-w-4xl font-display text-5xl leading-[1.02] sm:text-7xl">
           The design job board that respects your time.
         </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-lg leading-7 text-muted">
+        <p className="mx-auto mt-4 max-w-2xl text-lg leading-8 text-muted">
           Filters that actually matter. Nine seniority levels, years of experience, and industry. A role stays for 30
           days, then it is deleted.
         </p>

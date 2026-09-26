@@ -25,7 +25,7 @@ export function CompanyLogo({
 
   return (
     <span
-      className={`force-light relative inline-flex shrink-0 items-center justify-center overflow-hidden border border-line bg-bg ${spec.box}`}
+      className={`relative inline-flex shrink-0 items-center justify-center overflow-hidden border border-line bg-transparent ${spec.box}`}
       role="img"
       aria-label={`${name} logo`}
     >

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { controlClassName } from "@/components/ui/Field";
 import { activeFilterCount, filtersToQuery, type JobFilters } from "@/lib/filters";
+import { yearsFilterLabel } from "@/lib/format";
 import {
   DISCIPLINES,
   EMPLOYMENT_TYPES,
@@ -30,9 +31,7 @@ function choiceLabel(name: string, selected: string[]): string {
 function yearsLabel(filters: JobFilters): string {
   const { yearsMin, yearsMax, includeUnknownYears } = filters;
   if (yearsMin == null && yearsMax == null) return includeUnknownYears ? "Years" : "Years stated";
-  if (yearsMin != null && yearsMax != null) return yearsMin === yearsMax ? `${yearsMin} yrs` : `${yearsMin}–${yearsMax} yrs`;
-  if (yearsMin != null) return `${yearsMin}+ yrs`;
-  return `Up to ${yearsMax} yrs`;
+  return yearsFilterLabel(yearsMin, yearsMax) ?? "Years";
 }
 
 function Chevron() {
@@ -65,7 +64,7 @@ function Option({
 }) {
   return (
     <label className="flex h-11 items-center gap-3 rounded-full px-3 text-sm hover:bg-surface">
-      <input type={type} name={name} value={value} defaultChecked={defaultChecked} className="size-4 shrink-0 accent-accent" />
+      <input type={type} name={name} value={value} defaultChecked={defaultChecked} className="size-4 shrink-0 accent-ink" />
       <span>{children}</span>
     </label>
   );

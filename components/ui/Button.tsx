@@ -3,7 +3,7 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 const variants = {
   primary:
-    "inline-flex h-11 items-center justify-center rounded-full bg-ink px-6 font-display text-sm text-bg hover:opacity-90",
+    "inline-flex h-11 items-center justify-center rounded-full bg-accent px-6 font-display text-sm text-on-accent hover:bg-accent-hover active:bg-accent-active",
   secondary:
     "inline-flex h-11 items-center justify-center rounded-full border border-ink px-6 font-display text-sm text-ink hover:bg-ink hover:text-bg",
   ghost:

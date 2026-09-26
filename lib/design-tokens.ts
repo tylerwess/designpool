@@ -14,14 +14,26 @@ export const PROPORTIONS = {
   expressive: 10,
 } as const;
 
-export const COLOR_TOKENS = ["bg", "surface", "ink", "muted", "line", "accent", "accent-soft"] as const;
+export const COLOR_TOKENS = [
+  "bg",
+  "surface",
+  "ink",
+  "muted",
+  "line",
+  "accent",
+  "accent-hover",
+  "accent-active",
+  "on-accent",
+  "accent-focus",
+  "accent-soft",
+] as const;
 
 export type ColorToken = (typeof COLOR_TOKENS)[number];
 
 export const COLOR_ROLES: Record<keyof typeof PROPORTIONS, readonly ColorToken[]> = {
   canvas: ["bg"],
   structure: ["surface", "ink", "muted", "line"],
-  expressive: ["accent", "accent-soft"],
+  expressive: ["accent", "accent-hover", "accent-active", "on-accent", "accent-focus", "accent-soft"],
 };
 
 export const PALETTES: Record<"light" | "dark", Record<ColorToken, string>> = {
@@ -31,8 +43,12 @@ export const PALETTES: Record<"light" | "dark", Record<ColorToken, string>> = {
     ink: "#111111",
     muted: "#5c5c5c",
     line: "#e4e4e4",
-    accent: "#111111",
-    "accent-soft": "#ececec",
+    accent: "#5928ed",
+    "accent-hover": "#4b1fd4",
+    "accent-active": "#3f1ab8",
+    "on-accent": "#ffffff",
+    "accent-focus": "#5928ed",
+    "accent-soft": "#efe8ff",
   },
   dark: {
     bg: "#000000",
@@ -40,15 +56,34 @@ export const PALETTES: Record<"light" | "dark", Record<ColorToken, string>> = {
     ink: "#ffffff",
     muted: "#a3a3a3",
     line: "#333333",
-    accent: "#ffffff",
-    "accent-soft": "#1c1c1c",
+    accent: "#7a54ff",
+    "accent-hover": "#6b42f5",
+    "accent-active": "#5c36e8",
+    "on-accent": "#ffffff",
+    "accent-focus": "#7a54ff",
+    "accent-soft": "#1c1633",
   },
 };
+
+export const TYPE_BODY = {
+  family: "Work Sans",
+  weight: 500,
+  size: "1.125rem",
+  tracking: "-0.01em",
+  lineHeight: 1.6,
+  scale: {
+    xs: "0.875rem",
+    sm: "1rem",
+    base: "1.125rem",
+    lg: "1.25rem",
+    xl: "1.375rem",
+  },
+} as const;
 
 export const TYPE_ROLES = {
   body: {
     share: 60,
-    family: "Lato",
+    family: TYPE_BODY.family,
     utility: "font-sans",
     use: "Body copy, navigation, filters, and meta.",
   },
@@ -62,13 +97,14 @@ export const TYPE_ROLES = {
     share: 10,
     family: "Fjalla One at display size",
     utility: "font-display",
-    use: "The hero headline and the live stat numbers. No second hue and no ticker.",
+    use: "Primary CTAs in the brand accent, plus display-size Fjalla One for the hero and live stats.",
   },
 } as const;
 
 export const UI_PRIMITIVES = [
   "Button",
   "Badge",
+  "Tag",
   "Surface",
   "Eyebrow",
   "Field",

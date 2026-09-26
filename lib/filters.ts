@@ -149,6 +149,15 @@ export function applyFilters(listings: Listing[], filters: JobFilters, now = Dat
   return matched;
 }
 
+export function emptyFilters(): JobFilters {
+  return parseSearchParams({});
+}
+
+export function jobsHref(partial: Partial<JobFilters>): string {
+  const query = filtersToQuery({ ...emptyFilters(), ...partial });
+  return query ? `/jobs?${query}` : "/jobs";
+}
+
 export function filtersToQuery(filters: JobFilters): string {
   const params = new URLSearchParams();
   if (filters.q) params.set("q", filters.q);
