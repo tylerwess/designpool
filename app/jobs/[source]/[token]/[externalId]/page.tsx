@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { ExpandableDescription } from "@/components/ExpandableDescription";
 import { FloatingApply } from "@/components/FloatingApply";
 import { ListingByline } from "@/components/ListingByline";
-import { Button } from "@/components/ui/Button";
+import { BackArrowIcon, Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Surface } from "@/components/ui/Surface";
 import { Tag } from "@/components/ui/Tag";
@@ -48,8 +48,9 @@ export default async function JobPage({ params }: { params: Promise<JobParams> }
   return (
     <Container size="narrow" className="job-detail pt-12">
       <article>
-        <Button href="/jobs" variant="ghost">
-          All roles
+        <Button href="/jobs" variant="ghost" className="gap-1.5">
+          <BackArrowIcon />
+          Back to roles
         </Button>
         <div className="mt-6">
           <ListingByline listing={listing} size="lg" />

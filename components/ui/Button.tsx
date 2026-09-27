@@ -5,9 +5,9 @@ const variants = {
   primary:
     "inline-flex h-11 items-center justify-center rounded-full bg-accent px-6 font-display text-sm text-on-accent hover:bg-accent-hover active:bg-accent-active",
   secondary:
-    "inline-flex h-11 items-center justify-center rounded-full border border-ink px-6 font-display text-sm text-ink hover:bg-ink hover:text-bg",
+    "inline-flex h-11 items-center justify-center rounded-full border border-accent px-6 font-display text-sm text-accent hover:bg-accent hover:text-on-accent",
   ghost:
-    "inline-flex items-center font-display text-sm text-ink underline decoration-line underline-offset-4 hover:decoration-ink",
+    "inline-flex items-center font-display text-sm text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent",
 } as const;
 
 function LaunchIcon() {
@@ -30,6 +30,21 @@ export function ArrowIcon() {
     <svg width="14" height="10" viewBox="0 0 14 10" aria-hidden="true" className="shrink-0">
       <path
         d="M0 5h10.5M7 1l4 4-4 4"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function BackArrowIcon() {
+  return (
+    <svg width="14" height="10" viewBox="0 0 14 10" aria-hidden="true" className="shrink-0">
+      <path
+        d="M14 5H3.5M7 1 3 5l4 4"
         fill="none"
         stroke="currentColor"
         strokeWidth="1.6"
