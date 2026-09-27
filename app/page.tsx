@@ -1,3 +1,4 @@
+import { FreshListingsCount } from "@/components/FreshListingsCount";
 import { LandingLive } from "@/components/LandingLive";
 import { SourcePlatforms } from "@/components/SourcePlatforms";
 import { ArrowIcon, Button } from "@/components/ui/Button";
@@ -28,19 +29,25 @@ export default async function HomePage() {
           Smart filters, fresh listings, always <span className="text-accent">free</span>.
         </p>
         <div className="mt-6">
-          <p className="text-sm text-muted">Listings powered by</p>
-          <SourcePlatforms className="mt-3 text-lg" />
-        </div>
-
-        <div className="mt-6">
           <Button href="/jobs" className="gap-2">
             Browse open roles
             <ArrowIcon />
           </Button>
         </div>
+
+        <div className="mt-16 flex flex-wrap gap-4">
+          <div className="flex flex-col gap-3 rounded-2xl border border-line bg-surface px-4 py-3">
+            <p className="text-sm text-muted">Listings powered by</p>
+            <SourcePlatforms className="text-lg" />
+          </div>
+          <div className="flex flex-col gap-3 rounded-2xl border border-line bg-surface px-4 py-3">
+            <p className="text-sm text-muted">Open roles</p>
+            <FreshListingsCount count={jobs.length} className="text-lg" />
+          </div>
+        </div>
       </Container>
 
-      <div className="source-stack mt-10 pb-14">
+      <div className="source-stack mt-16 pb-14">
         {jobs.length > 0 ? (
           <Container>
             <LandingLive jobs={jobs} />

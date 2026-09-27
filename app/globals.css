@@ -327,6 +327,33 @@ h1.font-display,
   gap: 0.5rem;
 }
 
+.odometer {
+  display: inline-flex;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.odometer-digit {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  width: 0.62em;
+  height: 1em;
+  vertical-align: bottom;
+}
+
+.odometer-digit-strip {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.15s linear;
+}
+
+.odometer-digit-cell {
+  height: 1em;
+  line-height: 1;
+  text-align: center;
+}
+
 .logo-pool {
   display: inline-block;
   margin-left: 0.08em;
@@ -833,7 +860,8 @@ input.control[type="number"]::-webkit-outer-spin-button {
   .slider,
   .slider::before,
   .star,
-  .cloud {
+  .cloud,
+  .odometer-digit-strip {
     transition: none;
   }
 
