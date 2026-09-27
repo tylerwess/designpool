@@ -12,10 +12,11 @@ export function LandingLive({ jobs }: { jobs: Listing[] }) {
     const counts = new Map<Seniority, number>();
     for (const job of jobs) counts.set(job.seniority, (counts.get(job.seniority) ?? 0) + 1);
     const levels = SENIORITY_LEVELS.filter((level) => (counts.get(level) ?? 0) > 0);
-    const start = levels.reduce<Seniority | null>((best, level) => {
+    const mostPopulous = levels.reduce<Seniority | null>((best, level) => {
       if (!best) return level;
       return (counts.get(level) ?? 0) > (counts.get(best) ?? 0) ? level : best;
     }, null);
+    const start = levels.includes("new_grad") ? "new_grad" : mostPopulous;
     return { segments: levels, initial: start };
   }, [jobs]);
   const [focus, setFocus] = useState<Seniority | null>(initial);

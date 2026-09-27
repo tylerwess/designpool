@@ -207,7 +207,7 @@ h1.font-display,
 
 .hero-title .tower-loader-wrap {
   position: absolute;
-  left: 0;
+  left: calc(var(--tower-paint-x) * -0.5);
   bottom: calc(100% + 0.125em + 1px);
   top: auto;
   margin: 0;
@@ -217,6 +217,7 @@ h1.font-display,
 
 @media (min-width: 640px) {
   .hero-title .tower-loader-wrap {
+    left: calc(var(--tower-paint-x) * -1);
     scale: 1;
   }
 }

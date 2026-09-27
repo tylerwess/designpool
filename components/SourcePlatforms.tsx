@@ -12,15 +12,10 @@ export function SourcePlatforms({ className = "" }: { className?: string }) {
       {SOURCE_PLATFORMS.map((platform, index) => (
         <span key={platform.name} className="inline-flex items-center gap-2">
           {index > 0 ? <span aria-hidden="true">+</span> : null}
-          <a
-            href={platform.website}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 hover:underline"
-          >
+          <span className="inline-flex items-center gap-2">
             <CompanyLogo name={platform.name} website={platform.website} />
             {platform.name}
-          </a>
+          </span>
         </span>
       ))}
     </p>

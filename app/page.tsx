@@ -24,14 +24,14 @@ export default async function HomePage() {
             A design job board that makes sense.
           </h1>
         </div>
+        <p className="mt-6 max-w-2xl text-base text-muted">
+          Smart filters, fresh listings, always <span className="text-accent">free</span>.
+        </p>
         <div className="mt-6">
           <p className="text-sm text-muted">Listings powered by</p>
           <SourcePlatforms className="mt-3 text-lg" />
         </div>
 
-        <p className="mt-6 max-w-2xl text-base text-muted">
-          Smart filters, fresh listings, always <span className="text-accent">free</span>.
-        </p>
         <div className="mt-6">
           <Button href="/jobs" className="gap-2">
             Browse open roles
