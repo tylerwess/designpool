@@ -35,14 +35,16 @@ export default async function HomePage() {
           </Button>
         </div>
 
-        <div className="mt-16 flex flex-wrap gap-4">
-          <div className="flex flex-col gap-3 rounded-2xl border border-line bg-surface px-4 py-3">
+        <div className="mt-16 flex flex-wrap items-start gap-6">
+          <div className="flex flex-col gap-3">
             <p className="text-sm text-muted">Listings powered by</p>
             <SourcePlatforms className="text-lg" />
           </div>
-          <div className="flex flex-col gap-3 rounded-2xl border border-line bg-surface px-4 py-3">
-            <p className="text-sm text-muted">Open roles</p>
-            <FreshListingsCount count={jobs.length} className="text-lg" />
+          <div className="border-l border-line pl-6">
+            <div className="flex flex-col gap-3">
+              <p className="text-sm text-muted">Open roles</p>
+              <FreshListingsCount count={jobs.length} className="text-lg" />
+            </div>
           </div>
         </div>
       </Container>
