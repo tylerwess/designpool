@@ -2,6 +2,13 @@ import { getDb, type SqlParam } from "./db";
 import type { Listing, ListingDraft } from "./types";
 import type { Ats, DisciplineId, EmploymentType, IndustryId, Seniority, SizeBucket, WorkType } from "./taxonomy";
 
+/** Single source of truth for "nothing older than 30 days": both the cron sweep and every read use this. */
+export const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+
+export function freshCutoff(now = Date.now()): string {
+  return new Date(now - THIRTY_DAYS_MS).toISOString();
+}
+
 const LIST_COLUMNS = `
   id, source, external_id, company, company_token, title, url, location,
   remote_type, employment_type, salary_min, salary_max, salary_currency,
@@ -76,17 +83,26 @@ function mapRow(row: ListingRow): Listing {
   };
 }
 
-export async function listListings(): Promise<Listing[]> {
+/**
+ * Belt-and-suspenders: even if a cron run is late or fails, no page ever
+ * serves a listing older than 30 days. The physical DELETE in deleteExpired
+ * is what actually reclaims space; this WHERE clause is what guarantees
+ * nothing stale is ever displayed in the meantime.
+ */
+export async function listListings(now = Date.now()): Promise<Listing[]> {
   const db = await getDb();
-  const rows = await db.all<ListingRow>(`SELECT ${LIST_COLUMNS} FROM listings`);
+  const rows = await db.all<ListingRow>(
+    `SELECT ${LIST_COLUMNS} FROM listings WHERE COALESCE(posted_at, first_seen_at) >= ?`,
+    [freshCutoff(now)],
+  );
   return rows.map(mapRow);
 }
 
-export async function getListing(id: string): Promise<Listing | null> {
+export async function getListing(id: string, now = Date.now()): Promise<Listing | null> {
   const db = await getDb();
   const rows = await db.all<ListingRow>(
-    `SELECT ${LIST_COLUMNS}, description FROM listings WHERE id = ?`,
-    [id],
+    `SELECT ${LIST_COLUMNS}, description FROM listings WHERE id = ? AND COALESCE(posted_at, first_seen_at) >= ?`,
+    [id, freshCutoff(now)],
   );
   return rows[0] ? mapRow(rows[0]) : null;
 }
