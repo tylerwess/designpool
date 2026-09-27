@@ -26,7 +26,7 @@ function IconIndent({ icon }: { icon: ReactNode }) {
   return (
     <span
       aria-hidden="true"
-      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-line text-ink"
+      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-line text-accent"
     >
       {icon}
     </span>
@@ -96,9 +96,14 @@ function FilterIcon() {
 function FreshIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <circle cx="8" cy="8.5" r="6" stroke="currentColor" strokeWidth="1.4" />
-      <path d="M8 5v3.5l2.5 1.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M5.5 1.5h5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      <circle cx="8" cy="9.6" r="5.2" stroke="currentColor" strokeWidth="1.4" />
+      <path
+        d="M8 4.4V2.6M8 2.6c-.7-1-2-1.2-3-.8M8 2.6c.7-1 2-1.2 3-.8"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
