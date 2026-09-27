@@ -33,7 +33,10 @@ test("the tower loader is credited, scoped, and token-colored", () => {
   assert.equal(PALETTES.dark["tower-left"], "#4e2ad8");
   assert.equal(PALETTES.dark["tower-right"], "#7a54ff");
   assert.equal(PALETTES.dark["tower-top"], "#b089ff");
-  assert.ok(home.indexOf("TowerLoader") < home.indexOf("The <span"), "tower sits above the landing headline");
+  assert.ok(
+    home.indexOf("TowerLoader") < home.indexOf("A design job board that makes sense."),
+    "tower sits above the landing headline",
+  );
   assert.match(home, /className="hero-lead"/);
   assert.match(home, /className="hero-title /);
   assert.match(css, /\.hero-title \.tower-loader-wrap\s*\{[^}]*bottom:\s*calc\(100% \+ 0\.125em \+ 1px\)/);
