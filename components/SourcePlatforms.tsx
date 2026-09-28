@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { CompanyLogo } from "@/components/ui/CompanyLogo";
 
 export const SOURCE_PLATFORMS = [
@@ -6,18 +9,29 @@ export const SOURCE_PLATFORMS = [
   { name: "Lever", website: "https://www.lever.co" },
 ];
 
+const SLOT_INTERVAL_MS = 2000;
+
 export function SourcePlatforms({ className = "" }: { className?: string }) {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = setInterval(() => {
+      setIndex((current) => (current + 1) % SOURCE_PLATFORMS.length);
+    }, SLOT_INTERVAL_MS);
+    return () => clearInterval(id);
+  }, []);
+
   return (
-    <p className={`flex flex-wrap items-center gap-x-2 gap-y-2 font-display text-ink ${className}`.trim()}>
-      {SOURCE_PLATFORMS.map((platform, index) => (
-        <span key={platform.name} className="inline-flex items-center gap-2">
-          {index > 0 ? <span aria-hidden="true">+</span> : null}
-          <span className="inline-flex items-center gap-2">
+    <div className={`slot-reel h-7 overflow-hidden font-display text-ink ${className}`.trim()}>
+      <div className="slot-reel-strip" style={{ transform: `translateY(-${index * 1.75}rem)` }}>
+        {SOURCE_PLATFORMS.map((platform) => (
+          <div key={platform.name} className="slot-reel-item flex h-7 items-center gap-2">
             <CompanyLogo name={platform.name} website={platform.website} />
             {platform.name}
-          </span>
-        </span>
-      ))}
-    </p>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

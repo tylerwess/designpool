@@ -46,7 +46,7 @@ export function FreshListingsCount({ count, className = "" }: { count: number; c
     .map(Number);
 
   return (
-    <span className={`inline-flex items-center font-display text-ink ${className}`.trim()}>
+    <span className={`inline-flex items-center font-display ${className}`.trim()}>
       <span className="odometer" role="status" aria-live="off">
         {digits.map((digit, index) => (
           <OdometerDigit key={index} digit={digit} />

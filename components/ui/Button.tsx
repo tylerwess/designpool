@@ -3,7 +3,7 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 const variants = {
   primary:
-    "inline-flex h-11 items-center justify-center rounded-full bg-accent px-6 font-display text-sm text-on-accent hover:bg-accent-hover active:bg-accent-active",
+    "btn-neubrutal inline-flex h-11 items-center justify-center rounded-full border-2 border-ink bg-accent px-6 font-display text-sm text-on-accent",
   secondary:
     "inline-flex h-11 items-center justify-center rounded-full border border-accent px-6 font-display text-sm text-accent hover:bg-accent hover:text-on-accent",
   ghost:

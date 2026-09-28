@@ -354,6 +354,29 @@ h1.font-display,
   text-align: center;
 }
 
+.slot-reel-strip {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.btn-neubrutal {
+  box-shadow: 0 0 0 0 var(--ink);
+  transition:
+    transform 0.3s ease-in-out,
+    box-shadow 0.3s ease-in-out;
+}
+
+.btn-neubrutal:hover {
+  transform: translate(-2px, -4px);
+  box-shadow: 2px 5px 0 0 var(--ink);
+}
+
+.btn-neubrutal:active {
+  transform: translate(1px, 2px);
+  box-shadow: 0 0 0 0 var(--ink);
+}
+
 .logo-pool {
   display: inline-block;
   margin-left: 0.08em;
@@ -861,8 +884,15 @@ input.control[type="number"]::-webkit-outer-spin-button {
   .slider::before,
   .star,
   .cloud,
-  .odometer-digit-strip {
+  .odometer-digit-strip,
+  .slot-reel-strip,
+  .btn-neubrutal {
     transition: none;
+  }
+
+  .btn-neubrutal:hover,
+  .btn-neubrutal:active {
+    transform: none;
   }
 
   .tower-loader-wrap .box {

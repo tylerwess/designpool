@@ -59,13 +59,10 @@ test("the design gallery is hidden in production and on Vercel", () => {
   assert.equal(shouldHideDesignGallery({ VERCEL_ENV: "development" }), true);
 });
 
-test("the hero headline underlines the no-nonsense phrase and the subhead names the frustrations", () => {
+test("the hero headline puts design jobs board in the brand accent and the subhead names the frustrations", () => {
   const home = readFileSync(join(process.cwd(), "app/page.tsx"), "utf8");
-  assert.match(home, /A design jobs board for\{" "\}/);
-  assert.match(
-    home,
-    /<span className="underline decoration-accent decoration-4 underline-offset-8">\s*no-nonsense jobseekers\.\s*<\/span>/,
-  );
+  assert.match(home, /A <span className="text-accent">design jobs board<\/span> for no-nonsense jobseekers\./);
+  assert.equal(home.includes("underline"), false);
   assert.match(home, /No ghost jobs, no paywalls, no endless scrolling\./);
 });
 
