@@ -40,3 +40,25 @@ test("the default company list used by ingest includes every board", () => {
     else process.env.INGEST_SOURCES = previous;
   }
 });
+
+test("cron parts split the company list with no gaps or overlap", async () => {
+  const { companiesForPart, parseIngestPart } = await import("../lib/ingest-sources");
+  const { companies } = await import("../data/companies");
+  const seen = new Map<string, number>();
+  for (let part = 1; part <= 3; part += 1) {
+    const slice = companiesForPart(companies, { part, parts: 3 });
+    assert.ok(slice.length <= Math.ceil(companies.length / 3));
+    for (const company of slice) {
+      const key = `${company.ats}:${company.token}`;
+      seen.set(key, (seen.get(key) ?? 0) + 1);
+    }
+  }
+  assert.equal(seen.size, new Set(companies.map((c) => `${c.ats}:${c.token}`)).size);
+  assert.ok([...seen.values()].every((count) => count === 1));
+
+  assert.equal(parseIngestPart(new URLSearchParams("")), null);
+  assert.deepEqual(parseIngestPart(new URLSearchParams("part=2&parts=3")), { part: 2, parts: 3 });
+  for (const bad of ["part=0&parts=3", "part=4&parts=3", "part=1", "parts=3", "part=a&parts=3", "part=1.5&parts=3"]) {
+    assert.equal(typeof parseIngestPart(new URLSearchParams(bad)), "string", bad);
+  }
+});

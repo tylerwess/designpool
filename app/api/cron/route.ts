@@ -1,5 +1,6 @@
 import { databaseMode } from "@/lib/db";
 import { runIngest } from "@/lib/ingest";
+import { companiesForIngest, companiesForPart, parseIngestPart } from "@/lib/ingest-sources";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -21,8 +22,13 @@ async function handle(request: Request) {
       { status: 503 },
     );
   }
+  const slice = parseIngestPart(new URL(request.url).searchParams);
+  if (typeof slice === "string") {
+    return Response.json({ error: slice }, { status: 400 });
+  }
   try {
-    const result = await runIngest();
+    const all = companiesForIngest();
+    const result = await runIngest(slice ? companiesForPart(all, slice) : all);
     return Response.json(result);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Ingest failed";
