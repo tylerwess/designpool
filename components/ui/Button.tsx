@@ -5,7 +5,7 @@ const variants = {
   primary:
     "btn-neubrutal inline-flex h-11 items-center justify-center rounded-full border-2 border-ink bg-accent px-6 font-display text-sm text-on-accent",
   secondary:
-    "inline-flex h-11 items-center justify-center rounded-full border border-accent px-6 font-display text-sm text-accent hover:bg-accent hover:text-on-accent",
+    "btn-neubrutal btn-neubrutal-accent inline-flex h-11 items-center justify-center rounded-full border-2 border-accent px-6 font-display text-sm text-accent",
   ghost:
     "inline-flex items-center font-display text-sm text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent",
 } as const;

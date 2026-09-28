@@ -361,20 +361,21 @@ h1.font-display,
 }
 
 .btn-neubrutal {
-  box-shadow: 0 0 0 0 var(--ink);
+  --neubrutal-color: var(--ink);
+  transform: translate(-2px, -4px);
+  box-shadow: 2px 5px 0 0 var(--neubrutal-color);
   transition:
     transform 0.3s ease-in-out,
     box-shadow 0.3s ease-in-out;
 }
 
-.btn-neubrutal:hover {
-  transform: translate(-2px, -4px);
-  box-shadow: 2px 5px 0 0 var(--ink);
+.btn-neubrutal-accent {
+  --neubrutal-color: var(--accent);
 }
 
 .btn-neubrutal:active {
-  transform: translate(1px, 2px);
-  box-shadow: 0 0 0 0 var(--ink);
+  transform: translate(0, 0);
+  box-shadow: 0 0 0 0 var(--neubrutal-color);
 }
 
 .logo-pool {
@@ -888,11 +889,6 @@ input.control[type="number"]::-webkit-outer-spin-button {
   .slot-reel-strip,
   .btn-neubrutal {
     transition: none;
-  }
-
-  .btn-neubrutal:hover,
-  .btn-neubrutal:active {
-    transform: none;
   }
 
   .tower-loader-wrap .box {
