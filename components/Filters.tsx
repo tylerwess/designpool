@@ -88,11 +88,20 @@ function Menu({
   children: ReactNode;
 }) {
   const wrapRef = useRef<HTMLDivElement>(null);
-  const [alignEnd, setAlignEnd] = useState(false);
+  const [menuLeft, setMenuLeft] = useState(0);
   const chip = active ? "border-ink bg-ink text-bg" : "border-line bg-bg text-ink";
   function toggle() {
     const rect = wrapRef.current?.getBoundingClientRect();
-    if (rect) setAlignEnd(rect.left + rect.width / 2 > window.innerWidth / 2);
+    if (rect) {
+      const margin = 16;
+      const menuWidth = Math.min(320, window.innerWidth - margin * 2);
+      let left = 0;
+      const overflowRight = rect.left + left + menuWidth - (window.innerWidth - margin);
+      if (overflowRight > 0) left -= overflowRight;
+      const minLeft = margin - rect.left;
+      if (left < minLeft) left = minLeft;
+      setMenuLeft(left);
+    }
     onToggle();
   }
 
@@ -121,7 +130,8 @@ function Menu({
       </div>
       <div
         id={id}
-        className={`${open ? "block" : "hidden"} absolute z-30 mt-2 w-[min(20rem,calc(100vw-2.5rem))] rounded-2xl border border-line bg-bg p-2 ${alignEnd ? "right-0" : "left-0"}`}
+        style={{ left: `${menuLeft}px` }}
+        className={`${open ? "block" : "hidden"} absolute z-30 mt-2 w-[min(20rem,calc(100vw-2.5rem))] rounded-2xl border border-line bg-bg p-2`}
       >
         <div className="max-h-80 overflow-auto">{children}</div>
         <div className="px-1 pt-2 pb-1">

@@ -22,7 +22,8 @@ export default async function HomePage() {
         <div className="hero-lead">
           <h1 className="hero-title max-w-4xl font-display text-5xl leading-[1.02] sm:text-7xl">
             <TowerLoader />
-            A design job board that makes sense.
+            A design job board that{" "}
+            <span className="underline decoration-accent decoration-4 underline-offset-8">makes sense.</span>
           </h1>
         </div>
         <p className="mt-6 max-w-2xl text-base text-muted">
@@ -35,12 +36,13 @@ export default async function HomePage() {
           </Button>
         </div>
 
-        <div className="mt-16 flex flex-wrap items-start gap-6">
+        <div className="mt-16 flex flex-col gap-6 sm:flex-row sm:items-start">
           <div className="flex flex-col gap-3">
             <p className="text-sm text-muted">Listings powered by</p>
             <SourcePlatforms className="text-lg" />
           </div>
-          <div className="border-l border-line pl-6">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-stretch">
+            <div className="h-px w-1/2 bg-line sm:h-auto sm:w-px" aria-hidden="true" />
             <div className="flex flex-col gap-3">
               <p className="text-sm text-muted">Open roles</p>
               <FreshListingsCount count={jobs.length} className="text-lg" />
