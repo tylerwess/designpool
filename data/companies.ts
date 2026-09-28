@@ -62,7 +62,7 @@ export const companies: Company[] = [
   { name: "Monzo", ats: "greenhouse", token: "monzo", industry: "fintech", sizeBucket: "1000+", website: "https://monzo.com" },
   { name: "Chime", ats: "greenhouse", token: "chime", industry: "fintech", sizeBucket: "1000+", website: "https://www.chime.com" },
   { name: "Wealthfront", ats: "lever", token: "wealthfront", industry: "fintech", sizeBucket: "201-1000", website: "https://www.wealthfront.com" },
-  { name: "Lemonade", ats: "ashby", token: "lemonade", industry: "fintech", sizeBucket: "1000+", website: "https://www.lemonade.com" },
+  { name: "Lemonade", ats: "ashby", token: "lemonade", industry: "insurtech", sizeBucket: "1000+", website: "https://www.lemonade.com" },
   { name: "Betterment", ats: "greenhouse", token: "betterment", industry: "fintech", sizeBucket: "201-1000", website: "https://www.betterment.com" },
   { name: "Coinbase", ats: "greenhouse", token: "coinbase", industry: "crypto", sizeBucket: "1000+", website: "https://www.coinbase.com" },
   { name: "Uniswap", ats: "ashby", token: "uniswap", industry: "crypto", sizeBucket: "51-200", website: "https://uniswap.org" },

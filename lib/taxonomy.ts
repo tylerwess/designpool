@@ -36,6 +36,7 @@ export const TYPICAL_MIN_YEARS: Record<Seniority, number> = {
 
 export const INDUSTRIES = [
   { id: "fintech", label: "Fintech" },
+  { id: "insurtech", label: "Insurtech" },
   { id: "defense_govtech", label: "Defense/govtech" },
   { id: "ai_ml", label: "AI/ML" },
   { id: "healthcare", label: "Healthcare" },
