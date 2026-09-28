@@ -59,11 +59,14 @@ test("the design gallery is hidden in production and on Vercel", () => {
   assert.equal(shouldHideDesignGallery({ VERCEL_ENV: "development" }), true);
 });
 
-test("the hero headline and subtext say free in the brand accent", () => {
+test("the hero headline underlines the no-nonsense phrase and the subhead names the frustrations", () => {
   const home = readFileSync(join(process.cwd(), "app/page.tsx"), "utf8");
-  assert.match(home, /A design job board that\{" "\}/);
-  assert.match(home, /<span className="underline decoration-accent decoration-4 underline-offset-8">makes sense\.<\/span>/);
-  assert.match(home, /Smart filters, fresh listings, always <span className="text-accent">free<\/span>\./);
+  assert.match(home, /A design jobs board for\{" "\}/);
+  assert.match(
+    home,
+    /<span className="underline decoration-accent decoration-4 underline-offset-8">\s*no-nonsense jobseekers\.\s*<\/span>/,
+  );
+  assert.match(home, /No ghost jobs, no paywalls, no endless scrolling\./);
 });
 
 test("the Open Graph image is a static screenshot, not a generated card", () => {

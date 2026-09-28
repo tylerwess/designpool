@@ -22,13 +22,13 @@ export default async function HomePage() {
         <div className="hero-lead">
           <h1 className="hero-title max-w-4xl font-display text-5xl leading-[1.02] sm:text-7xl">
             <TowerLoader />
-            A design job board that{" "}
-            <span className="underline decoration-accent decoration-4 underline-offset-8">makes sense.</span>
+            A design jobs board for{" "}
+            <span className="underline decoration-accent decoration-4 underline-offset-8">
+              no-nonsense jobseekers.
+            </span>
           </h1>
         </div>
-        <p className="mt-6 max-w-2xl text-base text-muted">
-          Smart filters, fresh listings, always <span className="text-accent">free</span>.
-        </p>
+        <p className="mt-6 max-w-2xl text-base text-muted">No ghost jobs, no paywalls, no endless scrolling.</p>
         <div className="mt-6">
           <Button href="/jobs" className="gap-2">
             Browse open roles
