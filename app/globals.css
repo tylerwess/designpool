@@ -405,8 +405,6 @@ h1.font-display,
   border-radius: 50%;
   background-color: var(--accent);
   box-shadow: 2px 5px 0 0 var(--ink);
-  animation: bot-float 6s ease-in-out infinite alternate;
-  will-change: transform;
 }
 
 .bot-face {
@@ -429,18 +427,6 @@ h1.font-display,
 .bot-eye-inner {
   width: 0.75rem;
   height: 0.75rem;
-}
-
-@keyframes bot-float {
-  0% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(-3px) scale(1.02);
-  }
-  100% {
-    transform: translateY(0) scale(1);
-  }
 }
 
 /* Rests in the thinking pose, then dips down to "read" two lines of the copy below before looking back up. */
@@ -998,7 +984,6 @@ input.control[type="number"]::-webkit-outer-spin-button {
     opacity: 1;
   }
 
-  .bot-body,
   .bot-face,
   .bot-eye {
     animation: none;
