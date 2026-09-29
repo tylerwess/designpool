@@ -31,6 +31,7 @@ export const COLOR_TOKENS = [
   "tower-top",
   "tag-bg",
   "tag-fg",
+  "positive",
 ] as const;
 
 export type ColorToken = (typeof COLOR_TOKENS)[number];
@@ -48,6 +49,7 @@ export const COLOR_ROLES: Record<keyof typeof PROPORTIONS, readonly ColorToken[]
     "tower-left",
     "tower-right",
     "tower-top",
+    "positive",
   ],
 };
 
@@ -69,6 +71,7 @@ export const PALETTES: Record<"light" | "dark", Record<ColorToken, string>> = {
     "tower-top": "#8a66f5",
     "tag-bg": "#f0f0f0",
     "tag-fg": "#3d3d3d",
+    positive: "#02a969",
   },
   dark: {
     bg: "#000000",
@@ -87,6 +90,7 @@ export const PALETTES: Record<"light" | "dark", Record<ColorToken, string>> = {
     "tower-top": "#b089ff",
     "tag-bg": "#232323",
     "tag-fg": "#c8c8c8",
+    positive: "#02a969",
   },
 };
 

@@ -133,8 +133,17 @@ export default function AboutPage() {
           <a href={TYLER_WESSON_URL} target="_blank" rel="noopener noreferrer" className="underline hover:no-underline">
             Tyler
           </a>
-          , a designer who got tired of digging through stale posts and agency reposts to find good, fresh roles. So
-          I built the board I wanted.
+          , a designer who kept hearing the same pain points from young designers job hunting: boards full of stale
+          roles that closed weeks ago, seniority filters too broad to mean anything, and industry filters that never
+          match what they actually do. I built a job board that makes more sense.
+        </p>
+      </div>
+
+      <SectionHeading icon={<FreshIcon />}>Always fresh</SectionHeading>
+      <div className={`mt-4 space-y-4 text-sm leading-7 ${SECTION_INDENT}`}>
+        <p>
+          Nothing older than 30 days. Roles pulled from a company’s board disappear on the next daily check. Age is
+          the company’s post date, or the day Designpool first saw it.
         </p>
       </div>
 
@@ -155,14 +164,6 @@ export default function AboutPage() {
         Filter by what you’re actually looking for: time posted, specific industries, years of experience, and eight
         seniority levels.
       </p>
-
-      <SectionHeading icon={<FreshIcon />}>Always fresh</SectionHeading>
-      <div className={`mt-4 space-y-4 text-sm leading-7 ${SECTION_INDENT}`}>
-        <p>
-          Nothing older than 30 days. Roles pulled from a company’s board disappear on the next daily check. Age is
-          the company’s post date, or the day Designpool first saw it.
-        </p>
-      </div>
 
       <SectionHeading icon={<LevelsIcon />}>Eight seniority levels</SectionHeading>
       <p className={`mt-4 text-sm leading-7 ${SECTION_INDENT}`}>

@@ -5,7 +5,7 @@ import { ArrowIcon, Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Surface } from "@/components/ui/Surface";
 import { TowerLoader } from "@/components/ui/TowerLoader";
-import { loadBoard } from "@/lib/board";
+import { loadBoard, loadIngestStats } from "@/lib/board";
 import { pageMetadata } from "@/lib/site";
 
 export const metadata = pageMetadata({ path: "/" });
@@ -13,7 +13,7 @@ export const metadata = pageMetadata({ path: "/" });
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const board = await loadBoard();
+  const [board, ingestStats] = await Promise.all([loadBoard(), loadIngestStats()]);
   const jobs = board.status === "ok" ? board.jobs : [];
 
   return (
@@ -36,7 +36,15 @@ export default async function HomePage() {
         <div className="mt-16 flex flex-col gap-6 sm:flex-row sm:items-start">
           <div className="flex flex-col gap-3">
             <p className="text-sm text-muted">Open roles</p>
-            <FreshListingsCount count={jobs.length} className="text-[2.109375rem] text-ink" />
+            <div className="flex items-baseline gap-3">
+              <FreshListingsCount count={jobs.length} className="text-[2.109375rem] text-ink" />
+              {ingestStats ? (
+                <span className="inline-flex items-center gap-1 text-xs text-muted">
+                  <FreshListingsCount prefix="+" count={ingestStats.freshAdded} className="text-xs text-positive" />
+                  fresh roles added
+                </span>
+              ) : null}
+            </div>
           </div>
           <div className="flex flex-col gap-6 sm:flex-row sm:items-stretch">
             <div className="h-px w-1/2 bg-line sm:h-auto sm:w-px" aria-hidden="true" />

@@ -43,6 +43,12 @@ CREATE TABLE IF NOT EXISTS listings (
   disciplines TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS listings_company ON listings (source, company_token);
+CREATE TABLE IF NOT EXISTS ingest_stats (
+  day TEXT PRIMARY KEY,
+  fresh_added INTEGER NOT NULL,
+  stale_removed INTEGER NOT NULL,
+  ran_at TEXT NOT NULL
+);
 `;
 
 let dbPromise: Promise<Db> | null = null;

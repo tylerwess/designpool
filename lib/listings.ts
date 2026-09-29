@@ -199,3 +199,41 @@ export async function countBySeniority(): Promise<Record<string, number>> {
   for (const row of rows) counts[row.seniority] = Number(row.n);
   return counts;
 }
+
+/** Listings whose first_seen_at was never touched by the upsert's DO UPDATE, so this is exactly this run's inserts. */
+export async function countFirstSeenAt(seenAt: string): Promise<number> {
+  const db = await getDb();
+  const rows = await db.all<{ n: number | string }>(`SELECT COUNT(*) AS n FROM listings WHERE first_seen_at = ?`, [
+    seenAt,
+  ]);
+  return Number(rows[0]?.n ?? 0);
+}
+
+export type IngestStats = { freshAdded: number; staleRemoved: number; ranAt: string };
+
+/**
+ * The daily cron runs in three parts (see vercel.json), so a day's totals are the sum
+ * of each part's contribution rather than a single run's numbers.
+ */
+export async function recordIngestStats(freshAdded: number, staleRemoved: number, ranAt: string): Promise<void> {
+  const db = await getDb();
+  const day = ranAt.slice(0, 10);
+  await db.run(
+    `INSERT INTO ingest_stats (day, fresh_added, stale_removed, ran_at) VALUES (?, ?, ?, ?)
+     ON CONFLICT(day) DO UPDATE SET
+       fresh_added = fresh_added + excluded.fresh_added,
+       stale_removed = stale_removed + excluded.stale_removed,
+       ran_at = excluded.ran_at`,
+    [day, freshAdded, staleRemoved, ranAt],
+  );
+}
+
+export async function getIngestStats(): Promise<IngestStats | null> {
+  const db = await getDb();
+  const rows = await db.all<{ fresh_added: number | string; stale_removed: number | string; ran_at: string }>(
+    `SELECT fresh_added, stale_removed, ran_at FROM ingest_stats ORDER BY day DESC LIMIT 1`,
+  );
+  const row = rows[0];
+  if (!row) return null;
+  return { freshAdded: Number(row.fresh_added), staleRemoved: Number(row.stale_removed), ranAt: row.ran_at };
+}

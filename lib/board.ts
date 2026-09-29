@@ -1,5 +1,5 @@
 import { databaseMode } from "./db";
-import { listListings, getListing } from "./listings";
+import { listListings, getListing, getIngestStats, type IngestStats } from "./listings";
 import type { Listing } from "./types";
 
 export type BoardState = {
@@ -26,6 +26,17 @@ export async function loadBoard(): Promise<BoardState> {
       jobs: [],
       message: "The database couldn’t be reached. Check DATABASE_URL and try again.",
     };
+  }
+}
+
+/** Null when the database is unconfigured, unreachable, or no ingest has run yet. */
+export async function loadIngestStats(): Promise<IngestStats | null> {
+  if (databaseMode() === "unconfigured") return null;
+  try {
+    return await getIngestStats();
+  } catch (error) {
+    console.error(error);
+    return null;
   }
 }
 

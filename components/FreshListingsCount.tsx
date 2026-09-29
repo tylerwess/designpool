@@ -16,7 +16,15 @@ function OdometerDigit({ digit }: { digit: number }) {
   );
 }
 
-export function FreshListingsCount({ count, className = "" }: { count: number; className?: string }) {
+export function FreshListingsCount({
+  count,
+  prefix,
+  className = "",
+}: {
+  count: number;
+  prefix?: string;
+  className?: string;
+}) {
   const [display, setDisplay] = useState(0);
 
   useEffect(() => {
@@ -47,6 +55,7 @@ export function FreshListingsCount({ count, className = "" }: { count: number; c
 
   return (
     <span className={`inline-flex items-center font-display ${className}`.trim()}>
+      {prefix ? <span aria-hidden="true">{prefix}</span> : null}
       <span className="odometer" role="status" aria-live="off">
         {digits.map((digit, index) => (
           <OdometerDigit key={index} digit={digit} />
