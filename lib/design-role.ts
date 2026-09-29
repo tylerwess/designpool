@@ -42,6 +42,14 @@ const EXCLUDE = [
   /\bfull[- ]stack engineer\b/i,
 ];
 
+/**
+ * Jobs in another function that mention design only as the team they support,
+ * e.g. "Staff Technical Recruiter, Design" or "Account Executive, Design Tools".
+ * A title that also says "designer" is still kept.
+ */
+const OTHER_FUNCTION =
+  /\b(recruiter|recruiting|recruitment|sourcer|talent acquisition|talent partner|account executive|account manager|sales|business development|customer success|paralegal|counsel|attorney|accountant)\b/i;
+
 const ENGINEERING_NOISE =
   /\b(software|backend|frontend|full[\s-]?stack|data|machine learning|security|infra|infrastructure|platform|ios|android|devops|site reliability|firmware|embedded)\b/i;
 
@@ -52,6 +60,7 @@ const ENGINEERING_NOISE =
 export function isDesignRole(title: string): boolean {
   const normalized = title.toLowerCase().replace(/[/|_]+/g, " ");
   if (EXCLUDE.some((pattern) => pattern.test(normalized))) return false;
+  if (OTHER_FUNCTION.test(normalized) && !/\bdesigner\b/i.test(normalized)) return false;
   if (ENGINEERING_NOISE.test(normalized) && !/\b(designer|design engineer|ux|ui)\b/i.test(normalized)) {
     return false;
   }
