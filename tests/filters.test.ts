@@ -142,5 +142,14 @@ describe("company list and design filter", () => {
     assert.equal(isDesignRole("Software Engineer, Discovery UX"), false);
     assert.equal(isDesignRole("UI Programmer Intern"), false);
     assert.equal(isDesignRole("Staff Engineer, UI"), false);
+    assert.equal(isDesignRole("Staff Technical Recruiter, Design"), false);
+    assert.equal(isDesignRole("Design Recruiter"), false);
+    assert.equal(isDesignRole("Recruiting Coordinator, Design & Research"), false);
+    assert.equal(isDesignRole("Talent Acquisition Partner - Design"), false);
+    assert.equal(isDesignRole("Account Executive, Design Tools"), false);
+    assert.equal(isDesignRole("Sales Development Rep, Figma Design"), false);
+    assert.equal(isDesignRole("Associate Director, Design Research"), true);
+    assert.equal(isDesignRole("Design Program Manager"), true);
+    assert.equal(isDesignRole("Senior Product Designer, Sales Tools"), true);
   });
 });
