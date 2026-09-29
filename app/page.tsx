@@ -22,7 +22,7 @@ export default async function HomePage() {
         <div className="hero-lead">
           <h1 className="hero-title max-w-4xl font-display text-5xl leading-[1.02] sm:text-7xl">
             <TowerLoader />
-            A <span className="text-accent">design jobs board</span> for no-nonsense jobseekers.
+            A <span className="text-accent">design job board</span> for no-nonsense jobseekers.
           </h1>
         </div>
         <p className="mt-6 max-w-2xl text-base text-muted">No ghost jobs, no paywalls, no endless scrolling.</p>

@@ -34,7 +34,7 @@ test("the tower loader is credited, scoped, and token-colored", () => {
   assert.equal(PALETTES.dark["tower-right"], "#7a54ff");
   assert.equal(PALETTES.dark["tower-top"], "#b089ff");
   assert.ok(
-    home.indexOf("TowerLoader") < home.indexOf("design jobs board"),
+    home.indexOf("TowerLoader") < home.indexOf("design job board"),
     "tower sits above the landing headline",
   );
   assert.match(home, /className="hero-lead"/);
