@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
+import { GrokBot } from "@/components/ui/GrokBot";
 import { pageMetadata } from "@/lib/site";
 import { SENIORITY_LABELS, SENIORITY_LEVELS, TYPICAL_MIN_YEARS } from "@/lib/taxonomy";
 
@@ -125,6 +126,7 @@ function LevelsIcon() {
 export default function AboutPage() {
   return (
     <Container size="narrow" className="py-14">
+      <GrokBot className="mb-4" />
       <Eyebrow>About</Eyebrow>
       <h1 className="mt-3 font-display text-4xl sm:text-5xl">How this board works</h1>
       <div className="mt-8 space-y-4 text-sm leading-7 text-ink">

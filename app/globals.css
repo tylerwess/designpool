@@ -385,6 +385,101 @@ h1.font-display,
   box-shadow: 0 0 0 0 var(--neubrutal-color);
 }
 
+.bot-container {
+  position: relative;
+  display: flex;
+  width: 6.5rem;
+  height: 6.5rem;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.bot-body {
+  position: relative;
+  display: flex;
+  width: 4.5rem;
+  height: 4.5rem;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background-color: var(--accent);
+  box-shadow: 2px 5px 0 0 var(--ink);
+  animation: bot-float 6s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.bot-face {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  transform: translate(0.85rem, -0.55rem) rotate(-20deg);
+  animation: bot-eye-read 10s ease-in-out infinite;
+}
+
+.bot-eye {
+  width: 0.6rem;
+  height: 0.6rem;
+  transform-origin: center;
+  border-radius: 50%;
+  background-color: var(--on-accent);
+  animation: bot-blink 4s linear infinite;
+}
+
+.bot-eye-inner {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+@keyframes bot-float {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-3px) scale(1.02);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Rests in the thinking pose, then dips down to "read" two lines of the copy below before looking back up. */
+@keyframes bot-eye-read {
+  0%,
+  18% {
+    transform: translate(0.85rem, -0.55rem) rotate(-20deg);
+  }
+  28% {
+    transform: translate(-0.3rem, 0.7rem) rotate(12deg);
+  }
+  38% {
+    transform: translate(0.6rem, 0.75rem) rotate(12deg);
+  }
+  48%,
+  54% {
+    transform: translate(0.6rem, 0.95rem) rotate(12deg);
+  }
+  64% {
+    transform: translate(-0.3rem, 0.95rem) rotate(12deg);
+  }
+  78%,
+  100% {
+    transform: translate(0.85rem, -0.55rem) rotate(-20deg);
+  }
+}
+
+@keyframes bot-blink {
+  0%,
+  48%,
+  52%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.1);
+  }
+}
+
 .logo-pool {
   display: inline-block;
   margin-left: 0.08em;
@@ -901,6 +996,12 @@ input.control[type="number"]::-webkit-outer-spin-button {
   .tower-loader-wrap .box {
     animation: none;
     opacity: 1;
+  }
+
+  .bot-body,
+  .bot-face,
+  .bot-eye {
+    animation: none;
   }
 
   .tower-loader-wrap .box-1 {
