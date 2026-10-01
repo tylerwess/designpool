@@ -27,12 +27,12 @@ test("the tower loader is credited, scoped, and token-colored", () => {
   assert.match(css, /animation-delay: 2\.3s/);
   assert.match(css, /animation-delay: 3\.45s/);
   assert.match(css, /prefers-reduced-motion: reduce[\s\S]*\.tower-loader-wrap \.box/);
-  assert.equal(PALETTES.light["tower-left"], "#017a4d");
-  assert.equal(PALETTES.light["tower-right"], "#02a969");
-  assert.equal(PALETTES.light["tower-top"], "#7fe0b3");
-  assert.equal(PALETTES.dark["tower-left"], "#12a16b");
-  assert.equal(PALETTES.dark["tower-right"], "#1fd98c");
-  assert.equal(PALETTES.dark["tower-top"], "#9df0c7");
+  assert.equal(PALETTES.light["tower-left"], "#0052a3");
+  assert.equal(PALETTES.light["tower-right"], "#0073e6");
+  assert.equal(PALETTES.light["tower-top"], "#8cc3ff");
+  assert.equal(PALETTES.dark["tower-left"], "#2f82e0");
+  assert.equal(PALETTES.dark["tower-right"], "#4da3ff");
+  assert.equal(PALETTES.dark["tower-top"], "#a8d2ff");
   assert.ok(
     home.indexOf("TowerLoader") < home.indexOf("design job board"),
     "tower sits above the landing headline",

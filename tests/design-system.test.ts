@@ -107,8 +107,8 @@ test("primary accent text meets WCAG AA in both themes", () => {
     const accentOnBg = contrastRatio(PALETTES[theme].accent, PALETTES[theme].bg);
     assert.ok(accentOnBg >= 3, `${theme} accent on bg is ${accentOnBg.toFixed(2)}:1`);
   }
-  assert.equal(PALETTES.light.accent, "#02a969");
-  assert.equal(PALETTES.light["on-accent"], "#07120d");
+  assert.equal(PALETTES.light.accent, "#0073e6");
+  assert.equal(PALETTES.light["on-accent"], "#ffffff");
 });
 
 test("the written system and the gallery route exist", () => {

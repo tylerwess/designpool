@@ -1,15 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <style>
-    .mark { fill: #02a969; }
+    .mark { fill: #0073e6; }
     .word {
-      fill: #07120d;
+      fill: #ffffff;
       font-family: "Fjalla One", "Arial Narrow", sans-serif;
       font-size: 15px;
       font-weight: 400;
       letter-spacing: -0.525px;
     }
     @media (prefers-color-scheme: dark) {
-      .mark { fill: #1fd98c; }
+      .mark { fill: #4da3ff; }
+      .word { fill: #021326; }
     }
   </style>
   <rect class="mark" width="32" height="32" rx="8" />
