@@ -1,4 +1,5 @@
 import { FreshListingsCount } from "@/components/FreshListingsCount";
+import { FreshRollCount } from "@/components/FreshRollCount";
 import { LandingLive } from "@/components/LandingLive";
 import { SourcePlatforms } from "@/components/SourcePlatforms";
 import { ArrowIcon, Button } from "@/components/ui/Button";
@@ -36,11 +37,13 @@ export default async function HomePage() {
         <div className="mt-16 flex flex-col gap-6 sm:flex-row sm:items-start">
           <div className="flex flex-col gap-3">
             <p className="text-sm text-muted">Open roles</p>
-            <div className="flex items-baseline gap-3">
-              <FreshListingsCount count={jobs.length} className="text-[2.109375rem] text-ink" />
+            <div className="flex items-center gap-3">
+              <span className="metric-box">
+                <FreshListingsCount count={jobs.length} className="text-[2.109375rem] text-ink" />
+              </span>
               {ingestStats ? (
-                <span className="inline-flex items-center gap-1 text-xs text-muted">
-                  <FreshListingsCount prefix="+" count={ingestStats.freshAdded} className="text-xs text-positive" />
+                <span className="inline-flex items-center gap-1.5 text-xs text-muted">
+                  <FreshRollCount prefix="+" count={ingestStats.freshAdded} />
                   fresh roles added
                 </span>
               ) : null}

@@ -349,6 +349,23 @@ h1.font-display,
   vertical-align: bottom;
 }
 
+.odometer-divider {
+  position: relative;
+  display: inline-block;
+  width: 0;
+  margin: 0 0.12em;
+}
+
+.odometer-divider::after {
+  position: absolute;
+  top: -0.35rem;
+  bottom: -0.35rem;
+  left: 0;
+  width: 1px;
+  background: var(--line);
+  content: "";
+}
+
 .odometer-digit-strip {
   display: flex;
   flex-direction: column;
@@ -464,6 +481,48 @@ h1.font-display,
   50% {
     transform: scaleY(0.1);
   }
+}
+
+@property --roll-t {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0em;
+}
+
+.shadow-roll {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.05em;
+  font-family: var(--font-display), "Fjalla One", "Arial Narrow", sans-serif;
+  font-weight: 600;
+}
+
+.metric-box {
+  display: inline-flex;
+  padding: 0.2em;
+  border: 2px solid var(--accent);
+  border-radius: 0.3rem;
+}
+
+.shadow-roll-digit {
+  position: relative;
+  display: inline-block;
+  width: 0.62em;
+  height: 1em;
+  vertical-align: bottom;
+}
+
+.shadow-roll-digit::before {
+  content: "0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9";
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  white-space: pre;
+  line-height: 1em;
+  text-align: center;
+  color: transparent;
+  text-shadow: 0 var(--roll-t) 0 var(--positive);
+  transition: --roll-t 0.8s ease-out;
 }
 
 .logo-pool {
@@ -987,6 +1046,10 @@ input.control[type="number"]::-webkit-outer-spin-button {
   .bot-face,
   .bot-eye {
     animation: none;
+  }
+
+  .shadow-roll-digit::before {
+    transition: none;
   }
 
   .tower-loader-wrap .box-1 {
