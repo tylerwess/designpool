@@ -58,7 +58,7 @@ export function LandingLive({ jobs }: { jobs: Listing[] }) {
         id="landing-preview"
         role="tabpanel"
         aria-labelledby={focus ? `landing-seniority-${focus}` : undefined}
-        className="landing-preview grid max-w-3xl gap-3"
+        className="landing-preview mx-auto grid max-w-3xl gap-3 text-left"
       >
         {preview.map((listing) => (
           <JobCard key={listing.id} listing={listing} />

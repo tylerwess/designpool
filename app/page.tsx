@@ -19,14 +19,14 @@ export default async function HomePage() {
 
   return (
     <div>
-      <Container className="pt-16 sm:pt-20">
+      <Container className="pt-16 text-center sm:pt-20">
         <div className="hero-lead">
-          <h1 className="hero-title max-w-4xl font-display text-5xl leading-[1.02] sm:text-7xl">
+          <h1 className="hero-title mx-auto max-w-4xl font-display text-5xl leading-[1.02] sm:text-7xl">
             <TowerLoader />
             A <span className="text-accent">design job board</span> for no-nonsense jobseekers.
           </h1>
         </div>
-        <p className="mt-6 max-w-2xl text-base text-muted">No ghost jobs, no paywalls, no endless scrolling.</p>
+        <p className="mx-auto mt-6 max-w-2xl text-base text-muted">No ghost jobs, no paywalls, no endless scrolling.</p>
         <div className="mt-6">
           <Button href="/jobs" className="gap-2">
             Browse open roles
@@ -34,8 +34,8 @@ export default async function HomePage() {
           </Button>
         </div>
 
-        <div className="mt-16 flex flex-col gap-6 sm:flex-row sm:items-start">
-          <div className="flex flex-col gap-3">
+        <div className="mt-16 flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-center">
+          <div className="flex flex-col items-center gap-3">
             <p className="text-sm text-muted">Open roles</p>
             <div className="flex items-center gap-3">
               <span className="metric-box">
@@ -49,11 +49,11 @@ export default async function HomePage() {
               ) : null}
             </div>
           </div>
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-stretch">
+          <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-stretch">
             <div className="h-px w-1/2 bg-line sm:h-auto sm:w-px" aria-hidden="true" />
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col items-center gap-3">
               <p className="text-sm text-muted">Listings powered by</p>
-              <SourcePlatforms className="text-lg" />
+              <SourcePlatforms className="text-lg" align="center" />
             </div>
           </div>
         </div>
@@ -66,7 +66,7 @@ export default async function HomePage() {
           </Container>
         ) : (
           <Container>
-            <Surface className="landing-live max-w-xl p-5 text-sm leading-6">
+            <Surface className="landing-live mx-auto max-w-xl p-5 text-center text-sm leading-6">
               {board.status === "ok" ? "No roles yet. Listings show up after the first ingest." : board.message}
             </Surface>
           </Container>
@@ -74,9 +74,9 @@ export default async function HomePage() {
       </div>
 
       <section className="bg-surface">
-        <Container className="py-14 sm:py-16">
-          <h2 className="max-w-3xl font-display text-4xl leading-tight sm:text-5xl">Eight levels, not one bucket.</h2>
-          <p className="mt-3 max-w-xl text-base leading-7 text-muted">
+        <Container className="py-14 text-center sm:py-16">
+          <h2 className="mx-auto max-w-3xl font-display text-4xl leading-tight sm:text-5xl">Eight levels, not one bucket.</h2>
+          <p className="mx-auto mt-3 max-w-xl text-base leading-7 text-muted">
             Title first, years second. Lead stays an individual contributor unless the role manages people.
           </p>
           <div className="mt-5">
