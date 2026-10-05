@@ -44,11 +44,12 @@ const EXCLUDE = [
 
 /**
  * Jobs in another function that mention design only as the team they support,
- * e.g. "Staff Technical Recruiter, Design" or "Account Executive, Design Tools".
+ * e.g. "Staff Technical Recruiter, Design", "Account Executive, Design Tools" or
+ * "People Partner - Engineering, Product, Design".
  * A title that also says "designer" is still kept.
  */
 const OTHER_FUNCTION =
-  /\b(recruiter|recruiting|recruitment|sourcer|talent acquisition|talent partner|account executive|account manager|sales|business development|customer success|paralegal|counsel|attorney|accountant)\b/i;
+  /\b(recruiter|recruiting|recruitment|sourcer|talent acquisition|talent partner|people partner|people business partner|people operations|people ops|hrbp|hr|human resources|account executive|account manager|sales|business development|customer success|paralegal|counsel|attorney|accountant)\b/i;
 
 const ENGINEERING_NOISE =
   /\b(software|backend|frontend|full[\s-]?stack|data|machine learning|security|infra|infrastructure|platform|ios|android|devops|site reliability|firmware|embedded)\b/i;

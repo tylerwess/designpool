@@ -148,6 +148,12 @@ describe("company list and design filter", () => {
     assert.equal(isDesignRole("Talent Acquisition Partner - Design"), false);
     assert.equal(isDesignRole("Account Executive, Design Tools"), false);
     assert.equal(isDesignRole("Sales Development Rep, Figma Design"), false);
+    assert.equal(isDesignRole("People Partner - Engineering, Product, Design (EPD)"), false);
+    assert.equal(isDesignRole("HR Business Partner, Product & Design"), false);
+    assert.equal(isDesignRole("HRBP - Design"), false);
+    assert.equal(isDesignRole("Human Resources Manager, Design Org"), false);
+    assert.equal(isDesignRole("People Operations Lead, Design"), false);
+    assert.equal(isDesignRole("Senior Product Designer, HR Tools"), true);
     assert.equal(isDesignRole("Associate Director, Design Research"), true);
     assert.equal(isDesignRole("Design Program Manager"), true);
     assert.equal(isDesignRole("Senior Product Designer, Sales Tools"), true);
