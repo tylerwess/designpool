@@ -242,6 +242,8 @@ export type IngestDay = { day: string; freshAdded: number; staleRemoved: number;
 
 export type IngestHealth = {
   listings: number;
+  addedLast24h: number;
+  refreshedLast24h: number;
   newestFirstSeenAt: string | null;
   newestLastSeenAt: string | null;
   days: IngestDay[];
@@ -252,11 +254,23 @@ export type IngestHealth = {
  * ingest_stats plus when any listing was last added or refreshed. Counts only,
  * no listing content.
  */
-export async function getIngestHealth(days = 14): Promise<IngestHealth> {
+export async function getIngestHealth(days = 14, now = Date.now()): Promise<IngestHealth> {
   const db = await getDb();
+  const since = new Date(now - 24 * 60 * 60 * 1000).toISOString();
   const [totals, history] = await Promise.all([
-    db.all<{ n: number | string; first_seen: string | null; last_seen: string | null }>(
-      `SELECT COUNT(*) AS n, MAX(first_seen_at) AS first_seen, MAX(last_seen_at) AS last_seen FROM listings`,
+    db.all<{
+      n: number | string;
+      added: number | string;
+      refreshed: number | string;
+      first_seen: string | null;
+      last_seen: string | null;
+    }>(
+      `SELECT COUNT(*) AS n,
+        SUM(CASE WHEN first_seen_at >= ? THEN 1 ELSE 0 END) AS added,
+        SUM(CASE WHEN last_seen_at >= ? THEN 1 ELSE 0 END) AS refreshed,
+        MAX(first_seen_at) AS first_seen, MAX(last_seen_at) AS last_seen
+       FROM listings`,
+      [since, since],
     ),
     db.all<{ day: string; fresh_added: number | string; stale_removed: number | string; ran_at: string }>(
       `SELECT day, fresh_added, stale_removed, ran_at FROM ingest_stats ORDER BY day DESC LIMIT ?`,
@@ -266,6 +280,8 @@ export async function getIngestHealth(days = 14): Promise<IngestHealth> {
   const total = totals[0];
   return {
     listings: Number(total?.n ?? 0),
+    addedLast24h: Number(total?.added ?? 0),
+    refreshedLast24h: Number(total?.refreshed ?? 0),
     newestFirstSeenAt: total?.first_seen ?? null,
     newestLastSeenAt: total?.last_seen ?? null,
     days: history.map((row) => ({
