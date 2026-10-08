@@ -237,3 +237,42 @@ export async function getIngestStats(): Promise<IngestStats | null> {
   if (!row) return null;
   return { freshAdded: Number(row.fresh_added), staleRemoved: Number(row.stale_removed), ranAt: row.ran_at };
 }
+
+export type IngestDay = { day: string; freshAdded: number; staleRemoved: number; ranAt: string };
+
+export type IngestHealth = {
+  listings: number;
+  newestFirstSeenAt: string | null;
+  newestLastSeenAt: string | null;
+  days: IngestDay[];
+};
+
+/**
+ * Read-only summary for monitoring the nightly pull: the last two weeks of
+ * ingest_stats plus when any listing was last added or refreshed. Counts only,
+ * no listing content.
+ */
+export async function getIngestHealth(days = 14): Promise<IngestHealth> {
+  const db = await getDb();
+  const [totals, history] = await Promise.all([
+    db.all<{ n: number | string; first_seen: string | null; last_seen: string | null }>(
+      `SELECT COUNT(*) AS n, MAX(first_seen_at) AS first_seen, MAX(last_seen_at) AS last_seen FROM listings`,
+    ),
+    db.all<{ day: string; fresh_added: number | string; stale_removed: number | string; ran_at: string }>(
+      `SELECT day, fresh_added, stale_removed, ran_at FROM ingest_stats ORDER BY day DESC LIMIT ?`,
+      [days],
+    ),
+  ]);
+  const total = totals[0];
+  return {
+    listings: Number(total?.n ?? 0),
+    newestFirstSeenAt: total?.first_seen ?? null,
+    newestLastSeenAt: total?.last_seen ?? null,
+    days: history.map((row) => ({
+      day: row.day,
+      freshAdded: Number(row.fresh_added),
+      staleRemoved: Number(row.stale_removed),
+      ranAt: row.ran_at,
+    })),
+  };
+}
