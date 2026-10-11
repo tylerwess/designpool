@@ -9,17 +9,6 @@ import { TowerLoader } from "@/components/ui/TowerLoader";
 import { loadBoard, loadIngestStats } from "@/lib/board";
 import { pageMetadata } from "@/lib/site";
 
-function BriefcaseIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" className="shrink-0 text-accent">
-      <path
-        fill="currentColor"
-        d="M9 3a2 2 0 0 0-2 2v1H4a2 2 0 0 0-2 2v3.5h20V8a2 2 0 0 0-2-2h-3V5a2 2 0 0 0-2-2H9Zm0 2h6v1H9V5ZM2 13v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6h-8v1a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-1H2Z"
-      />
-    </svg>
-  );
-}
-
 function VerifiedIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" className="shrink-0 text-accent">
@@ -64,28 +53,20 @@ export default async function HomePage() {
           </Button>
         </div>
 
-        <div className="mt-16 flex flex-col gap-6 sm:flex-row sm:items-start">
+        <div className="mt-16 flex flex-col gap-8 sm:flex-row sm:items-start sm:gap-12">
           <div className="flex flex-col items-start gap-3">
             <p className="inline-flex items-center gap-1.5 text-sm text-muted">
-              <BriefcaseIcon />
-              Open roles
+              <VerifiedIcon />
+              Real listings from
             </p>
-            <div className="flex items-center gap-3">
-              <span className="metric-box">
-                <FreshListingsCount count={jobs.length} className="text-[2.109375rem] text-ink" />
-              </span>
-            </div>
-            {ingestStats ? <LastUpdated iso={ingestStats.ranAt} /> : null}
+            <SourcePlatforms className="text-lg" />
           </div>
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-stretch">
-            <div className="w-1/2 border-t border-dashed border-line sm:w-0 sm:border-t-0 sm:border-l" aria-hidden="true" />
-            <div className="flex flex-col items-start gap-3">
-              <p className="inline-flex items-center gap-1.5 text-sm text-muted">
-                <VerifiedIcon />
-                Real listings from
-              </p>
-              <SourcePlatforms className="text-lg" />
-            </div>
+          <div className="flex flex-col items-start gap-3">
+            <p className="text-sm text-muted">Open roles</p>
+            <span className="metric-box">
+              <FreshListingsCount count={jobs.length} className="text-[2.109375rem] text-ink" />
+            </span>
+            {ingestStats ? <LastUpdated iso={ingestStats.ranAt} /> : null}
           </div>
         </div>
       </Container>
