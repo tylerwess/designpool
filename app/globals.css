@@ -213,19 +213,18 @@ h1.font-display,
 }
 
 .hero-title .tower-loader-wrap {
-  /* Horizontal center of the painted tower inside the wrap. */
-  --tower-center-x: calc(var(--tower-paint-x) + 45px);
   position: absolute;
-  left: calc(50% - var(--tower-center-x));
+  left: calc(var(--tower-paint-x) * -0.5);
   bottom: calc(100% + 0.125em + 1px);
   top: auto;
   margin: 0;
   scale: 0.5;
-  transform-origin: var(--tower-center-x) bottom;
+  transform-origin: left bottom;
 }
 
 @media (min-width: 640px) {
   .hero-title .tower-loader-wrap {
+    left: calc(var(--tower-paint-x) * -1);
     scale: 1;
   }
 }
@@ -987,15 +986,6 @@ input.control[type="number"]::-webkit-outer-spin-button {
   display: none;
 }
 
-/* Auto margins center the row but still let it scroll from the first chip when it overflows. */
-.landing-seniority > :first-child {
-  margin-inline-start: auto;
-}
-
-.landing-seniority > :last-child {
-  margin-inline-end: auto;
-}
-
 @media (min-width: 640px) {
   .landing-seniority-wrap {
     margin-inline: 0;
@@ -1003,7 +993,6 @@ input.control[type="number"]::-webkit-outer-spin-button {
 
   .landing-seniority {
     flex-wrap: wrap;
-    justify-content: center;
     padding-inline: 0;
   }
 }
@@ -1044,8 +1033,6 @@ input.control[type="number"]::-webkit-outer-spin-button {
 }
 
 .landing-preview-cta {
-  display: flex;
-  justify-content: center;
   margin-top: var(--space-6);
 }
 

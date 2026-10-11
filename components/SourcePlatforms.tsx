@@ -11,13 +11,7 @@ export const SOURCE_PLATFORMS = [
 
 const SLOT_INTERVAL_MS = 2000;
 
-export function SourcePlatforms({
-  className = "",
-  align = "start",
-}: {
-  className?: string;
-  align?: "start" | "center";
-}) {
+export function SourcePlatforms({ className = "" }: { className?: string }) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -32,7 +26,7 @@ export function SourcePlatforms({
     <div className={`slot-reel h-7 overflow-hidden font-display text-ink ${className}`.trim()}>
       <div className="slot-reel-strip" style={{ transform: `translateY(-${index * 1.75}rem)` }}>
         {SOURCE_PLATFORMS.map((platform) => (
-          <div key={platform.name} className={`slot-reel-item flex h-7 items-center gap-2 ${align === "center" ? "justify-center" : ""}`.trim()}>
+          <div key={platform.name} className="slot-reel-item flex h-7 items-center gap-2">
             <CompanyLogo name={platform.name} website={platform.website} />
             {platform.name}
           </div>
