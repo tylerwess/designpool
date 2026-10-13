@@ -98,13 +98,13 @@ Filters are multi-select where it makes sense.
 - **Badges:** level, Stretch, Remote, and Salary listed.
 
 ## Environment variables
-- `DATABASE_URL` is the Postgres connection string. When it is unset on Vercel, the site still builds and shows an empty state.
+- `DATABASE_URL` is the Postgres connection string (a Worker secret). When it is unset on Cloudflare, the site still builds and shows an empty state.
 - `CRON_SECRET` protects the daily cron route. While it is unset, the route rejects every request. The build and the site do not require it.
 - `LLM_CLASSIFIER_ENABLED` is optional and defaults to `false`. A matching API key is needed only if it's enabled.
-- `NEXT_PUBLIC_SITE_URL` is the canonical origin for metadata, the sitemap, and Open Graph. It defaults to `https://designpool-taupe.vercel.app`.
+- `NEXT_PUBLIC_SITE_URL` is the canonical origin for metadata, the sitemap, and Open Graph. It defaults to `https://designpool.io`.
 
 ## Done when
 - The app runs locally, a real ingest against the live APIs fills the database, and every filter works end to end.
 - The daily cron route (ingest, then 30-day and stale deletion) works and is protected.
 - The classifier and parser tests pass.
-- The README covers local setup, adding companies, env vars, and deploying to Vercel (including the cron config in `vercel.json`).
+- The README covers local setup, adding companies, env vars, and deploying to Cloudflare Workers (including the cron trigger in `wrangler.jsonc`).

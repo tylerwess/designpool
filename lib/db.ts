@@ -52,16 +52,36 @@ CREATE TABLE IF NOT EXISTS ingest_stats (
 `;
 
 let dbPromise: Promise<Db> | null = null;
+let schemaReady = false;
+
+/** True inside the Cloudflare Workers runtime (production and `wrangler dev`). */
+export function isWorkersRuntime(): boolean {
+  return typeof navigator !== "undefined" && navigator.userAgent === "Cloudflare-Workers";
+}
 
 export function databaseMode(): DatabaseMode {
   if (process.env.DATABASE_URL?.trim()) return "postgres";
-  if (process.env.VERCEL) return "unconfigured";
+  if (process.env.VERCEL || isWorkersRuntime()) return "unconfigured";
   return "sqlite";
 }
 
-export function getDb(): Promise<Db> {
+/** Workers cannot reuse a socket across requests, so each request gets its own client. */
+const workerConnections = new WeakMap<object, Promise<Db>>();
+
+export async function getDb(): Promise<Db> {
   if (databaseMode() === "unconfigured") {
-    return Promise.reject(new Error("DATABASE_URL is not set"));
+    throw new Error("DATABASE_URL is not set");
+  }
+  if (isWorkersRuntime()) {
+    const { getCloudflareContext } = await import("@opennextjs/cloudflare");
+    const { ctx } = await getCloudflareContext({ async: true });
+    let connection = workerConnections.get(ctx);
+    if (!connection) {
+      connection = openDatabase();
+      workerConnections.set(ctx, connection);
+      connection.catch(() => workerConnections.delete(ctx));
+    }
+    return connection;
   }
   if (!dbPromise) {
     dbPromise = openDatabase().catch((error) => {
@@ -75,10 +95,17 @@ export function getDb(): Promise<Db> {
 async function openDatabase(): Promise<Db> {
   const mode = databaseMode();
   const db = mode === "postgres" ? await openPostgres() : await openSqlite();
+  if (!schemaReady) {
+    await ensureSchema(db);
+    schemaReady = true;
+  }
+  return db;
+}
+
+async function ensureSchema(db: Db): Promise<void> {
   for (const statement of SCHEMA.split(";").map((part) => part.trim()).filter(Boolean)) {
     await db.run(statement);
   }
-  return db;
 }
 
 function toPostgres(sql: string): string {

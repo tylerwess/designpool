@@ -13,7 +13,7 @@ test.after(() => {
 
 test("the canonical site URL defaults to the production domain", () => {
   delete process.env.NEXT_PUBLIC_SITE_URL;
-  assert.equal(siteUrl().origin, "https://designpool-taupe.vercel.app");
+  assert.equal(siteUrl().origin, "https://designpool.io");
   assert.equal(absoluteUrl("/jobs"), `${PRODUCTION_SITE_URL}/jobs`);
   assert.equal(absoluteUrl("/"), `${PRODUCTION_SITE_URL}/`);
 });
@@ -27,7 +27,7 @@ test("NEXT_PUBLIC_SITE_URL overrides the canonical origin", () => {
 
 test("a bad site URL falls back to production", () => {
   process.env.NEXT_PUBLIC_SITE_URL = "http://";
-  assert.equal(siteUrl().origin, "https://designpool-taupe.vercel.app");
+  assert.equal(siteUrl().origin, "https://designpool.io");
 });
 
 test("sitemap uses the canonical origin when the database is not configured", async () => {
