@@ -1,0 +1,32 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "designpool",
+  "main": "cloudflare/worker.ts",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "designpool"
+    }
+  ],
+  // Daily ingest at 08:15 UTC, same schedule the Vercel cron used.
+  "triggers": {
+    "crons": ["15 8 * * *"]
+  },
+  "observability": {
+    "enabled": true
+  },
+  "vars": {
+    "INGEST_SOURCES": "greenhouse,ashby,lever",
+    "LLM_CLASSIFIER_ENABLED": "false"
+  }
+  // Secrets (set with `npx wrangler secret put NAME`, never committed):
+  //   DATABASE_URL  Neon connection string
+  //   CRON_SECRET   bearer token for /api/cron
+  //   LLM_API_URL, LLM_API_KEY, LLM_MODEL  only if LLM_CLASSIFIER_ENABLED is "true"
+}

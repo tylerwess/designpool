@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
-/** Production domain for the imported Vercel project. Override with NEXT_PUBLIC_SITE_URL. */
-export const PRODUCTION_SITE_URL = "https://designpool-taupe.vercel.app";
+/** Production domain. Override with NEXT_PUBLIC_SITE_URL. */
+export const PRODUCTION_SITE_URL = "https://designpool.io";
 
 export const SITE_NAME = "Designpool";
 
@@ -25,7 +25,7 @@ export function siteUrl(): URL {
   }
 }
 
-/** Local `npm run dev` only. Production, `next start`, and any Vercel env 404. */
+/** Local `npm run dev` only. Production builds (including Cloudflare) and any Vercel env 404. */
 export function shouldHideDesignGallery(
   env: { NODE_ENV?: string; VERCEL_ENV?: string } = process.env,
 ): boolean {
