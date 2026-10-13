@@ -30,7 +30,7 @@ export async function classifyListing(input: ClassifyInput): Promise<Classificat
           {
             role: "system",
             content:
-              "Classify the design job into exactly one level: new_grad, entry, mid, senior, staff, principal, manager, director, executive. Reply with the level only.",
+              "Classify the design job into exactly one level: new_grad, mid, senior, staff, principal, manager, director, executive. Reply with the level only.",
           },
           {
             role: "user",

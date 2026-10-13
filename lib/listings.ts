@@ -1,13 +1,19 @@
 import { getDb, type SqlParam } from "./db";
 import type { Listing, ListingDraft } from "./types";
-import type { Ats, BenefitId, DisciplineId, EmploymentType, IndustryId, Seniority, SizeBucket, WorkType } from "./taxonomy";
+import type { Ats, DisciplineId, EmploymentType, IndustryId, Seniority, SizeBucket, WorkType } from "./taxonomy";
+
+/** Single source of truth for "nothing older than 30 days": both the cron sweep and every read use this. */
+export const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+
+export function freshCutoff(now = Date.now()): string {
+  return new Date(now - THIRTY_DAYS_MS).toISOString();
+}
 
 const LIST_COLUMNS = `
   id, source, external_id, company, company_token, title, url, location,
   remote_type, employment_type, salary_min, salary_max, salary_currency,
   salary_interval, posted_at, source_updated_at, first_seen_at, last_seen_at,
-  seniority, stretch, years_min, years_max, industry, size_bucket, disciplines,
-  benefits
+  seniority, stretch, years_min, years_max, industry, size_bucket, disciplines
 `;
 
 type ListingRow = {
@@ -37,7 +43,6 @@ type ListingRow = {
   industry: string;
   size_bucket: string;
   disciplines: string;
-  benefits: string;
 };
 
 function mapRow(row: ListingRow): Listing {
@@ -47,13 +52,6 @@ function mapRow(row: ListingRow): Listing {
     if (Array.isArray(parsed)) disciplines = parsed;
   } catch {
     disciplines = [];
-  }
-  let benefits: BenefitId[] = [];
-  try {
-    const parsed = JSON.parse(row.benefits) as BenefitId[];
-    if (Array.isArray(parsed)) benefits = parsed;
-  } catch {
-    benefits = [];
   }
   return {
     id: row.id,
@@ -82,21 +80,29 @@ function mapRow(row: ListingRow): Listing {
     industry: row.industry as IndustryId,
     sizeBucket: row.size_bucket as SizeBucket,
     disciplines,
-    benefits,
   };
 }
 
-export async function listListings(): Promise<Listing[]> {
+/**
+ * Belt-and-suspenders: even if a cron run is late or fails, no page ever
+ * serves a listing older than 30 days. The physical DELETE in deleteExpired
+ * is what actually reclaims space; this WHERE clause is what guarantees
+ * nothing stale is ever displayed in the meantime.
+ */
+export async function listListings(now = Date.now()): Promise<Listing[]> {
   const db = await getDb();
-  const rows = await db.all<ListingRow>(`SELECT ${LIST_COLUMNS} FROM listings`);
+  const rows = await db.all<ListingRow>(
+    `SELECT ${LIST_COLUMNS} FROM listings WHERE COALESCE(posted_at, first_seen_at) >= ?`,
+    [freshCutoff(now)],
+  );
   return rows.map(mapRow);
 }
 
-export async function getListing(id: string): Promise<Listing | null> {
+export async function getListing(id: string, now = Date.now()): Promise<Listing | null> {
   const db = await getDb();
   const rows = await db.all<ListingRow>(
-    `SELECT ${LIST_COLUMNS}, description FROM listings WHERE id = ?`,
-    [id],
+    `SELECT ${LIST_COLUMNS}, description FROM listings WHERE id = ? AND COALESCE(posted_at, first_seen_at) >= ?`,
+    [id, freshCutoff(now)],
   );
   return rows[0] ? mapRow(rows[0]) : null;
 }
@@ -130,7 +136,6 @@ export async function upsertListing(listing: ListingDraft): Promise<void> {
     listing.industry,
     listing.sizeBucket,
     JSON.stringify(listing.disciplines),
-    JSON.stringify(listing.benefits),
   ];
   await db.run(
     `INSERT INTO listings (
@@ -138,8 +143,8 @@ export async function upsertListing(listing: ListingDraft): Promise<void> {
       remote_type, employment_type, salary_min, salary_max, salary_currency,
       salary_interval, description, posted_at, source_updated_at, first_seen_at,
       last_seen_at, seniority, stretch, years_min, years_max, industry,
-      size_bucket, disciplines, benefits
-    ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+      size_bucket, disciplines
+    ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
     ON CONFLICT(id) DO UPDATE SET
       company = excluded.company,
       company_token = excluded.company_token,
@@ -162,8 +167,7 @@ export async function upsertListing(listing: ListingDraft): Promise<void> {
       years_max = excluded.years_max,
       industry = excluded.industry,
       size_bucket = excluded.size_bucket,
-      disciplines = excluded.disciplines,
-      benefits = excluded.benefits`,
+      disciplines = excluded.disciplines`,
     params,
   );
 }
@@ -194,4 +198,97 @@ export async function countBySeniority(): Promise<Record<string, number>> {
   const counts: Record<string, number> = {};
   for (const row of rows) counts[row.seniority] = Number(row.n);
   return counts;
+}
+
+/** Listings whose first_seen_at was never touched by the upsert's DO UPDATE, so this is exactly this run's inserts. */
+export async function countFirstSeenAt(seenAt: string): Promise<number> {
+  const db = await getDb();
+  const rows = await db.all<{ n: number | string }>(`SELECT COUNT(*) AS n FROM listings WHERE first_seen_at = ?`, [
+    seenAt,
+  ]);
+  return Number(rows[0]?.n ?? 0);
+}
+
+export type IngestStats = { freshAdded: number; staleRemoved: number; ranAt: string };
+
+/**
+ * The daily cron runs in three parts (see vercel.json), so a day's totals are the sum
+ * of each part's contribution rather than a single run's numbers.
+ */
+export async function recordIngestStats(freshAdded: number, staleRemoved: number, ranAt: string): Promise<void> {
+  const db = await getDb();
+  const day = ranAt.slice(0, 10);
+  await db.run(
+    `INSERT INTO ingest_stats (day, fresh_added, stale_removed, ran_at) VALUES (?, ?, ?, ?)
+     ON CONFLICT(day) DO UPDATE SET
+       fresh_added = ingest_stats.fresh_added + excluded.fresh_added,
+       stale_removed = ingest_stats.stale_removed + excluded.stale_removed,
+       ran_at = excluded.ran_at`,
+    [day, freshAdded, staleRemoved, ranAt],
+  );
+}
+
+export async function getIngestStats(): Promise<IngestStats | null> {
+  const db = await getDb();
+  const rows = await db.all<{ fresh_added: number | string; stale_removed: number | string; ran_at: string }>(
+    `SELECT fresh_added, stale_removed, ran_at FROM ingest_stats ORDER BY day DESC LIMIT 1`,
+  );
+  const row = rows[0];
+  if (!row) return null;
+  return { freshAdded: Number(row.fresh_added), staleRemoved: Number(row.stale_removed), ranAt: row.ran_at };
+}
+
+export type IngestDay = { day: string; freshAdded: number; staleRemoved: number; ranAt: string };
+
+export type IngestHealth = {
+  listings: number;
+  addedLast24h: number;
+  refreshedLast24h: number;
+  newestFirstSeenAt: string | null;
+  newestLastSeenAt: string | null;
+  days: IngestDay[];
+};
+
+/**
+ * Read-only summary for monitoring the nightly pull: the last two weeks of
+ * ingest_stats plus when any listing was last added or refreshed. Counts only,
+ * no listing content.
+ */
+export async function getIngestHealth(days = 14, now = Date.now()): Promise<IngestHealth> {
+  const db = await getDb();
+  const since = new Date(now - 24 * 60 * 60 * 1000).toISOString();
+  const [totals, history] = await Promise.all([
+    db.all<{
+      n: number | string;
+      added: number | string;
+      refreshed: number | string;
+      first_seen: string | null;
+      last_seen: string | null;
+    }>(
+      `SELECT COUNT(*) AS n,
+        SUM(CASE WHEN first_seen_at >= ? THEN 1 ELSE 0 END) AS added,
+        SUM(CASE WHEN last_seen_at >= ? THEN 1 ELSE 0 END) AS refreshed,
+        MAX(first_seen_at) AS first_seen, MAX(last_seen_at) AS last_seen
+       FROM listings`,
+      [since, since],
+    ),
+    db.all<{ day: string; fresh_added: number | string; stale_removed: number | string; ran_at: string }>(
+      `SELECT day, fresh_added, stale_removed, ran_at FROM ingest_stats ORDER BY day DESC LIMIT ?`,
+      [days],
+    ),
+  ]);
+  const total = totals[0];
+  return {
+    listings: Number(total?.n ?? 0),
+    addedLast24h: Number(total?.added ?? 0),
+    refreshedLast24h: Number(total?.refreshed ?? 0),
+    newestFirstSeenAt: total?.first_seen ?? null,
+    newestLastSeenAt: total?.last_seen ?? null,
+    days: history.map((row) => ({
+      day: row.day,
+      freshAdded: Number(row.fresh_added),
+      staleRemoved: Number(row.stale_removed),
+      ranAt: row.ran_at,
+    })),
+  };
 }

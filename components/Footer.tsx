@@ -6,7 +6,7 @@ import { Logo } from "@/components/ui/Logo";
 export function Footer() {
   return (
     <footer className="border-t border-line">
-      <Container className="grid gap-8 py-10 sm:grid-cols-3">
+      <Container className="grid gap-8 py-10 sm:grid-cols-2">
         <div>
           <Logo className="text-lg" />
           <p className="mt-2 max-w-xs text-sm leading-6 text-muted">
@@ -27,12 +27,6 @@ export function Footer() {
               </Link>
             </li>
           </ul>
-        </div>
-        <div>
-          <Eyebrow>Sources</Eyebrow>
-          <p className="mt-3 text-sm leading-6 text-muted">
-            Pulled from public Greenhouse, Ashby, and Lever boards. Apply goes to the original posting.
-          </p>
         </div>
       </Container>
     </footer>

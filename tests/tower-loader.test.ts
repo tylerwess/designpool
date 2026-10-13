@@ -27,13 +27,16 @@ test("the tower loader is credited, scoped, and token-colored", () => {
   assert.match(css, /animation-delay: 2\.3s/);
   assert.match(css, /animation-delay: 3\.45s/);
   assert.match(css, /prefers-reduced-motion: reduce[\s\S]*\.tower-loader-wrap \.box/);
-  assert.equal(PALETTES.light["tower-left"], "#4a1fcc");
-  assert.equal(PALETTES.light["tower-right"], "#5928ed");
-  assert.equal(PALETTES.light["tower-top"], "#8a66f5");
-  assert.equal(PALETTES.dark["tower-left"], "#4e2ad8");
-  assert.equal(PALETTES.dark["tower-right"], "#7a54ff");
-  assert.equal(PALETTES.dark["tower-top"], "#b089ff");
-  assert.ok(home.indexOf("TowerLoader") < home.indexOf("The <span"), "tower sits above the landing headline");
+  assert.equal(PALETTES.light["tower-left"], "#0052a3");
+  assert.equal(PALETTES.light["tower-right"], "#0073e6");
+  assert.equal(PALETTES.light["tower-top"], "#8cc3ff");
+  assert.equal(PALETTES.dark["tower-left"], "#2f82e0");
+  assert.equal(PALETTES.dark["tower-right"], "#4da3ff");
+  assert.equal(PALETTES.dark["tower-top"], "#a8d2ff");
+  assert.ok(
+    home.indexOf("TowerLoader") < home.indexOf("design job board"),
+    "tower sits above the landing headline",
+  );
   assert.match(home, /className="hero-lead"/);
   assert.match(home, /className="hero-title /);
   assert.match(css, /\.hero-title \.tower-loader-wrap\s*\{[^}]*bottom:\s*calc\(100% \+ 0\.125em \+ 1px\)/);

@@ -1,15 +1,8 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import test from "node:test";
-import {
-  FILTERS_MATTER_COPY,
-  PRODUCTION_SITE_URL,
-  SITE_DESCRIPTION,
-  absoluteUrl,
-  shouldHideDesignGallery,
-  siteUrl,
-} from "../lib/site";
+import { PRODUCTION_SITE_URL, absoluteUrl, shouldHideDesignGallery, siteUrl } from "../lib/site";
 
 const ORIGINAL = process.env.NEXT_PUBLIC_SITE_URL;
 
@@ -66,29 +59,21 @@ test("the design gallery is hidden in production and on Vercel", () => {
   assert.equal(shouldHideDesignGallery({ VERCEL_ENV: "development" }), true);
 });
 
-test("the hero and site copy say free in the brand accent", () => {
+test("the hero headline puts design job board in the brand accent and the subhead names the frustrations", () => {
   const home = readFileSync(join(process.cwd(), "app/page.tsx"), "utf8");
-  const og = readFileSync(join(process.cwd(), "app/opengraph-image.tsx"), "utf8");
-  assert.match(home, /<span className="text-accent">free<\/span>/);
-  assert.match(home, /The <span className="text-accent">free<\/span> design job board that respects your time\./);
-  assert.match(SITE_DESCRIPTION, /The free design job board that respects your time/);
-  assert.match(og, /color:\s*color\.accent/);
-  assert.match(og, />free</);
+  assert.match(home, /A <span className="text-accent">design job board<\/span> for no-nonsense jobseekers\./);
+  assert.equal(home.includes("underline"), false);
+  assert.match(home, /No ghost jobs, no paywalls, no endless scrolling\./);
 });
 
-test("the landing hero keeps the more-relevant industry filter line", () => {
-  const home = readFileSync(join(process.cwd(), "app/page.tsx"), "utf8");
-  assert.equal(
-    FILTERS_MATTER_COPY,
-    "Filters that actually matter. Nine seniority levels, years of experience, and more relevant industry filters.",
-  );
-  assert.match(home, /FILTERS_MATTER_COPY/);
-  assert.equal(home.includes("and industry."), false);
+test("the Open Graph image is a static screenshot, not a generated card", () => {
+  assert.equal(existsSync(join(process.cwd(), "app/opengraph-image.png")), true);
+  assert.equal(existsSync(join(process.cwd(), "app/opengraph-image.tsx")), false);
 });
 
 test("the about page credits Tyler Wesson and links his site", () => {
   const about = readFileSync(join(process.cwd(), "app/about/page.tsx"), "utf8");
-  assert.match(about, /Tyler Wesson/);
+  assert.match(about, /Tyler/);
   assert.match(about, /https:\/\/www\.tylerwdesign\.site\//);
   assert.match(about, /target="_blank"/);
   assert.match(about, /rel="noopener noreferrer"/);

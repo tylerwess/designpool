@@ -16,7 +16,7 @@ export function JobCard({ listing, titleHref }: { listing: Listing; titleHref?: 
 
   return (
     <Surface className="p-5">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div className="min-w-0">
           <ListingByline listing={listing} />
           <h2 className="mt-3 font-display text-2xl leading-snug">

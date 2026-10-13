@@ -1,6 +1,6 @@
 # Designpool
 
-A minimal public job board for design roles. It pulls openings from company Greenhouse, Ashby, and Lever boards, classifies each one into one of nine seniority levels, and deletes anything older than 30 days.
+A minimal public job board for design roles. It pulls openings from company Greenhouse, Ashby, and Lever boards, classifies each one into one of eight seniority levels, and deletes anything older than 30 days.
 
 The interface has light and dark mode and a small design system. Tokens, type, and components are documented in [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md). The living gallery at `/design` is local `npm run dev` only; production builds return 404. Change colors in `lib/design-tokens.ts` and `app/globals.css` together. `npm test` checks that they still match.
 
@@ -87,7 +87,7 @@ How the pieces map:
 
 - `wrangler.jsonc` configures the Worker, its static assets, plain-text vars, and the cron trigger.
 - `open-next.config.ts` configures the adapter. Data pages are `force-dynamic`, so there is no incremental cache. Prerendered routes are served from static assets.
-- `cloudflare/worker.ts` is the Worker entry. It serves the app and adds a `scheduled` handler that calls `/api/cron` in-process with `CRON_SECRET` every day at 08:15 UTC.
+- `cloudflare/worker.ts` is the Worker entry. It serves the app and adds a `scheduled` handler that calls `/api/cron` in-process with `CRON_SECRET`. The daily ingest still runs in three parts, an hour apart: `part=1&parts=3` at 08:15 UTC, `part=2` at 09:15 and `part=3` at 10:15. Each fetches every third company in `data/companies.ts`. Workers allow far longer runs than Vercel Hobby did, so one full run (`/api/cron` with no `part`) would also fit; the split is kept so the daily stats and timing stay as they were.
 - `lib/db.ts` opens one Postgres connection per request on Workers, because a Worker cannot reuse a socket across requests. In Node (`npm run dev`, scripts) it keeps one shared connection as before.
 - The display font for the icons and Open Graph image is embedded in `lib/display-font.ts`, because Workers have no project filesystem. Run `npm run embed-font` after replacing the font.
 
@@ -120,7 +120,7 @@ Leave `LLM_CLASSIFIER_ENABLED` as `false` unless you want the optional model pas
 
 ## How seniority is decided
 
-Each role gets one level from the title: New grad, Entry level, Mid-senior, Senior, Staff, Principal, Manager, Director, or Executive. Years of experience are parsed from the description (`5+ years`, `3-5 years`, `3 to 5 years`, `at least 4 years`, `minimum of 6 years`, and spelled-out numbers). Unrelated numbers, such as “5 years of runway” or a company age, are ignored.
+Each role gets one level from the title: New grad/Entry level, Mid-senior, Senior, Staff, Principal, Manager, Director, or Executive. Years of experience are parsed from the description (`5+ years`, `3-5 years`, `3 to 5 years`, `at least 4 years`, `minimum of 6 years`, and spelled-out numbers). Unrelated numbers, such as “5 years of runway” or a company age, are ignored.
 
 If the title asks for fewer years than that level usually does, the title is kept and the role is marked Stretch. Roles that never state years use the title only.
 
@@ -131,6 +131,3 @@ If the title asks for fewer years than that level usually does, the title is kep
 - `npm run ingest` — fetch live boards into the configured database
 - `npm run verify-companies` — check that each configured token still returns jobs
 - `npm run lint` — ESLint
-- `npm run preview` — build for Cloudflare and run it in the local Workers runtime (reads `.dev.vars`; see `.dev.vars.example`)
-- `npm run deploy` — build and deploy the Worker
-- `npm run embed-font` — regenerate `lib/display-font.ts` from `fonts/`

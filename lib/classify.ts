@@ -72,8 +72,8 @@ export function levelFromTitle(title: string, description: string, sizeBucket: s
     return "new_grad";
   }
 
-  if (/\b(associate|junior|jr|apprentice)\b/.test(t)) return "entry";
-  if (/\b(designer|design)\s+(i|1)\b/.test(t) || /\b(level|lvl)\s+(i|1)\b/.test(t)) return "entry";
+  if (/\b(associate|junior|jr|apprentice)\b/.test(t)) return "new_grad";
+  if (/\b(designer|design)\s+(i|1)\b/.test(t) || /\b(level|lvl)\s+(i|1)\b/.test(t)) return "new_grad";
 
   if (/\b(designer|design)\s+(ii|2)\b/.test(t) || /\b(level|lvl)\s+(ii|2)\b/.test(t) || /\bii\b/.test(t)) {
     return "mid";

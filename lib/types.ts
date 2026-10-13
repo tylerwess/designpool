@@ -1,6 +1,5 @@
 import type {
   Ats,
-  BenefitId,
   DisciplineId,
   EmploymentType,
   IndustryId,
@@ -36,7 +35,6 @@ export type Listing = {
   industry: IndustryId;
   sizeBucket: SizeBucket;
   disciplines: DisciplineId[];
-  benefits: BenefitId[];
 };
 
 export type ListingDraft = Listing & { description: string };

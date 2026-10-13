@@ -8,9 +8,6 @@ export const SITE_NAME = "Designpool";
 export const SITE_DESCRIPTION =
   "The free design job board that respects your time. Filters that actually matter, and nothing older than 30 days.";
 
-export const FILTERS_MATTER_COPY =
-  "Filters that actually matter. Nine seniority levels, years of experience, and more relevant industry filters.";
-
 export function siteUrl(): URL {
   const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim();
   const candidate = configured
@@ -48,7 +45,6 @@ export function pageMetadata({
 }): Metadata {
   const canonical = path.startsWith("/") ? path : `/${path}`;
   const socialTitle = title ? `${title} · ${SITE_NAME}` : SITE_NAME;
-  const image = { url: "/opengraph-image", width: 1200, height: 630, alt: "Designpool, a job board for design roles" };
   return {
     ...(title ? { title } : {}),
     description,
@@ -60,13 +56,11 @@ export function pageMetadata({
       siteName: SITE_NAME,
       type: "website",
       locale: "en_US",
-      images: [image],
     },
     twitter: {
       card: "summary_large_image",
       title: socialTitle,
       description,
-      images: [image.url],
     },
   };
 }

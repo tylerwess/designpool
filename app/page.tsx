@@ -1,39 +1,51 @@
+import { FreshListingsCount } from "@/components/FreshListingsCount";
 import { LandingLive } from "@/components/LandingLive";
+import { LastUpdated } from "@/components/LastUpdated";
+import { SourcePlatforms } from "@/components/SourcePlatforms";
 import { ArrowIcon, Button } from "@/components/ui/Button";
-import { CompanyLogo } from "@/components/ui/CompanyLogo";
 import { Container } from "@/components/ui/Container";
-import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Surface } from "@/components/ui/Surface";
 import { TowerLoader } from "@/components/ui/TowerLoader";
-import { loadBoard } from "@/lib/board";
-import { FILTERS_MATTER_COPY, pageMetadata } from "@/lib/site";
+import { loadBoard, loadIngestStats } from "@/lib/board";
+import { pageMetadata } from "@/lib/site";
 
-const SOURCE_PLATFORMS = [
-  { name: "Greenhouse", website: "https://www.greenhouse.com" },
-  { name: "Ashby", website: "https://www.ashbyhq.com" },
-  { name: "Lever", website: "https://www.lever.co" },
-];
+function VerifiedIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" className="shrink-0 text-accent">
+      <path
+        fill="currentColor"
+        d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.69 3.1 5.5l.34 3.7L1 12l2.44 2.79-.34 3.7 3.61.82L8.6 22.5l3.4-1.47 3.4 1.46 1.89-3.19 3.61-.82-.34-3.69L23 12z"
+      />
+      <path
+        d="M7.75 12.25 10.5 15l5.75-5.75"
+        fill="none"
+        stroke="var(--bg)"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 export const metadata = pageMetadata({ path: "/" });
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const board = await loadBoard();
+  const [board, ingestStats] = await Promise.all([loadBoard(), loadIngestStats()]);
   const jobs = board.status === "ok" ? board.jobs : [];
 
   return (
     <div>
-      <Container className="py-16 sm:py-20">
+      <Container size="narrow" className="pt-16 sm:pt-20">
         <div className="hero-lead">
           <h1 className="hero-title max-w-4xl font-display text-5xl leading-[1.02] sm:text-7xl">
             <TowerLoader />
-            The <span className="text-accent">free</span> design job board that respects your time.
+            A <span className="text-accent">design job board</span> for no-nonsense jobseekers.
           </h1>
         </div>
-        <p className="mt-4 max-w-2xl text-base text-muted">
-          {FILTERS_MATTER_COPY} A role stays for 30 days, then it is deleted.
-        </p>
+        <p className="mt-6 max-w-2xl text-base text-muted">No ghost jobs, no paywalls, no endless scrolling.</p>
         <div className="mt-6">
           <Button href="/jobs" className="gap-2">
             Browse open roles
@@ -41,31 +53,31 @@ export default async function HomePage() {
           </Button>
         </div>
 
-        <div className="mt-10">
-          <Eyebrow>Listings powered by</Eyebrow>
-          <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-2 font-display text-lg text-ink">
-            {SOURCE_PLATFORMS.map((platform, index) => (
-              <span key={platform.name} className="inline-flex items-center gap-2">
-                <CompanyLogo name={platform.name} website={platform.website} />
-                {platform.name}
-                {index < SOURCE_PLATFORMS.length - 1
-                  ? index === SOURCE_PLATFORMS.length - 2
-                    ? ", and"
-                    : ","
-                  : ""}
-              </span>
-            ))}
-          </p>
+        <div className="mt-16 flex flex-col gap-8 sm:flex-row sm:items-start sm:gap-12">
+          <div className="flex flex-col items-start gap-3">
+            <p className="inline-flex items-center gap-1.5 text-sm text-muted">
+              <VerifiedIcon />
+              Real listings from
+            </p>
+            <SourcePlatforms className="text-lg" />
+          </div>
+          <div className="flex flex-col items-start gap-3">
+            <p className="text-sm text-muted">Open roles</p>
+            <span className="metric-box">
+              <FreshListingsCount count={jobs.length} className="text-[2.109375rem] text-ink" />
+            </span>
+            {ingestStats ? <LastUpdated iso={ingestStats.ranAt} /> : null}
+          </div>
         </div>
       </Container>
 
-      <div className="source-stack pb-14">
+      <div className="source-stack mt-16 pb-14">
         {jobs.length > 0 ? (
-          <Container>
+          <Container size="narrow">
             <LandingLive jobs={jobs} />
           </Container>
         ) : (
-          <Container>
+          <Container size="narrow">
             <Surface className="landing-live max-w-xl p-5 text-sm leading-6">
               {board.status === "ok" ? "No roles yet. Listings show up after the first ingest." : board.message}
             </Surface>
@@ -74,8 +86,8 @@ export default async function HomePage() {
       </div>
 
       <section className="bg-surface">
-        <Container className="py-14 sm:py-16">
-          <h2 className="max-w-3xl font-display text-4xl leading-tight sm:text-5xl">Nine levels, not one bucket.</h2>
+        <Container size="narrow" className="py-14 sm:py-16">
+          <h2 className="max-w-3xl font-display text-4xl leading-tight sm:text-5xl">Eight levels, not one bucket.</h2>
           <p className="mt-3 max-w-xl text-base leading-7 text-muted">
             Title first, years second. Lead stays an individual contributor unless the role manages people.
           </p>

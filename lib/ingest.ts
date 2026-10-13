@@ -2,13 +2,20 @@ import type { Company } from "../data/companies";
 import { companiesForIngest } from "./ingest-sources";
 import { classifyListing } from "./llm";
 import { isDesignRole } from "./design-role";
-import { deleteExpired, deleteStale, countBySeniority, upsertListing } from "./listings";
+import {
+  countBySeniority,
+  countFirstSeenAt,
+  deleteExpired,
+  deleteStale,
+  freshCutoff,
+  recordIngestStats,
+  upsertListing,
+} from "./listings";
 import { fetchCompanyJobs, type FetchedJob } from "./sources";
-import { benefitsFor, disciplinesFor } from "./text";
+import { disciplinesFor } from "./text";
 import { parseYears } from "./years";
 import type { ListingDraft } from "./types";
 
-const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 const FETCH_CONCURRENCY = 6;
 
 export type IngestResult = {
@@ -81,13 +88,12 @@ export async function toListingDraft(company: Company, job: FetchedJob, seenAt: 
     industry: company.industry,
     sizeBucket: company.sizeBucket,
     disciplines: disciplinesFor(job.title, description),
-    benefits: benefitsFor(description),
   };
 }
 
 export async function runIngest(source: Company[] = companiesForIngest()): Promise<IngestResult> {
   const seenAt = new Date().toISOString();
-  const cutoff = new Date(Date.now() - THIRTY_DAYS_MS).toISOString();
+  const cutoff = freshCutoff();
   let deletedExpired = await deleteExpired(cutoff);
 
   const outcomes = await mapPool(source, FETCH_CONCURRENCY, async (company, index) => {
@@ -118,6 +124,9 @@ export async function runIngest(source: Company[] = companiesForIngest()): Promi
     name: outcome.name,
     error: outcome.error ?? "Unknown error",
   }));
+  const deletedStale = outcomes.reduce((sum, outcome) => sum + outcome.deletedStale, 0);
+  const freshAdded = await countFirstSeenAt(seenAt);
+  await recordIngestStats(freshAdded, deletedStale + deletedExpired, seenAt);
 
   return {
     ok: failed.length === 0,
@@ -126,7 +135,7 @@ export async function runIngest(source: Company[] = companiesForIngest()): Promi
     succeeded: outcomes.length - failed.length,
     failed,
     upserted: outcomes.reduce((sum, outcome) => sum + outcome.upserted, 0),
-    deletedStale: outcomes.reduce((sum, outcome) => sum + outcome.deletedStale, 0),
+    deletedStale,
     deletedExpired,
     bySeniority,
     total: Object.values(bySeniority).reduce((sum, count) => sum + count, 0),

@@ -40,14 +40,16 @@ CREATE TABLE IF NOT EXISTS listings (
   years_max INTEGER,
   industry TEXT NOT NULL,
   size_bucket TEXT NOT NULL,
-  disciplines TEXT NOT NULL,
-  benefits TEXT NOT NULL DEFAULT '[]'
+  disciplines TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS listings_company ON listings (source, company_token);
+CREATE TABLE IF NOT EXISTS ingest_stats (
+  day TEXT PRIMARY KEY,
+  fresh_added INTEGER NOT NULL,
+  stale_removed INTEGER NOT NULL,
+  ran_at TEXT NOT NULL
+);
 `;
-
-/** Adds columns introduced after a table already existed. Both engines error on a repeat add, so failures are swallowed. */
-const MIGRATIONS = [`ALTER TABLE listings ADD COLUMN benefits TEXT NOT NULL DEFAULT '[]'`];
 
 let dbPromise: Promise<Db> | null = null;
 let schemaReady = false;
@@ -103,14 +105,6 @@ async function openDatabase(): Promise<Db> {
 async function ensureSchema(db: Db): Promise<void> {
   for (const statement of SCHEMA.split(";").map((part) => part.trim()).filter(Boolean)) {
     await db.run(statement);
-  }
-  for (const statement of MIGRATIONS) {
-    try {
-      await db.run(statement);
-    } catch (error) {
-      const message = error instanceof Error ? error.message.toLowerCase() : "";
-      if (!message.includes("duplicate column") && !message.includes("already exists")) throw error;
-    }
   }
 }
 
