@@ -471,24 +471,16 @@ h1.font-display,
     0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
-/* Secondary CTA: white key with a grey ledge underneath. */
-.btn-3d {
-  border: 1px solid #d4d4d4;
-  background-color: #ffffff;
-  color: #0a0a0a;
-  box-shadow: 0 4px 0 0 #b3b3b3;
-  transition:
-    transform 0.12s ease,
-    box-shadow 0.12s ease;
+/* Secondary CTA: plain outline that follows the theme. */
+.btn-outline {
+  border: 2px solid var(--muted);
+  background-color: transparent;
+  color: var(--ink);
+  transition: border-color 0.15s ease;
 }
 
-.btn-3d:hover {
-  background-color: #f7f7f7;
-}
-
-.btn-3d:active {
-  transform: translateY(3px);
-  box-shadow: 0 1px 0 0 #b3b3b3;
+.btn-outline:hover {
+  border-color: var(--ink);
 }
 
 .bot-container {
@@ -1145,7 +1137,7 @@ input.control[type="number"]::-webkit-outer-spin-button {
   .btn-glossy::before,
   .btn-glossy::after,
   .btn-glossy .btn-label,
-  .btn-3d {
+  .btn-outline {
     transition: none;
   }
 
