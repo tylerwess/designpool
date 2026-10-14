@@ -1,0 +1,4 @@
+# Copy to .dev.vars for `npm run preview` (runs the app in the local Workers runtime).
+NEXTJS_ENV=development
+DATABASE_URL=
+CRON_SECRET=dev-secret

@@ -1,11 +1,12 @@
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
 import type { CSSProperties, ReactElement } from "react";
 import { PALETTES, TYPE_DISPLAY } from "@/lib/design-tokens";
+import { FJALLA_ONE_BASE64 } from "@/lib/display-font";
 
 export async function loadDisplayFont(): Promise<ArrayBuffer> {
-  const bytes = await readFile(join(process.cwd(), "fonts/FjallaOne-Regular.ttf"));
-  return bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
+  const binary = atob(FJALLA_ONE_BASE64);
+  const bytes = new Uint8Array(binary.length);
+  for (let index = 0; index < binary.length; index += 1) bytes[index] = binary.charCodeAt(index);
+  return bytes.buffer;
 }
 
 export function brandMarkStyle(size: number): CSSProperties {

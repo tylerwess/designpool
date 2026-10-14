@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import type { Metadata, Viewport } from "next";
-import { Analytics } from "@vercel/analytics/next";
 import { Fjalla_One, Work_Sans } from "next/font/google";
 import Script from "next/script";
 import { Footer } from "@/components/Footer";
@@ -60,7 +59,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Header />
         <div className="flex-1">{children}</div>
         <Footer />
-        <Analytics />
       </body>
     </html>
   );

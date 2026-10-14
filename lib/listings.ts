@@ -221,8 +221,8 @@ export async function recordIngestStats(freshAdded: number, staleRemoved: number
   await db.run(
     `INSERT INTO ingest_stats (day, fresh_added, stale_removed, ran_at) VALUES (?, ?, ?, ?)
      ON CONFLICT(day) DO UPDATE SET
-       fresh_added = fresh_added + excluded.fresh_added,
-       stale_removed = stale_removed + excluded.stale_removed,
+       fresh_added = ingest_stats.fresh_added + excluded.fresh_added,
+       stale_removed = ingest_stats.stale_removed + excluded.stale_removed,
        ran_at = excluded.ran_at`,
     [day, freshAdded, staleRemoved, ranAt],
   );
