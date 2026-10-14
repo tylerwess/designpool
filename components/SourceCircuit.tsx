@@ -1,19 +1,23 @@
+"use client";
+
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { CompanyLogo } from "@/components/ui/CompanyLogo";
 import { SOURCE_PLATFORMS } from "@/lib/source-platforms";
 
-const VIEW_W = 410;
+/** Below this width the whole drawing scales down instead of the traces getting shorter. */
+const MIN_W = 410;
 const VIEW_H = 150;
 
 const NODE_W = 132;
 const NODE_H = 40;
+const CHIP_W = 104;
+const CHIP_H = 54;
+const CHIP_Y = 48;
 
-const CHIP = { x: 154, y: 48, w: 104, h: 54 };
-const CHIP_RIGHT = CHIP.x + CHIP.w;
-
-type Platform = (typeof SOURCE_PLATFORMS)[number];
+type Name = (typeof SOURCE_PLATFORMS)[number]["name"];
 
 type Node = {
-  name: Platform["name"];
+  name: Name;
   x: number;
   y: number;
   /** Trace from the node edge into a chip pin, drawn node → chip so the pulse flows inward. */
@@ -23,79 +27,102 @@ type Node = {
   delay: string;
 };
 
-const NODES: Node[] = [
-  {
-    name: "Greenhouse",
-    x: 0,
-    y: 4,
-    trace: `M${NODE_W} 24 H143 V64 H${CHIP.x}`,
-    pin: { x: CHIP.x - 5, y: 64 },
-    delay: "0s",
-  },
-  {
-    name: "Ashby",
-    x: 0,
-    y: 106,
-    trace: `M${NODE_W} 126 H143 V86 H${CHIP.x}`,
-    pin: { x: CHIP.x - 5, y: 86 },
-    delay: "1s",
-  },
-  {
-    name: "Lever",
-    x: VIEW_W - NODE_W,
-    y: 55,
-    trace: `M${VIEW_W - NODE_W} 75 H${CHIP_RIGHT}`,
-    pin: { x: CHIP_RIGHT, y: 75 },
-    delay: "2s",
-  },
-];
+/** Nodes and chip keep their size; the chip stays centered and the traces stretch to fill the width. */
+function layout(width: number) {
+  const chipX = (width - CHIP_W) / 2;
+  const chipRight = chipX + CHIP_W;
+  const jog = (NODE_W + chipX) / 2;
+  const nodes: Node[] = [
+    {
+      name: "Greenhouse",
+      x: 0,
+      y: 4,
+      trace: `M${NODE_W} 24 H${jog} V64 H${chipX}`,
+      pin: { x: chipX - 5, y: 64 },
+      delay: "0s",
+    },
+    {
+      name: "Ashby",
+      x: 0,
+      y: 106,
+      trace: `M${NODE_W} 126 H${jog} V86 H${chipX}`,
+      pin: { x: chipX - 5, y: 86 },
+      delay: "1s",
+    },
+    {
+      name: "Lever",
+      x: width - NODE_W,
+      y: 55,
+      trace: `M${width - NODE_W} 75 H${chipRight}`,
+      pin: { x: chipRight, y: 75 },
+      delay: "2s",
+    },
+  ];
+  const edgePins = [20, 36, 52, 68, 84].map((offset) => chipX + offset);
+  return { chipX, nodes, edgePins };
+}
 
-/** Decorative pins along the chip's top and bottom edges. */
-const EDGE_PINS = [20, 36, 52, 68, 84].map((offset) => CHIP.x + offset);
-
-/** Greenhouse, Ashby, and Lever feeding the Designpool chip, with a pulse running down each trace. */
+/** Greenhouse, Ashby, and Lever feeding the Designpool chip, each pulse in that platform's icon color. */
 export function SourceCircuit({ className = "" }: { className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(MIN_W);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+    const observer = new ResizeObserver(([entry]) => {
+      setWidth(Math.max(MIN_W, Math.round(entry.contentRect.width)));
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  const { chipX, nodes, edgePins } = layout(width);
+
   return (
-    <div className={`source-circuit w-[25.625rem] max-w-full ${className}`.trim()}>
+    <div ref={ref} className={`source-circuit w-full ${className}`.trim()}>
       <svg
-        viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
+        viewBox={`0 0 ${width} ${VIEW_H}`}
         role="img"
         aria-labelledby="source-circuit-title"
         className="block h-auto w-full"
       >
         <title id="source-circuit-title">Listings flow into Designpool from Greenhouse, Ashby, and Lever.</title>
 
-        {NODES.map((node) => (
+        {nodes.map((node) => (
           <path key={`${node.name}-bg`} d={node.trace} className="trace-bg" />
         ))}
-        {NODES.map((node) => (
-          <path
-            key={`${node.name}-flow`}
-            d={node.trace}
-            pathLength={100}
-            className="trace-flow"
-            style={{ animationDelay: node.delay }}
-          />
-        ))}
+        {nodes.map((node) => {
+          const color = SOURCE_PLATFORMS.find((item) => item.name === node.name)!.color;
+          return (
+            <path
+              key={`${node.name}-flow`}
+              d={node.trace}
+              pathLength={100}
+              className="trace-flow"
+              style={{ "--trace-color": color, animationDelay: node.delay } as CSSProperties}
+            />
+          );
+        })}
 
-        {EDGE_PINS.map((x) => (
+        {edgePins.map((x) => (
           <g key={x}>
-            <rect x={x - 3} y={CHIP.y - 5} width={6} height={5} rx={1} className="chip-pin" />
-            <rect x={x - 3} y={CHIP.y + CHIP.h} width={6} height={5} rx={1} className="chip-pin" />
+            <rect x={x - 3} y={CHIP_Y - 5} width={6} height={5} rx={1} className="chip-pin" />
+            <rect x={x - 3} y={CHIP_Y + CHIP_H} width={6} height={5} rx={1} className="chip-pin" />
           </g>
         ))}
-        {NODES.map((node) => (
+        {nodes.map((node) => (
           <rect key={`${node.name}-pin`} x={node.pin.x} y={node.pin.y - 3} width={5} height={6} rx={1} className="chip-pin" />
         ))}
 
-        <rect x={CHIP.x} y={CHIP.y} width={CHIP.w} height={CHIP.h} rx={12} className="chip-body" />
-        <foreignObject x={CHIP.x} y={CHIP.y} width={CHIP.w} height={CHIP.h}>
+        <rect x={chipX} y={CHIP_Y} width={CHIP_W} height={CHIP_H} rx={12} className="chip-body" />
+        <foreignObject x={chipX} y={CHIP_Y} width={CHIP_W} height={CHIP_H}>
           <div className="chip-label">
             Design<span className="chip-label-pool">pool</span>
           </div>
         </foreignObject>
 
-        {NODES.map((node) => {
+        {nodes.map((node) => {
           const platform = SOURCE_PLATFORMS.find((item) => item.name === node.name)!;
           return (
             <g key={node.name}>
