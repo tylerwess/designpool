@@ -3,9 +3,9 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 const variants = {
   primary:
-    "btn-neubrutal inline-flex h-11 items-center justify-center rounded-full border-2 border-ink bg-accent px-6 font-display text-sm text-on-accent",
+    "btn-glossy inline-flex h-11 items-center justify-center rounded-[12px] px-6 font-display text-sm",
   secondary:
-    "btn-neubrutal btn-neubrutal-accent inline-flex h-11 items-center justify-center rounded-full border-2 border-accent px-6 font-display text-sm text-accent",
+    "btn-3d inline-flex h-11 items-center justify-center rounded-[12px] px-6 font-display text-sm",
   ghost:
     "inline-flex items-center font-display text-sm text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent",
 } as const;
@@ -69,19 +69,26 @@ type NativeButton = Shared & { href?: undefined } & ButtonHTMLAttributes<HTMLBut
 export function Button(props: LinkButton | NativeButton) {
   const variant = props.variant ?? "primary";
   const className = `${variants[variant]} ${props.className ?? ""}`.trim();
+  // The glossy primary paints its highlights behind a label layer.
+  const label = (content: ReactNode) =>
+    variant === "primary" ? <span className="btn-label">{content}</span> : content;
 
   if ("href" in props && props.href) {
     if (props.external) {
       return (
         <a href={props.href} className={`${className} gap-1.5`} target="_blank" rel="noopener noreferrer">
-          {props.children}
-          <LaunchIcon />
+          {label(
+            <>
+              {props.children}
+              <LaunchIcon />
+            </>,
+          )}
         </a>
       );
     }
     return (
       <Link href={props.href} className={className}>
-        {props.children}
+        {label(props.children)}
       </Link>
     );
   }
@@ -93,7 +100,7 @@ export function Button(props: LinkButton | NativeButton) {
   delete rest.children;
   return (
     <button type={type} className={className} {...rest}>
-      {native.children}
+      {label(native.children)}
     </button>
   );
 }

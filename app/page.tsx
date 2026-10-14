@@ -55,18 +55,18 @@ export default async function HomePage() {
 
         <div className="mt-16 flex flex-col gap-8 sm:flex-row sm:items-start sm:gap-12">
           <div className="flex flex-col items-start gap-3">
-            <p className="inline-flex items-center gap-1.5 text-sm text-muted">
-              <VerifiedIcon />
-              Real listings from
-            </p>
-            <SourcePlatforms className="text-lg" />
-          </div>
-          <div className="flex flex-col items-start gap-3">
             <p className="text-sm text-muted">Open roles</p>
             <span className="metric-box">
               <FreshListingsCount count={jobs.length} className="text-[2.109375rem] text-ink" />
             </span>
             {ingestStats ? <LastUpdated iso={ingestStats.ranAt} /> : null}
+          </div>
+          <div className="flex flex-col items-start gap-3">
+            <p className="inline-flex items-center gap-1.5 text-sm text-muted">
+              <VerifiedIcon />
+              Real listings from
+            </p>
+            <SourcePlatforms className="text-lg" />
           </div>
         </div>
       </Container>
