@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
+import { SourceCircuit } from "@/components/SourceCircuit";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
-import { GrokBot } from "@/components/ui/GrokBot";
 import { pageMetadata } from "@/lib/site";
 import { SENIORITY_LABELS, SENIORITY_LEVELS, TYPICAL_MIN_YEARS } from "@/lib/taxonomy";
 
@@ -126,7 +126,6 @@ function LevelsIcon() {
 export default function AboutPage() {
   return (
     <Container size="narrow" className="py-14">
-      <GrokBot className="mb-4" />
       <Eyebrow>About</Eyebrow>
       <h1 className="mt-3 font-display text-4xl sm:text-5xl">How this board works</h1>
       <div className="mt-8 space-y-4 text-sm leading-7 text-ink">
@@ -160,6 +159,9 @@ export default function AboutPage() {
         Every listing comes from the company’s own Greenhouse, Ashby, or Lever board. No agencies, no recruiters, no
         reposts. Apply takes you to the original posting.
       </p>
+      <div className={`mt-6 ${SECTION_INDENT}`}>
+        <SourceCircuit />
+      </div>
 
       <SectionHeading icon={<FilterIcon />}>Filters that actually matter</SectionHeading>
       <p className={`mt-4 text-sm leading-7 ${SECTION_INDENT}`}>

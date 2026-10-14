@@ -53,7 +53,7 @@ export default async function HomePage() {
           </Button>
         </div>
 
-        <div className="mt-16 flex flex-col gap-8 sm:flex-row sm:items-start sm:gap-12">
+        <div className="mt-16 flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8">
           <div className="flex flex-col items-start gap-3">
             <p className="text-sm text-muted">Open roles</p>
             <span className="metric-box">
@@ -61,6 +61,7 @@ export default async function HomePage() {
             </span>
             {ingestStats ? <LastUpdated iso={ingestStats.ranAt} /> : null}
           </div>
+          <div className="h-px w-1/2 bg-line sm:h-auto sm:w-px sm:self-stretch" aria-hidden="true" />
           <div className="flex flex-col items-start gap-3">
             <p className="inline-flex items-center gap-1.5 text-sm text-muted">
               <VerifiedIcon />
