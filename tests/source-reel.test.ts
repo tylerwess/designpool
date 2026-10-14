@@ -65,14 +65,14 @@ test("the landing page is left-aligned to the header content column", () => {
   assert.match(doc, /left-aligned/);
 });
 
-test("seniority tabs hug their items and only ring on :focus-visible", () => {
+test("seniority chips sit in one swipeable row and only ring on :focus-visible", () => {
   const live = readFileSync(join(ROOT, "components/LandingLive.tsx"), "utf8");
   const css = readFileSync(join(ROOT, "app/globals.css"), "utf8");
   assert.match(live, /className="landing-seniority"/);
-  assert.match(css, /\.landing-seniority\s*\{[^}]*display:\s*inline-flex/);
-  assert.match(css, /\.landing-seniority\s*\{[^}]*width:\s*fit-content/);
-  assert.match(css, /\.landing-seniority\s*\{[^}]*padding:\s*0\.25rem/);
+  assert.match(css, /\.landing-seniority\s*\{[^}]*flex-wrap:\s*nowrap/);
   assert.match(css, /\.landing-seniority\s*\{[^}]*overflow-x:\s*auto/);
+  assert.match(css, /\.landing-seniority-tab\s*\{[^}]*border:\s*1px solid var\(--line\)/);
+  assert.match(css, /\.landing-seniority-tab\.is-active\s*\{[^}]*background:\s*var\(--ink\)/);
   assert.match(css, /\.landing-seniority-tab:focus\s*\{[^}]*outline:\s*none/);
   assert.match(css, /\.landing-seniority-tab:focus-visible\s*\{[^}]*outline:\s*2px solid var\(--accent-focus\)/);
 });
