@@ -412,9 +412,9 @@ h1.font-display,
 }
 
 .source-circuit .chip-body {
-  fill: var(--surface);
-  stroke: var(--line);
-  stroke-width: 1;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
 }
 
 .source-circuit .chip-pin {
@@ -444,9 +444,9 @@ h1.font-display,
 }
 
 .source-circuit .circuit-node {
-  fill: var(--bg);
-  stroke: var(--line);
-  stroke-width: 1;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg);
 }
 
 .source-circuit .circuit-node-label {
