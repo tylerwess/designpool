@@ -3,11 +3,11 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 const variants = {
   primary:
-    "btn-glossy inline-flex h-11 items-center justify-center rounded-[12px] px-6 font-display text-sm",
+    "btn-glossy inline-flex h-11 items-center justify-center rounded-[12px] px-6 font-sans font-medium text-sm",
   secondary:
-    "btn-outline inline-flex h-11 items-center justify-center rounded-[12px] px-6 font-display text-sm",
+    "btn-outline inline-flex h-11 items-center justify-center rounded-[12px] px-6 font-sans font-medium text-sm",
   ghost:
-    "inline-flex items-center font-display text-sm text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent",
+    "inline-flex items-center font-sans font-medium text-sm text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent",
 } as const;
 
 function LaunchIcon() {

@@ -182,13 +182,18 @@ body {
   line-height: 1.6;
 }
 
-/* Headings are Work Sans; only the hero title (and anything marked .font-display) uses Fjalla One. */
-h1,
-h2,
-h3 {
-  font-family: var(--font-sans), "Work Sans", "Segoe UI", sans-serif;
-  font-weight: 700;
-  letter-spacing: var(--tracking-display);
+/*
+  Headings are Work Sans; only the hero title (and anything marked .font-display) uses Fjalla One.
+  In the base layer so utilities such as font-medium can override the weight.
+*/
+@layer base {
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-sans), "Work Sans", "Segoe UI", sans-serif;
+    font-weight: 700;
+    letter-spacing: var(--tracking-display);
+  }
 }
 
 .font-display {
