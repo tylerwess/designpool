@@ -473,91 +473,20 @@ h1.font-display,
   color: var(--ink);
 }
 
-/* Primary CTA: glossy pill in the brand accent. */
-.btn-glossy {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
+/* Primary CTA: flat fill in the brand accent. */
+.btn-primary {
   border: 0;
   background-color: var(--accent);
   color: var(--on-accent);
-  box-shadow:
-    inset 0 0.15rem 0.35rem rgba(255, 255, 255, 0.25),
-    inset 0 -0.08rem 0.15rem rgba(0, 0, 0, 0.18),
-    inset 0 -0.2rem 0.4rem rgba(255, 255, 255, 0.25),
-    0 1px 2px rgba(0, 0, 0, 0.12),
-    0 2px 6px -2px rgba(0, 0, 0, 0.12);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  transition: background-color 0.15s ease;
 }
 
-.btn-glossy::before,
-.btn-glossy::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  pointer-events: none;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+.btn-primary:hover {
+  background-color: var(--accent-hover);
 }
 
-/* Soft dome of light across the top. */
-.btn-glossy::before {
-  left: -15%;
-  right: -15%;
-  top: -100%;
-  bottom: 25%;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Specular highlight along the upper edge. */
-.btn-glossy::after {
-  left: 6%;
-  right: 6%;
-  top: 10%;
-  bottom: 42%;
-  border-radius: 8px 8px 0 0;
-  box-shadow: inset 0 8px 6px -8px rgba(255, 255, 255, 0.55);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 55%);
-}
-
-.btn-glossy .btn-label {
-  display: inline-flex;
-  align-items: center;
-  gap: inherit;
-  transition: transform 0.2s ease;
-}
-
-.btn-glossy:hover {
-  box-shadow:
-    inset 0 0.15rem 0.3rem rgba(255, 255, 255, 0.32),
-    inset 0 -0.08rem 0.15rem rgba(0, 0, 0, 0.18),
-    inset 0 -0.2rem 0.4rem rgba(255, 255, 255, 0.35),
-    0 1px 2px rgba(0, 0, 0, 0.12),
-    0 3px 8px -2px rgba(0, 0, 0, 0.14);
-}
-
-.btn-glossy:hover::before {
-  transform: translateY(-5%);
-}
-
-.btn-glossy:hover::after {
-  opacity: 0.4;
-  transform: translateY(5%);
-}
-
-.btn-glossy:hover .btn-label {
-  transform: translateY(-1px);
-}
-
-.btn-glossy:active {
-  transform: translateY(1px);
-  box-shadow:
-    inset 0 0.15rem 0.3rem rgba(255, 255, 255, 0.3),
-    inset 0 -0.08rem 0.15rem rgba(0, 0, 0, 0.22),
-    inset 0 -0.2rem 0.4rem rgba(255, 255, 255, 0.2),
-    0 1px 1px rgba(0, 0, 0, 0.1);
+.btn-primary:active {
+  background-color: var(--accent-active);
 }
 
 /* Secondary CTA: plain outline that follows the theme. */
@@ -1145,10 +1074,7 @@ input.control[type="number"]::-webkit-outer-spin-button {
   .cloud,
   .odometer-digit-strip,
   .slot-reel-strip,
-  .btn-glossy,
-  .btn-glossy::before,
-  .btn-glossy::after,
-  .btn-glossy .btn-label,
+  .btn-primary,
   .btn-outline {
     transition: none;
   }

@@ -3,7 +3,7 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 const variants = {
   primary:
-    "btn-glossy inline-flex h-11 items-center justify-center rounded-[12px] px-6 font-sans font-medium text-sm",
+    "btn-primary inline-flex h-11 items-center justify-center rounded-[12px] px-6 font-sans font-medium text-sm",
   secondary:
     "btn-outline inline-flex h-11 items-center justify-center rounded-[12px] px-6 font-sans font-medium text-sm",
   ghost:
@@ -69,26 +69,19 @@ type NativeButton = Shared & { href?: undefined } & ButtonHTMLAttributes<HTMLBut
 export function Button(props: LinkButton | NativeButton) {
   const variant = props.variant ?? "primary";
   const className = `${variants[variant]} ${props.className ?? ""}`.trim();
-  // The glossy primary paints its highlights behind a label layer.
-  const label = (content: ReactNode) =>
-    variant === "primary" ? <span className="btn-label">{content}</span> : content;
 
   if ("href" in props && props.href) {
     if (props.external) {
       return (
         <a href={props.href} className={`${className} gap-1.5`} target="_blank" rel="noopener noreferrer">
-          {label(
-            <>
-              {props.children}
-              <LaunchIcon />
-            </>,
-          )}
+          {props.children}
+          <LaunchIcon />
         </a>
       );
     }
     return (
       <Link href={props.href} className={className}>
-        {label(props.children)}
+        {props.children}
       </Link>
     );
   }
@@ -100,7 +93,7 @@ export function Button(props: LinkButton | NativeButton) {
   delete rest.children;
   return (
     <button type={type} className={className} {...rest}>
-      {label(native.children)}
+      {native.children}
     </button>
   );
 }
