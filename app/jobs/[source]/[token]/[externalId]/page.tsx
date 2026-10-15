@@ -55,7 +55,7 @@ export default async function JobPage({ params }: { params: Promise<JobParams> }
         <div className="mt-6">
           <ListingByline listing={listing} size="lg" />
         </div>
-        <h1 className="mt-4 font-display text-4xl leading-tight sm:text-5xl">{listing.title}</h1>
+        <h1 className="mt-4 text-4xl leading-tight sm:text-5xl">{listing.title}</h1>
         {tags.length > 0 ? (
           <ul className="tag-row mt-4">
             {tags.map((tag) => (
@@ -66,7 +66,7 @@ export default async function JobPage({ params }: { params: Promise<JobParams> }
           </ul>
         ) : null}
 
-        <h2 className="mt-10 font-display text-2xl">Description</h2>
+        <h2 className="mt-10 text-2xl">Description</h2>
         <ExpandableDescription
           html={toDescriptionHtml(listing.description)}
           empty="The company didn’t include a description in the public feed."

@@ -87,7 +87,7 @@ export default function DesignPage() {
   return (
     <Container className="py-14">
       <Eyebrow>Design system</Eyebrow>
-      <h1 className="mt-3 max-w-3xl font-display text-4xl leading-tight sm:text-6xl">
+      <h1 className="mt-3 max-w-3xl text-4xl leading-tight sm:text-6xl">
         Flat surfaces, thin borders, two themes.
       </h1>
       <p className="mt-5 max-w-2xl text-base leading-7 text-muted">
@@ -96,7 +96,7 @@ export default function DesignPage() {
       </p>
 
       <section className="mt-12">
-        <h2 className="font-display text-3xl">60 / 30 / 10</h2>
+        <h2 className="text-3xl">60 / 30 / 10</h2>
         <div className="mt-5 flex h-28 overflow-hidden rounded-xl border border-line text-xs">
           <div className="flex items-end bg-bg p-3 text-ink" style={{ width: `${PROPORTIONS.canvas}%` }}>
             Canvas {PROPORTIONS.canvas}
@@ -129,7 +129,7 @@ export default function DesignPage() {
       </section>
 
       <section className="mt-16">
-        <h2 className="font-display text-3xl">Color</h2>
+        <h2 className="text-3xl">Color</h2>
         <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">
           Roles: canvas {COLOR_ROLES.canvas.join(", ")}; structure {COLOR_ROLES.structure.join(", ")}; expressive{" "}
           {COLOR_ROLES.expressive.join(", ")}.
@@ -137,7 +137,7 @@ export default function DesignPage() {
         <div className="mt-6 grid gap-8 md:grid-cols-2">
           {(["light", "dark"] as const).map((theme) => (
             <div key={theme}>
-              <h3 className="font-display text-xl capitalize">{theme}</h3>
+              <h3 className="text-xl capitalize">{theme}</h3>
               <div className="mt-3 grid grid-cols-2 gap-3">
                 {COLOR_TOKENS.map((token) => (
                   <Swatch key={token} theme={theme} token={token} />
@@ -153,7 +153,7 @@ export default function DesignPage() {
       </section>
 
       <section className="mt-16">
-        <h2 className="font-display text-3xl">Type</h2>
+        <h2 className="text-3xl">Type</h2>
         <div className="mt-6 grid gap-8">
           <div>
             <p className="text-xs uppercase tracking-[0.16em] text-muted">
@@ -183,7 +183,7 @@ export default function DesignPage() {
       </section>
 
       <section className="mt-16">
-        <h2 className="font-display text-3xl">Components</h2>
+        <h2 className="text-3xl">Components</h2>
         <div className="mt-6 flex flex-wrap items-center gap-6">
           <Logo className="text-3xl" />
           <Logo className="text-xl" />

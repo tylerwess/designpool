@@ -21,14 +21,14 @@ const notes = [
 ];
 
 function SectionHeading({ children }: { children: ReactNode }) {
-  return <h2 className="mt-12 font-display text-3xl">{children}</h2>;
+  return <h2 className="mt-12 text-3xl">{children}</h2>;
 }
 
 export default function AboutPage() {
   return (
     <Container size="narrow" className="py-14">
       <Eyebrow>About</Eyebrow>
-      <h1 className="mt-3 font-display text-4xl sm:text-5xl">How this board works</h1>
+      <h1 className="mt-3 text-4xl sm:text-5xl">How this board works</h1>
       <div className="mt-8 space-y-4 text-sm leading-7 text-ink">
         <p>
           Hey, I’m{" "}

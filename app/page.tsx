@@ -42,7 +42,7 @@ export default async function HomePage() {
         <div className="hero-lead">
           <h1 className="hero-title max-w-4xl font-display text-5xl leading-[1.02] sm:text-7xl">
             <TowerLoader />
-            A <span className="text-accent">design job board</span> for no-nonsense jobseekers.
+            A design job board for no-nonsense jobseekers.
           </h1>
         </div>
         <p className="mt-6 max-w-2xl text-base text-muted">No ghost jobs, no paywalls, no endless scrolling.</p>
@@ -88,7 +88,7 @@ export default async function HomePage() {
 
       <section className="bg-surface">
         <Container size="narrow" className="py-14 sm:py-16">
-          <h2 className="max-w-3xl font-display text-4xl leading-tight sm:text-5xl">Eight levels, not one bucket.</h2>
+          <h2 className="max-w-3xl text-4xl leading-tight sm:text-5xl">Eight levels, not one bucket.</h2>
           <p className="mt-3 max-w-xl text-base leading-7 text-muted">
             Title first, years second. Lead stays an individual contributor unless the role manages people.
           </p>
