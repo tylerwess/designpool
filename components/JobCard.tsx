@@ -19,7 +19,7 @@ export function JobCard({ listing, titleHref }: { listing: Listing; titleHref?: 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div className="min-w-0">
           <ListingByline listing={listing} />
-          <h2 className="mt-3 text-2xl font-medium leading-snug tracking-[-0.035em]">
+          <h2 className="mt-3 text-[1.125rem] leading-snug tracking-[-0.035em]">
             <Link href={href} className="hover:underline">
               {listing.title}
             </Link>

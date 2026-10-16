@@ -4,7 +4,8 @@
  * component introduces a color outside this set.
  *
  * 60/30/10 is a proportion of the interface, not a count of tokens:
- * canvas is most of every page, structure is text and surfaces, and the
+ * canvas is most of every page (the page itself, with bg as the slightly
+ * lifted fill for cards and controls), structure is text and surfaces, and the
  * accent pair is the small expressive share.
  */
 
@@ -15,6 +16,7 @@ export const PROPORTIONS = {
 } as const;
 
 export const COLOR_TOKENS = [
+  "canvas",
   "bg",
   "surface",
   "ink",
@@ -37,7 +39,7 @@ export const COLOR_TOKENS = [
 export type ColorToken = (typeof COLOR_TOKENS)[number];
 
 export const COLOR_ROLES: Record<keyof typeof PROPORTIONS, readonly ColorToken[]> = {
-  canvas: ["bg"],
+  canvas: ["canvas", "bg"],
   structure: ["surface", "ink", "muted", "line", "tag-bg", "tag-fg"],
   expressive: [
     "accent",
@@ -55,6 +57,7 @@ export const COLOR_ROLES: Record<keyof typeof PROPORTIONS, readonly ColorToken[]
 
 export const PALETTES: Record<"light" | "dark", Record<ColorToken, string>> = {
   light: {
+    canvas: "#f7f7f7",
     bg: "#ffffff",
     surface: "#f3f3f3",
     ink: "#111111",
@@ -74,7 +77,8 @@ export const PALETTES: Record<"light" | "dark", Record<ColorToken, string>> = {
     positive: "#02a969",
   },
   dark: {
-    bg: "#000000",
+    canvas: "#000000",
+    bg: "#0d0d0d",
     surface: "#2c2c2c",
     ink: "#ffffff",
     muted: "#a3a3a3",
@@ -95,14 +99,14 @@ export const PALETTES: Record<"light" | "dark", Record<ColorToken, string>> = {
 };
 
 export const TRACKING = {
-  body: "-0.02em",
-  meta: "-0.01em",
+  body: "-0.03em",
+  meta: "-0.02em",
   display: "-0.02em",
   hero: "-0.035em",
 } as const;
 
 export const TYPE_BODY = {
-  family: "Work Sans",
+  family: "Figtree",
   weight: 500,
   size: "1.125rem",
   tracking: TRACKING.body,
@@ -128,14 +132,14 @@ export const TYPE_ROLES = {
   body: {
     share: 60,
     family: TYPE_BODY.family,
-    utility: "font-sans",
-    use: "Body copy, navigation, filters, and meta.",
+    utility: "font-body",
+    use: "Body copy, navigation, filters, tags, and meta.",
   },
   structure: {
     share: 30,
-    family: "Fjalla One",
-    utility: "font-display",
-    use: "Page titles, section headings, job titles, and buttons.",
+    family: "Figtree",
+    utility: "font-body",
+    use: "Page titles, section headings, and job titles at 600. Buttons are Work Sans 600.",
   },
   expressive: {
     share: 10,

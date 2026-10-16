@@ -1,4 +1,5 @@
 import { FreshListingsCount } from "@/components/FreshListingsCount";
+import { HeroSearch } from "@/components/HeroSearch";
 import { LandingLive } from "@/components/LandingLive";
 import { LastUpdated } from "@/components/LastUpdated";
 import { SourcePlatforms } from "@/components/SourcePlatforms";
@@ -38,22 +39,19 @@ export default async function HomePage() {
 
   return (
     <div>
-      <Container size="narrow" className="pt-16 sm:pt-20">
+      <Container size="narrow" className="pt-10 sm:pt-14">
         <div className="hero-lead">
-          <h1 className="hero-title max-w-4xl font-display text-5xl leading-[1.02] sm:text-7xl">
+          <h1 className="hero-title max-w-3xl font-display text-4xl leading-[1.05] sm:text-6xl">
             <TowerLoader />
             A design job board for no-nonsense jobseekers.
           </h1>
         </div>
-        <p className="mt-6 max-w-2xl text-base text-muted">No ghost jobs, no paywalls, no endless scrolling.</p>
+        <p className="mt-4 max-w-2xl text-base text-muted">No ghost jobs, no paywalls, no endless scrolling.</p>
         <div className="mt-6">
-          <Button href="/jobs" className="gap-2">
-            Browse open roles
-            <ArrowIcon />
-          </Button>
+          <HeroSearch />
         </div>
 
-        <div className="mt-16 flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8">
+        <div className="mt-10 flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8">
           <div className="flex flex-col items-start gap-3">
             <p className="text-sm text-muted">Open roles</p>
             <span className="metric-box">
@@ -72,19 +70,28 @@ export default async function HomePage() {
         </div>
       </Container>
 
-      <div className="source-stack mt-16 pb-14">
-        {jobs.length > 0 ? (
-          <Container size="narrow">
+      <section aria-labelledby="latest-roles" className="source-stack mt-12 border-t border-line pt-10 pb-14">
+        <Container size="narrow">
+          <div className="mb-5 flex items-baseline justify-between gap-4">
+            <h2 id="latest-roles" className="text-2xl">
+              Latest roles
+            </h2>
+            {jobs.length > 0 ? (
+              <Button href="/jobs" variant="ghost" className="gap-1.5">
+                View all {jobs.length}
+                <ArrowIcon />
+              </Button>
+            ) : null}
+          </div>
+          {jobs.length > 0 ? (
             <LandingLive jobs={jobs} />
-          </Container>
-        ) : (
-          <Container size="narrow">
+          ) : (
             <Surface className="landing-live max-w-xl p-5 text-sm leading-6">
               {board.status === "ok" ? "No roles yet. Listings show up after the first ingest." : board.message}
             </Surface>
-          </Container>
-        )}
-      </div>
+          )}
+        </Container>
+      </section>
 
       <section className="bg-surface">
         <Container size="narrow" className="py-14 sm:py-16">

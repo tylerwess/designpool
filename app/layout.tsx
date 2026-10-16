@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { Metadata, Viewport } from "next";
-import { Fjalla_One, Work_Sans } from "next/font/google";
+import { Figtree, Fjalla_One, Work_Sans } from "next/font/google";
 import Script from "next/script";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -8,10 +8,18 @@ import { themeInitScript } from "@/lib/design-tokens";
 import { SITE_DESCRIPTION, SITE_NAME, siteUrl } from "@/lib/site";
 import "./globals.css";
 
+/** Buttons. */
 const sans = Work_Sans({
   subsets: ["latin"],
-  weight: ["500", "700"],
+  weight: ["600"],
   variable: "--font-sans",
+});
+
+/** Body copy at 500 and headings at 600, plus navigation, filters, tags, and meta. */
+const body = Figtree({
+  subsets: ["latin"],
+  weight: ["500", "600"],
+  variable: "--font-body",
 });
 
 const display = Fjalla_One({
@@ -53,8 +61,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${display.variable} h-full antialiased`} suppressHydrationWarning>
-      <body className="flex min-h-full flex-col bg-bg text-ink">
+    <html lang="en" className={`${sans.variable} ${body.variable} ${display.variable} h-full antialiased`} suppressHydrationWarning>
+      <body className="flex min-h-full flex-col bg-canvas text-ink">
         <Script id="designpool-theme" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <Header />
         <div className="flex-1">{children}</div>

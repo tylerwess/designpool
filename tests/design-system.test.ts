@@ -113,17 +113,17 @@ test("primary accent text meets WCAG AA in both themes", () => {
 
 test("the written system and the gallery route exist", () => {
   const doc = readFileSync(join(ROOT, "DESIGN_SYSTEM.md"), "utf8");
-  for (const phrase of ["60/30/10", "/design", "Fjalla One", "Work Sans", "OpenAI", "1.125rem", "-0.02em", "-0.01em"]) {
+  for (const phrase of ["60/30/10", "/design", "Fjalla One", "Work Sans", "Figtree", "OpenAI", "1.125rem", "-0.03em", "-0.02em"]) {
     assert.equal(doc.includes(phrase), true, `DESIGN_SYSTEM.md should mention ${phrase}`);
   }
-  assert.equal(TYPE_ROLES.body.family, "Work Sans");
-  assert.equal(TYPE_ROLES.structure.family, "Fjalla One");
-  assert.equal(TYPE_BODY.family, "Work Sans");
+  assert.equal(TYPE_ROLES.body.family, "Figtree");
+  assert.equal(TYPE_ROLES.structure.family, "Figtree");
+  assert.equal(TYPE_BODY.family, "Figtree");
   assert.equal(TYPE_BODY.weight, 500);
   assert.equal(TYPE_BODY.size, "1.125rem");
   assert.equal(TYPE_BODY.tracking, TRACKING.body);
-  assert.equal(TYPE_BODY.tracking, "-0.02em");
-  assert.equal(TYPE_BODY.metaTracking, "-0.01em");
+  assert.equal(TYPE_BODY.tracking, "-0.03em");
+  assert.equal(TYPE_BODY.metaTracking, "-0.02em");
   assert.equal(TYPE_DISPLAY.family, "Fjalla One");
   assert.equal(TYPE_DISPLAY.heroTracking, "-0.035em");
   const page = readFileSync(join(ROOT, "app/design/page.tsx"), "utf8");
@@ -177,7 +177,7 @@ test("the theme switch and floating apply tokens stay documented", () => {
 
 test("body type tokens drive CSS and next/font", () => {
   const css = readFileSync(join(ROOT, "app/globals.css"), "utf8");
-  assert.match(css, /font-family:\s*var\(--font-sans\),\s*"Work Sans"/);
+  assert.match(css, /font-family:\s*var\(--font-body\),\s*"Figtree"/);
   assert.match(css, new RegExp(`font-weight:\\s*${TYPE_BODY.weight}`));
   assert.match(css, new RegExp(`font-size:\\s*${TYPE_BODY.size}`));
   assert.match(css, new RegExp(`--tracking-body:\\s*${TYPE_BODY.tracking.replace(".", "\\.")}`));
@@ -193,6 +193,7 @@ test("body type tokens drive CSS and next/font", () => {
   }
   const layout = readFileSync(join(ROOT, "app/layout.tsx"), "utf8");
   assert.match(layout, /Work_Sans/);
+  assert.match(layout, /Figtree/);
   assert.equal(layout.includes("Lato"), false);
   assert.match(layout, /Fjalla_One/);
 });

@@ -63,7 +63,7 @@ function Option({
   children: ReactNode;
 }) {
   return (
-    <label className="flex h-11 items-center gap-3 rounded-full px-3 text-sm hover:bg-surface">
+    <label className="flex h-11 items-center gap-3 rounded-[8px] px-3 text-sm hover:bg-surface">
       <input type={type} name={name} value={value} defaultChecked={defaultChecked} className="size-4 shrink-0 accent-ink" />
       <span>{children}</span>
     </label>
@@ -107,7 +107,7 @@ function Menu({
 
   return (
     <div ref={wrapRef} className="relative">
-      <div className={`inline-flex h-9 items-center rounded-full border ${chip}`}>
+      <div className={`inline-flex h-9 items-center rounded-[12px] border ${chip}`}>
         <button
           type="button"
           className={`inline-flex h-9 items-center gap-2 text-sm ${active && clearHref ? "pl-3.5 pr-2.5" : "px-3.5"}`}
@@ -131,7 +131,7 @@ function Menu({
       <div
         id={id}
         style={{ left: `${menuLeft}px` }}
-        className={`${open ? "block" : "hidden"} absolute z-30 mt-2 w-[min(20rem,calc(100vw-2.5rem))] rounded-2xl border border-line bg-bg p-2`}
+        className={`${open ? "block" : "hidden"} absolute z-30 mt-2 w-[min(20rem,calc(100vw-2.5rem))] rounded-[12px] border border-line bg-bg p-2`}
       >
         <div className="max-h-80 overflow-auto">{children}</div>
         <div className="px-1 pt-2 pb-1">
@@ -413,7 +413,7 @@ function FilterForm({ filters }: { filters: JobFilters }) {
         <Link
           href={hrefFor({ ...filters, salary: !filters.salary })}
           aria-pressed={filters.salary}
-          className={`inline-flex h-9 items-center rounded-full border px-3.5 text-sm ${
+          className={`inline-flex h-9 items-center rounded-[12px] border px-3.5 text-sm ${
             filters.salary ? "border-ink bg-ink text-bg" : "border-line bg-bg text-ink"
           }`}
         >

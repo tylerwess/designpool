@@ -40,7 +40,7 @@ function PaginationItem({
   children: ReactNode;
 }) {
   const className =
-    "flex h-10 w-10 items-center justify-center rounded-full border text-sm transition-colors" +
+    "flex h-10 w-10 items-center justify-center rounded-[12px] border text-sm transition-colors" +
     (current
       ? " border-accent bg-accent text-on-accent"
       : " border-line text-ink hover:bg-surface");
