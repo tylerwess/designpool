@@ -8,7 +8,9 @@ import {
   deleteExpired,
   deleteStale,
   freshCutoff,
+  listListings,
   recordIngestStats,
+  recordRoleCount,
   upsertListing,
 } from "./listings";
 import { fetchCompanyJobs, type FetchedJob } from "./sources";
@@ -127,6 +129,8 @@ export async function runIngest(source: Company[] = companiesForIngest()): Promi
   const deletedStale = outcomes.reduce((sum, outcome) => sum + outcome.deletedStale, 0);
   const freshAdded = await countFirstSeenAt(seenAt);
   await recordIngestStats(freshAdded, deletedStale + deletedExpired, seenAt);
+  // Same count the landing page shows: listings within the 30-day window.
+  await recordRoleCount(seenAt.slice(0, 10), (await listListings()).length, seenAt, true);
 
   return {
     ok: failed.length === 0,

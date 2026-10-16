@@ -164,15 +164,6 @@ export const UI_PRIMITIVES = [
 ] as const;
 
 /** Day/night switch colors. The supplied `.switch` CSS keeps these hex values literally. */
-export const TOGGLE_COLORS = {
-  night: "#2a2a2a",
-  day: "#00a6ff",
-  moon: "#fff",
-  sun: "#ffcf48",
-} as const;
-
-export const TOGGLE_SIZE = "13px";
-
 export const DESCRIPTION_PREVIEW = {
   lines: 6,
 } as const;

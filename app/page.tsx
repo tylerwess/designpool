@@ -1,12 +1,25 @@
 import { FreshListingsCount } from "@/components/FreshListingsCount";
 import { HeroSearch } from "@/components/HeroSearch";
+import { RoleTrend } from "@/components/RoleTrend";
 import { LandingLive } from "@/components/LandingLive";
 import { LastUpdated } from "@/components/LastUpdated";
 import { ArrowIcon, Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Surface } from "@/components/ui/Surface";
-import { loadBoard, loadIngestStats } from "@/lib/board";
+import { loadBoard, loadIngestStats, loadRoleTrend } from "@/lib/board";
 import { pageMetadata } from "@/lib/site";
+
+/** Bento grid: four rounded tiles of mixed sizes, for the hero chip's app-style tile. */
+function BentoIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+      <rect x="3" y="3" width="9.5" height="10.5" rx="2" />
+      <rect x="14.5" y="3" width="6.5" height="6.5" rx="2" />
+      <rect x="14.5" y="11.5" width="6.5" height="9.5" rx="2" />
+      <rect x="3" y="15.5" width="9.5" height="5.5" rx="2" />
+    </svg>
+  );
+}
 
 export const metadata = pageMetadata({ path: "/" });
 
@@ -15,6 +28,7 @@ export const dynamic = "force-dynamic";
 export default async function HomePage() {
   const [board, ingestStats] = await Promise.all([loadBoard(), loadIngestStats()]);
   const jobs = board.status === "ok" ? board.jobs : [];
+  const trend = board.status === "ok" ? await loadRoleTrend(jobs.length) : null;
 
   return (
     <div>
@@ -27,22 +41,30 @@ export default async function HomePage() {
         </Container>
       ) : null}
       <Container size="narrow" className="pt-10 sm:pt-14">
-        <h1 className="hero-title max-w-3xl font-display text-4xl leading-[1.05] sm:text-6xl">
-          A design job board for no-nonsense jobseekers.
+        <h1 className="hero-title max-w-3xl text-[1.6875rem] leading-[1.1] sm:text-[2.8125rem]">
+          A{" "}
+          <span className="hero-chip">
+            <span className="hero-chip-icon" aria-hidden="true">
+              <BentoIcon />
+            </span>
+            design job board
+          </span>{" "}
+          for no-nonsense jobseekers.
         </h1>
         <p className="mt-4 max-w-2xl text-base text-muted">No roles older than 30 days. Apply goes right to the official job listing.</p>
         <div className="mt-6">
           <HeroSearch />
         </div>
 
-        <Surface className="mt-10 flex items-center justify-between gap-4 p-4 sm:p-5">
-          <div className="flex min-w-0 flex-col gap-1">
+        <Surface className="mt-10 flex items-end justify-between gap-4 p-4 sm:p-5">
+          <div className="flex min-w-0 flex-col gap-2">
             <p className="text-sm text-muted">Open roles</p>
+            <span className="metric-box self-start">
+              <FreshListingsCount count={jobs.length} className="text-[2.109375rem] text-ink" />
+            </span>
             <p className="text-xs text-muted">Posted in the last 30 days</p>
           </div>
-          <span className="metric-box">
-            <FreshListingsCount count={jobs.length} className="text-[2.109375rem] text-ink" />
-          </span>
+          {trend ? <RoleTrend days={trend} /> : null}
         </Surface>
       </Container>
 

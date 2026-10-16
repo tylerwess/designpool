@@ -63,7 +63,7 @@ function Option({
   children: ReactNode;
 }) {
   return (
-    <label className="flex h-11 items-center gap-3 rounded-[8px] px-3 text-sm hover:bg-surface">
+    <label className="flex h-11 items-center gap-3 rounded-[4px] px-3 text-sm hover:bg-surface">
       <input type={type} name={name} value={value} defaultChecked={defaultChecked} className="size-4 shrink-0 accent-ink" />
       <span>{children}</span>
     </label>
@@ -107,7 +107,7 @@ function Menu({
 
   return (
     <div ref={wrapRef} className="relative">
-      <div className={`inline-flex h-9 items-center rounded-[12px] border ${chip}`}>
+      <div className={`inline-flex h-9 items-center rounded-[4px] border ${chip}`}>
         <button
           type="button"
           className={`inline-flex h-9 items-center gap-2 text-sm ${active && clearHref ? "pl-3.5 pr-2.5" : "px-3.5"}`}
@@ -413,7 +413,7 @@ function FilterForm({ filters }: { filters: JobFilters }) {
         <Link
           href={hrefFor({ ...filters, salary: !filters.salary })}
           aria-pressed={filters.salary}
-          className={`inline-flex h-9 items-center rounded-[12px] border px-3.5 text-sm ${
+          className={`inline-flex h-9 items-center rounded-[4px] border px-3.5 text-sm ${
             filters.salary ? "border-ink bg-ink text-bg" : "border-line bg-bg text-ink"
           }`}
         >

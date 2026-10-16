@@ -9,6 +9,7 @@ import { Surface } from "@/components/ui/Surface";
 import { Tag } from "@/components/ui/Tag";
 import { loadListing } from "@/lib/board";
 import { toDescriptionHtml } from "@/lib/description";
+import { LANGUAGE_NAMES, detectNonEnglish } from "@/lib/language";
 import { listingTags } from "@/lib/listing-tags";
 import { pageMetadata } from "@/lib/site";
 
@@ -44,6 +45,7 @@ export default async function JobPage({ params }: { params: Promise<JobParams> }
   if (!result.job) notFound();
   const listing = result.job;
   const tags = listingTags(listing);
+  const language = detectNonEnglish(listing.title, listing.description);
 
   return (
     <Container size="narrow" className="job-detail pt-12">
@@ -55,7 +57,9 @@ export default async function JobPage({ params }: { params: Promise<JobParams> }
         <div className="mt-6">
           <ListingByline listing={listing} size="lg" />
         </div>
-        <h1 className="mt-4 text-4xl leading-tight sm:text-5xl">{listing.title}</h1>
+        <h1 className="mt-4 text-4xl leading-tight sm:text-5xl" lang={language ?? undefined} data-translatable>
+          {listing.title}
+        </h1>
         {tags.length > 0 ? (
           <ul className="tag-row mt-4">
             {tags.map((tag) => (
@@ -67,12 +71,17 @@ export default async function JobPage({ params }: { params: Promise<JobParams> }
         ) : null}
 
         <h2 className="mt-10 text-2xl">Description</h2>
-        <ExpandableDescription
-          html={toDescriptionHtml(listing.description)}
-          empty="The company didn’t include a description in the public feed."
-        />
+        <div lang={language ?? undefined} data-translatable>
+          <ExpandableDescription
+            html={toDescriptionHtml(listing.description)}
+            empty="The company didn’t include a description in the public feed."
+          />
+        </div>
       </article>
-      <FloatingApply href={listing.url} />
+      <FloatingApply
+        href={listing.url}
+        translate={language ? { sourceLanguage: language, languageName: LANGUAGE_NAMES[language] ?? language } : null}
+      />
     </Container>
   );
 }

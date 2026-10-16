@@ -49,6 +49,11 @@ CREATE TABLE IF NOT EXISTS ingest_stats (
   stale_removed INTEGER NOT NULL,
   ran_at TEXT NOT NULL
 );
+CREATE TABLE IF NOT EXISTS role_counts (
+  day TEXT PRIMARY KEY,
+  open_roles INTEGER NOT NULL,
+  recorded_at TEXT NOT NULL
+);
 `;
 
 let dbPromise: Promise<Db> | null = null;

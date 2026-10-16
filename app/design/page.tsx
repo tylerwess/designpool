@@ -13,7 +13,7 @@ import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { fieldClassName, FieldLabel } from "@/components/ui/Field";
 import { Surface } from "@/components/ui/Surface";
-import { COLOR_ROLES, COLOR_TOKENS, PROPORTIONS, TOGGLE_SIZE, TYPE_BODY, TYPE_ROLES, type ColorToken } from "@/lib/design-tokens";
+import { COLOR_ROLES, COLOR_TOKENS, PROPORTIONS, TYPE_BODY, TYPE_ROLES, type ColorToken } from "@/lib/design-tokens";
 import { pageMetadata, shouldHideDesignGallery } from "@/lib/site";
 import type { Listing } from "@/lib/types";
 
@@ -205,7 +205,7 @@ export default function DesignPage() {
             Read more
           </Button>
           <ThemeToggle />
-          <span className="text-sm text-muted">Theme checkbox · {TOGGLE_SIZE}</span>
+          <span className="text-sm text-muted">Theme switch · 44×24</span>
         </div>
         <div className="relative mt-6 h-40 overflow-hidden rounded-xl border border-line bg-bg">
           <p className="max-w-sm p-4 text-sm leading-6 text-muted">

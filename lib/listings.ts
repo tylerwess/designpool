@@ -238,6 +238,34 @@ export async function getIngestStats(): Promise<IngestStats | null> {
   return { freshAdded: Number(row.fresh_added), staleRemoved: Number(row.stale_removed), ranAt: row.ran_at };
 }
 
+export type RoleCount = { day: string; openRoles: number };
+
+/**
+ * One open-role count per UTC day, for the landing trend. The ingest overwrites the day's
+ * row (its count is final); a page view only fills a day that has no row yet.
+ */
+export async function recordRoleCount(day: string, openRoles: number, recordedAt: string, overwrite: boolean): Promise<void> {
+  const db = await getDb();
+  await db.run(
+    overwrite
+      ? `INSERT INTO role_counts (day, open_roles, recorded_at) VALUES (?, ?, ?)
+         ON CONFLICT(day) DO UPDATE SET open_roles = excluded.open_roles, recorded_at = excluded.recorded_at`
+      : `INSERT INTO role_counts (day, open_roles, recorded_at) VALUES (?, ?, ?) ON CONFLICT(day) DO NOTHING`,
+    [day, openRoles, recordedAt],
+  );
+}
+
+/** Counts for the given UTC days (YYYY-MM-DD); days without a row are left out. */
+export async function getRoleCounts(days: string[]): Promise<RoleCount[]> {
+  if (days.length === 0) return [];
+  const db = await getDb();
+  const rows = await db.all<{ day: string; open_roles: number | string }>(
+    `SELECT day, open_roles FROM role_counts WHERE day IN (${days.map(() => "?").join(", ")})`,
+    days,
+  );
+  return rows.map((row) => ({ day: row.day, openRoles: Number(row.open_roles) }));
+}
+
 export type IngestDay = { day: string; freshAdded: number; staleRemoved: number; ranAt: string };
 
 export type IngestHealth = {
