@@ -107,7 +107,7 @@ function Menu({
 
   return (
     <div ref={wrapRef} className="relative">
-      <div className={`inline-flex h-9 items-center rounded-[4px] border ${chip}`}>
+      <div className={`inline-flex h-9 items-center rounded-[10px] border ${chip}`}>
         <button
           type="button"
           className={`inline-flex h-9 items-center gap-2 text-sm ${active && clearHref ? "pl-3.5 pr-2.5" : "px-3.5"}`}
@@ -413,7 +413,7 @@ function FilterForm({ filters }: { filters: JobFilters }) {
         <Link
           href={hrefFor({ ...filters, salary: !filters.salary })}
           aria-pressed={filters.salary}
-          className={`inline-flex h-9 items-center rounded-[4px] border px-3.5 text-sm ${
+          className={`inline-flex h-9 items-center rounded-[10px] border px-3.5 text-sm ${
             filters.salary ? "border-ink bg-ink text-bg" : "border-line bg-bg text-ink"
           }`}
         >

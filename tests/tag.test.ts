@@ -18,7 +18,7 @@ test("tags use flat token fills with no border or icon", () => {
   assert.equal(tag.includes("<svg"), false);
   assert.equal(badge.includes("<svg"), false);
   assert.match(css, /\.tag\s*\{[^}]*border:\s*0/);
-  assert.match(css, /\.tag\s*\{[^}]*border-radius:\s*4px/);
+  assert.match(css, /\.tag\s*\{[^}]*border-radius:\s*10px/);
   assert.match(css, /\.tag\s*\{[^}]*background:\s*var\(--tag-bg\)/);
   assert.match(css, /\.tag\s*\{[^}]*color:\s*var\(--tag-fg\)/);
   assert.match(css, /\.tag\s*\{[^}]*padding:\s*6px 12px/);

@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 /** Fixed height, equal inline padding, no browser select chrome. */
 export const controlClassName =
-  "control box-border h-11 w-full appearance-none rounded-[4px] border border-line bg-bg px-4 text-sm text-ink placeholder:text-muted";
+  "control box-border h-11 w-full appearance-none rounded-[10px] border border-line bg-bg px-4 text-sm text-ink placeholder:text-muted";
 
 export const fieldClassName = `mt-2 ${controlClassName}`;
 

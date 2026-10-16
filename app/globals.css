@@ -214,15 +214,14 @@ h1.font-display,
 .hero-title {
   margin-top: 0;
   font-family: var(--font-body), "Figtree", "Segoe UI", sans-serif;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.04em;
 }
 
 /* "design job board" pill: soft tag fill, with a tilted app-style icon tile overlapping its left end. */
 .hero-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.16em;
+  /* inline-block, not flex, so "design job board" sits on the same baseline as "A" and "for". */
+  display: inline-block;
   /* Matches the word space on each side: margin-left offsets the tile, padding-right the text's end. */
   margin-inline: 0.165em -0.07em;
   padding: 0.04em 0.36em 0.04em 0;
@@ -234,6 +233,9 @@ h1.font-display,
 
 .hero-chip-icon {
   display: inline-flex;
+  margin-right: 0.16em;
+  /* Raised so the tile centers in the pill rather than resting on the baseline. */
+  vertical-align: 0.12em;
   /* 40px at the 56.25px desktop headline; scales with the text on phones. */
   width: 0.711em;
   height: 0.711em;
@@ -340,7 +342,7 @@ h1.font-display,
   display: inline-flex;
   align-items: center;
   border: 0;
-  border-radius: 4px;
+  border-radius: 10px;
   background: var(--tag-bg);
   color: var(--tag-fg);
   padding: 6px 12px;
@@ -1063,7 +1065,7 @@ input.control[type="number"]::-webkit-outer-spin-button {
   height: 2.25rem;
   padding-inline: 0.875rem;
   border: 1px solid var(--line);
-  border-radius: 4px;
+  border-radius: 10px;
   font-size: 1rem;
   line-height: 1.55;
   white-space: nowrap;

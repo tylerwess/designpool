@@ -15,10 +15,10 @@ const sans = Work_Sans({
   variable: "--font-sans",
 });
 
-/** Body copy at 500, headings at 600, and the hero title at 700, plus navigation, filters, tags, and meta. */
+/** Body copy at 500 and headings (including the hero title) at 600, plus navigation, filters, tags, and meta. */
 const body = Figtree({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["500", "600"],
   variable: "--font-body",
 });
 

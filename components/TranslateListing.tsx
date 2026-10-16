@@ -107,7 +107,7 @@ export function TranslateListing({ sourceLanguage, languageName }: { sourceLangu
       disabled={status === "working"}
       aria-live="polite"
       aria-label={label}
-      className="btn-outline floating-translate-button inline-flex h-11 items-center justify-center gap-2 rounded-[4px] bg-bg px-5 font-sans text-sm font-semibold disabled:opacity-60"
+      className="btn-outline floating-translate-button inline-flex h-11 items-center justify-center gap-2 rounded-[10px] bg-bg px-5 font-sans text-sm font-semibold disabled:opacity-60"
     >
       <TranslateIcon />
       <span className="whitespace-nowrap sm:hidden">{shortLabel}</span>
