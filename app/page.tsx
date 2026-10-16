@@ -28,7 +28,7 @@ export const dynamic = "force-dynamic";
 export default async function HomePage() {
   const [board, ingestStats] = await Promise.all([loadBoard(), loadIngestStats()]);
   const jobs = board.status === "ok" ? board.jobs : [];
-  const trend = board.status === "ok" ? await loadRoleTrend(jobs.length) : null;
+  const trend = board.status === "ok" ? await loadRoleTrend(jobs) : null;
 
   return (
     <div>
@@ -59,9 +59,7 @@ export default async function HomePage() {
         <Surface className="mt-10 flex items-end justify-between gap-4 p-4 sm:p-5">
           <div className="flex min-w-0 flex-col gap-2">
             <p className="text-sm text-muted">Open roles</p>
-            <span className="metric-box self-start">
-              <FreshListingsCount count={jobs.length} className="text-[2.109375rem] text-ink" />
-            </span>
+            <FreshListingsCount count={jobs.length} className="self-start text-[2.109375rem] leading-none text-ink" />
             <p className="text-xs text-muted">Posted in the last 30 days</p>
           </div>
           {trend ? <RoleTrend days={trend} /> : null}

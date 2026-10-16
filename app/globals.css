@@ -224,7 +224,7 @@ h1.font-display,
   align-items: center;
   gap: 0.16em;
   /* Matches the word space on each side: margin-left offsets the tile, padding-right the text's end. */
-  margin-inline: 0.165em 0.09em;
+  margin-inline: 0.165em -0.07em;
   padding: 0.04em 0.36em 0.04em 0;
   border-radius: 999px;
   background: var(--tag-bg);
@@ -371,23 +371,6 @@ h1.font-display,
   width: 0.62em;
   height: 1em;
   vertical-align: bottom;
-}
-
-.odometer-divider {
-  position: relative;
-  display: inline-block;
-  width: 0;
-  margin: 0 0.12em;
-}
-
-.odometer-divider::after {
-  position: absolute;
-  top: -0.35rem;
-  bottom: -0.35rem;
-  left: 0;
-  width: 1px;
-  background: var(--line);
-  content: "";
 }
 
 .odometer-digit-strip {
@@ -543,13 +526,6 @@ h1.font-display,
   gap: 0.05em;
   font-family: var(--font-display), "Fjalla One", "Arial Narrow", sans-serif;
   font-weight: 600;
-}
-
-.metric-box {
-  display: inline-flex;
-  padding: 0.2em;
-  border: 2px solid var(--accent);
-  border-radius: 0.3rem;
 }
 
 .shadow-roll-digit {

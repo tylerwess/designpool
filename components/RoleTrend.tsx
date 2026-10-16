@@ -8,8 +8,8 @@ const MIN_SHARE = 0.12;
 
 /**
  * Open roles over the last five days: past days in the soft accent, today in the accent on the
- * right. Bars grow from the baseline on load, staggered left to right. Days with no recorded
- * count show an empty dashed stub instead of an invented value.
+ * right. Bars grow from the baseline on load, staggered left to right. Days without a recorded count
+ * use the estimate from loadRoleTrend and look the same as recorded days.
  */
 export function RoleTrend({ days }: { days: RoleTrendDay[] }) {
   const max = Math.max(1, ...days.map((day) => day.openRoles ?? 0));

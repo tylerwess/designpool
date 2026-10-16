@@ -58,10 +58,7 @@ export function FreshListingsCount({
       {prefix ? <span aria-hidden="true">{prefix}</span> : null}
       <span className="odometer" role="status" aria-live="off">
         {digits.map((digit, index) => (
-          <span key={index} className="inline-flex items-center">
-            {index > 0 ? <span className="odometer-divider" aria-hidden="true" /> : null}
-            <OdometerDigit digit={digit} />
-          </span>
+          <OdometerDigit key={index} digit={digit} />
         ))}
       </span>
     </span>
