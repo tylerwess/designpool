@@ -41,7 +41,7 @@ export default async function HomePage() {
         </Container>
       ) : null}
       <Container size="narrow" className="pt-10 sm:pt-14">
-        <h1 className="hero-title max-w-3xl text-[1.6875rem] leading-[1.1] sm:text-[2.8125rem]">
+        <h1 className="hero-title max-w-3xl text-[2.109375rem] leading-[1.1] sm:text-[3.515625rem]">
           A{" "}
           <span className="hero-chip">
             <span className="hero-chip-icon" aria-hidden="true">
