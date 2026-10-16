@@ -29,7 +29,8 @@ export function HeroSearch() {
           className={controlClassName}
         />
       </label>
-      <Button type="submit" className="w-full shrink-0 sm:w-auto">
+      {/* Stacked, the 8px row gap plus mt-4 gives the 24px the site uses above CTAs. */}
+      <Button type="submit" className="mt-4 w-full shrink-0 sm:mt-0 sm:w-auto">
         Search roles
       </Button>
     </form>

@@ -1,12 +1,14 @@
 import Link from "next/link";
+import { SourcePlatforms } from "@/components/SourcePlatforms";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Logo } from "@/components/ui/Logo";
+import { VerifiedIcon } from "@/components/ui/VerifiedIcon";
 
 export function Footer() {
   return (
     <footer className="border-t border-line">
-      <Container className="grid gap-8 py-10 sm:grid-cols-2">
+      <Container className="grid gap-8 py-10 sm:grid-cols-3">
         <div>
           <Logo className="text-lg" />
           <p className="mt-2 max-w-xs text-sm leading-6 text-muted">
@@ -27,6 +29,13 @@ export function Footer() {
               </Link>
             </li>
           </ul>
+        </div>
+        <div>
+          <p className="inline-flex items-center gap-1.5 text-sm text-muted">
+            <VerifiedIcon />
+            Real listings from
+          </p>
+          <SourcePlatforms className="mt-3 text-lg" />
         </div>
       </Container>
     </footer>

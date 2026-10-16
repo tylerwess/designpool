@@ -420,8 +420,12 @@ h1.font-display,
   /* pathLength is 100, so every trace takes the same time end to end. */
   stroke-dasharray: 16 200;
   stroke-dashoffset: 16;
-  filter: drop-shadow(0 0 4px currentColor);
   animation: circuit-flow 3s cubic-bezier(0.5, 0, 0.9, 1) infinite;
+}
+
+/* The glow only reads as light on a dark page; on light it smears into a halo, so it is dark-only. */
+.dark .source-circuit .trace-flow {
+  filter: drop-shadow(0 0 4px currentColor);
 }
 
 @keyframes circuit-flow {
