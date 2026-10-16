@@ -33,13 +33,9 @@ test("the tower loader is credited, scoped, and token-colored", () => {
   assert.equal(PALETTES.dark["tower-left"], "#2f82e0");
   assert.equal(PALETTES.dark["tower-right"], "#4da3ff");
   assert.equal(PALETTES.dark["tower-top"], "#a8d2ff");
-  assert.ok(
-    home.indexOf("TowerLoader") < home.indexOf("design job board"),
-    "tower sits above the landing headline",
-  );
-  assert.match(home, /className="hero-lead"/);
+  // The tower lives in the /design gallery only; the landing hero no longer shows it.
+  assert.equal(home.includes("TowerLoader"), false);
   assert.match(home, /className="hero-title /);
-  assert.match(css, /\.hero-title \.tower-loader-wrap\s*\{[^}]*bottom:\s*calc\(100% \+ 0\.125em \+ 1px\)/);
 });
 
 test("side-top keeps rotate and skew as separate declarations", () => {

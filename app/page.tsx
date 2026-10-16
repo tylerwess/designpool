@@ -5,7 +5,6 @@ import { LastUpdated } from "@/components/LastUpdated";
 import { ArrowIcon, Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Surface } from "@/components/ui/Surface";
-import { TowerLoader } from "@/components/ui/TowerLoader";
 import { loadBoard, loadIngestStats } from "@/lib/board";
 import { pageMetadata } from "@/lib/site";
 
@@ -19,16 +18,19 @@ export default async function HomePage() {
 
   return (
     <div>
-      <Container size="narrow" className="relative pt-10 sm:pt-14">
-        {/* Freshness banner, top right under the nav, clear of the tower on the left. */}
-        {ingestStats ? <LastUpdated iso={ingestStats.ranAt} className="absolute top-4 right-5" /> : null}
-        <div className="hero-lead">
-          <h1 className="hero-title max-w-3xl font-display text-4xl leading-[1.05] sm:text-6xl">
-            <TowerLoader />
-            A design job board for no-nonsense jobseekers.
-          </h1>
-        </div>
-        <p className="mt-4 max-w-2xl text-base text-muted">No ghost jobs, no paywalls, no endless scrolling.</p>
+      {/* Freshness banner: same container as the header, so its right edge lines up with the nav's. */}
+      {ingestStats ? (
+        // Hangs straight off the nav's bottom border. On phones it takes its own row so it can't cover the
+        // tower; from sm up it floats over the hero's top padding.
+        <Container className="relative flex justify-end sm:block">
+          <LastUpdated iso={ingestStats.ranAt} className="sm:absolute sm:top-0 sm:right-5 sm:z-10" />
+        </Container>
+      ) : null}
+      <Container size="narrow" className="pt-10 sm:pt-14">
+        <h1 className="hero-title max-w-3xl font-display text-4xl leading-[1.05] sm:text-6xl">
+          A design job board for no-nonsense jobseekers.
+        </h1>
+        <p className="mt-4 max-w-2xl text-base text-muted">No roles older than 30 days. Apply goes right to the official job listing.</p>
         <div className="mt-6">
           <HeroSearch />
         </div>

@@ -7,8 +7,8 @@ import { listingTimestamp } from "@/lib/filters";
 import { SENIORITY_LABELS, SENIORITY_LEVELS, type Seniority } from "@/lib/taxonomy";
 import type { Listing } from "@/lib/types";
 
-/** Enough rows to read as a board, not a teaser. */
-const PREVIEW_COUNT = 8;
+/** The three most recent roles in the selected level. */
+const PREVIEW_COUNT = 3;
 
 export function LandingLive({ jobs }: { jobs: Listing[] }) {
   const segments = useMemo(() => {

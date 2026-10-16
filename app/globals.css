@@ -215,37 +215,8 @@ h1.font-display,
   letter-spacing: var(--tracking-hero);
 }
 
-/* Room above the headline for the tower, which sits absolutely over it. */
-.hero-lead {
-  padding-top: calc(3.75rem + 0.375rem);
-}
-
-@media (min-width: 640px) {
-  .hero-lead {
-    padding-top: calc(5.25rem + 0.5625rem);
-  }
-}
-
 .hero-title {
-  position: relative;
   margin-top: 0;
-}
-
-.hero-title .tower-loader-wrap {
-  position: absolute;
-  left: calc(var(--tower-paint-x) * -0.5);
-  bottom: calc(100% + 0.125em + 1px);
-  top: auto;
-  margin: 0;
-  scale: 0.5;
-  transform-origin: left bottom;
-}
-
-@media (min-width: 640px) {
-  .hero-title .tower-loader-wrap {
-    left: calc(var(--tower-paint-x) * -0.7);
-    scale: 0.7;
-  }
 }
 
 .fresh-sticker {

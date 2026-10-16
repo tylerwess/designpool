@@ -59,12 +59,12 @@ test("the design gallery is hidden in production and on Vercel", () => {
   assert.equal(shouldHideDesignGallery({ VERCEL_ENV: "development" }), true);
 });
 
-test("the hero headline is one color and the subhead names the frustrations", () => {
+test("the hero headline is one color and the subhead states the freshness and apply promises", () => {
   const home = readFileSync(join(process.cwd(), "app/page.tsx"), "utf8");
   assert.match(home, /A design job board for no-nonsense jobseekers\./);
   assert.equal(home.includes("text-accent\">design job board"), false);
   assert.equal(home.includes("underline"), false);
-  assert.match(home, /No ghost jobs, no paywalls, no endless scrolling\./);
+  assert.match(home, /No roles older than 30 days\. Apply goes right to the official job listing\./);
 });
 
 test("the Open Graph image is a static screenshot, not a generated card", () => {
