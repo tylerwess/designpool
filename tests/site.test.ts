@@ -73,10 +73,10 @@ test("the Open Graph image is a static screenshot, not a generated card", () => 
   assert.equal(existsSync(join(process.cwd(), "app/opengraph-image.tsx")), false);
 });
 
-test("the about page credits Tyler Wesson and links his site", () => {
+test("the about page credits Tyler Wesson and links his LinkedIn", () => {
   const about = readFileSync(join(process.cwd(), "app/about/page.tsx"), "utf8");
   assert.match(about, /Tyler/);
-  assert.match(about, /https:\/\/www\.tylerwdesign\.site\//);
+  assert.match(about, /https:\/\/www\.linkedin\.com\/in\/tyler-wesson-751017205\//);
   assert.match(about, /target="_blank"/);
   assert.match(about, /rel="noopener noreferrer"/);
 });

@@ -5,7 +5,7 @@ import { Eyebrow } from "@/components/ui/Eyebrow";
 import { pageMetadata } from "@/lib/site";
 import { SENIORITY_LABELS, SENIORITY_LEVELS, TYPICAL_MIN_YEARS } from "@/lib/taxonomy";
 
-const TYLER_WESSON_URL = "https://www.tylerwdesign.site/";
+const TYLER_WESSON_URL = "https://www.linkedin.com/in/tyler-wesson-751017205/";
 
 export const metadata = pageMetadata({
   path: "/about",
