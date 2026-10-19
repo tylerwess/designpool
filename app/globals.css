@@ -6,7 +6,7 @@
   names, so a theme switch does not require a second class on each element.
 */
 :root {
-  --light-canvas: #f7f7f7;
+  --light-canvas: #ffffff;
   --light-bg: #ffffff;
   --light-surface: #f3f3f3;
   --light-ink: #111111;

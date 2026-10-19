@@ -57,7 +57,7 @@ export const COLOR_ROLES: Record<keyof typeof PROPORTIONS, readonly ColorToken[]
 
 export const PALETTES: Record<"light" | "dark", Record<ColorToken, string>> = {
   light: {
-    canvas: "#f7f7f7",
+    canvas: "#ffffff",
     bg: "#ffffff",
     surface: "#f3f3f3",
     ink: "#111111",
