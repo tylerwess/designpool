@@ -1,5 +1,4 @@
 import { FreshListingsCount } from "@/components/FreshListingsCount";
-import { HeroSearch } from "@/components/HeroSearch";
 import { RoleTrend } from "@/components/RoleTrend";
 import { LandingLive } from "@/components/LandingLive";
 import { LastUpdated } from "@/components/LastUpdated";
@@ -53,7 +52,10 @@ export default async function HomePage() {
         </h1>
         <p className="mt-4 max-w-2xl text-base text-muted">No roles older than 30 days. Apply goes right to the official job listing.</p>
         <div className="mt-6">
-          <HeroSearch />
+          <Button href="/jobs" className="w-full gap-1.5 sm:w-auto">
+            See roles
+            <ArrowIcon />
+          </Button>
         </div>
 
         <Surface className="mt-10 flex items-end justify-between gap-4 p-4 sm:p-5">
