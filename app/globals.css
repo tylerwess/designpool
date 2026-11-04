@@ -289,24 +289,30 @@ h1.font-display,
   mix-blend-mode: screen;
 }
 
-/* Hero level reel: one line tall, clipping the strip; its width eases to the visible word's. */
+/* Hero level: an icon and the streamed word, kept on one line. Clearing fades both out before the next level. */
 .hero-levels {
-  display: inline-block;
-  height: 1.1em;
-  overflow: hidden;
-  vertical-align: bottom;
-  white-space: nowrap;
-  transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.hero-levels-item {
-  display: flex;
-  width: max-content;
-  height: 1.1em;
+  display: inline-flex;
   /* The icon's bottom edge is its baseline, so the bars stand on the text's baseline. */
   align-items: baseline;
   gap: 0.2em;
-  line-height: 1.1;
+  white-space: nowrap;
+  transition: opacity 0.18s ease;
+}
+
+.hero-levels.is-clearing {
+  opacity: 0;
+}
+
+/* Each streamed token fades and un-blurs in, the way chat answers arrive. */
+.hero-token {
+  animation: hero-token-in 0.35s ease-out both;
+}
+
+@keyframes hero-token-in {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+  }
 }
 
 .hero-levels-icon {
@@ -1171,7 +1177,8 @@ input.control[type="number"]::-webkit-outer-spin-button {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .role-trend-bar {
+  .role-trend-bar,
+  .hero-token {
     animation: none;
   }
 

@@ -1,11 +1,15 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
-/** Levels that read as "for ___ designers"; manager and up don't fit the phrase. */
+/** Levels that read as "for ___ design professionals"; manager and up don't fit the phrase. */
 const LEVELS = ["entry-level", "mid-senior", "senior", "staff", "principal"];
 
-const SLOT_INTERVAL_MS = 2000;
+/** How long a finished level stays up before the next one streams in. */
+const HOLD_MS = 2200;
+const CLEAR_MS = 180;
+/** A short beat before the first token, like a model thinking. */
+const THINK_MS = 250;
 
 /** Five rising bars, filled up to the level: entry-level lights one, principal all five. */
 function LevelIcon({ level }: { level: number }) {
@@ -26,42 +30,67 @@ function LevelIcon({ level }: { level: number }) {
   );
 }
 
-/** Slot reel for the hero headline, like the footer's source reel; the box eases to each word's width. */
+/** Splits a word into 1-3 character tokens, the uneven bursts a model streams in. */
+function tokenize(word: string): string[] {
+  const tokens: string[] = [];
+  for (let at = 0; at < word.length; ) {
+    const size = 1 + Math.floor(Math.random() * 3);
+    tokens.push(word.slice(at, at + size));
+    at += size;
+  }
+  return tokens;
+}
+
+/** The hero's level, streamed in token by token as if a model were answering. */
 export function HeroLevels() {
   const [index, setIndex] = useState(0);
-  const [width, setWidth] = useState<number>();
-  const items = useRef<(HTMLSpanElement | null)[]>([]);
+  const [tokens, setTokens] = useState([LEVELS[0]]);
+  const [clearing, setClearing] = useState(false);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const id = setInterval(() => {
-      setIndex((current) => (current + 1) % LEVELS.length);
-    }, SLOT_INTERVAL_MS);
-    return () => clearInterval(id);
-  }, []);
 
-  useLayoutEffect(() => {
-    const measure = () => setWidth(items.current[index]?.offsetWidth);
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, [index]);
+    let timer: ReturnType<typeof setTimeout>;
+    let cancelled = false;
+    const wait = (ms: number) =>
+      new Promise<void>((resolve) => {
+        timer = setTimeout(resolve, ms);
+      });
+
+    (async () => {
+      for (let next = 1; !cancelled; next = (next + 1) % LEVELS.length) {
+        await wait(HOLD_MS);
+        if (cancelled) return;
+        setClearing(true);
+        await wait(CLEAR_MS);
+        if (cancelled) return;
+        setIndex(next);
+        setTokens([]);
+        setClearing(false);
+        await wait(THINK_MS);
+        for (const token of tokenize(LEVELS[next])) {
+          if (cancelled) return;
+          setTokens((current) => [...current, token]);
+          await wait(45 + Math.random() * 75);
+        }
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, []);
 
   return (
     <>
       <span className="sr-only">{LEVELS.join(", ")}</span>
-      <span className="hero-levels" aria-hidden="true" style={{ width }}>
-        <span className="slot-reel-strip" style={{ transform: `translateY(-${index * 1.1}em)` }}>
-          {LEVELS.map((level, i) => (
-            <span
-              key={level}
-              ref={(node) => {
-                items.current[i] = node;
-              }}
-              className="hero-levels-item"
-            >
-              <LevelIcon level={i} />
-              {level}
+      <span className={`hero-levels${clearing ? " is-clearing" : ""}`} aria-hidden="true">
+        <LevelIcon level={index} />
+        <span>
+          {tokens.map((token, i) => (
+            <span key={`${index}-${i}`} className="hero-token">
+              {token}
             </span>
           ))}
         </span>

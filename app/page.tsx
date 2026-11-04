@@ -35,7 +35,9 @@ export default async function HomePage() {
             {/* The level gets its own line so the reel never reflows the sentence; balance keeps phones from orphaning "board for". */}
             <span className="block text-balance">A no-nonsense design job board for</span>
             <span className="block">
-              <HeroLevels /> designers.
+              <HeroLevels />{" "}
+              {/* Its own line on phones, so the streaming level never pushes "design" back and forth. */}
+              <span className="block whitespace-nowrap sm:inline">design professionals.</span>
             </span>
           </h1>
           <p className="mt-4 max-w-2xl text-base text-muted">No roles older than 30 days. Apply goes right to the official job listing.</p>
