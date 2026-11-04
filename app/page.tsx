@@ -33,7 +33,7 @@ export default async function HomePage() {
         <Container size="narrow" className="pt-10 sm:pt-14">
           <h1 className="hero-title max-w-3xl text-[1.58203125rem] leading-[1.1] sm:text-[2.63671875rem]">
             {/* The level gets its own line so the reel never reflows the sentence; balance keeps phones from orphaning "board for". */}
-            <span className="block text-balance">A no-nonsense design job board for</span>
+            <span className="block text-balance">A no-nonsense job board for</span>
             <span className="block">
               <HeroLevels />{" "}
               {/* Its own line on phones, so the streaming level never pushes "design" back and forth. */}
@@ -84,7 +84,7 @@ export default async function HomePage() {
 
       <section className="divider-top">
         <Container size="narrow" className="py-14 sm:py-16">
-          <h2 className="max-w-3xl text-4xl leading-tight sm:text-5xl">Eight levels, not one bucket.</h2>
+          <h2 className="max-w-3xl text-2xl">Eight levels, not one bucket.</h2>
           <p className="mt-3 max-w-xl text-base leading-7 text-muted">
             Title first, years second. Lead stays an individual contributor unless the role manages people.
           </p>
