@@ -61,9 +61,9 @@ test("the design gallery is hidden in production and on Vercel", () => {
 
 test("the hero headline is one color and the subhead states the freshness and apply promises", () => {
   const home = readFileSync(join(process.cwd(), "app/page.tsx"), "utf8");
-  assert.match(home, /className="hero-chip"/);
-  assert.match(home, /design job board\s*<\/span>\{" "\}\s*for no-nonsense jobseekers\./);
-  assert.equal(home.includes("text-accent\">design job board"), false);
+  assert.equal(home.includes("hero-chip"), false);
+  assert.match(home, /A no-nonsense design job board for<\/span>/);
+  assert.match(home, /<HeroLevels \/> designers\./);
   assert.equal(home.includes("underline"), false);
   assert.match(home, /No roles older than 30 days\. Apply goes right to the official job listing\./);
 });
