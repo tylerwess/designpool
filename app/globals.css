@@ -187,6 +187,53 @@ body {
 }
 
 /*
+  Page frame: the gutters outside the max-w-6xl column get a dot grid, edged by dashed rails.
+  Only once the viewport is wider than the column, so phones and narrow windows stay plain.
+*/
+@media (min-width: 72rem) {
+  body::before,
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  body::before {
+    background-image: radial-gradient(circle, var(--line) 1px, transparent 1.25px);
+    background-size: 14px 14px;
+    background-position: center top;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(50% - 36rem), transparent 0 calc(50% + 36rem), #000 0);
+    mask-image: linear-gradient(to right, #000 calc(50% - 36rem), transparent 0 calc(50% + 36rem), #000 0);
+  }
+
+  body::after {
+    left: calc(50% - 36rem);
+    right: calc(50% - 36rem);
+    background:
+      repeating-linear-gradient(to bottom, var(--line) 0 4px, transparent 4px 8px) left / 1px 100% no-repeat,
+      repeating-linear-gradient(to bottom, var(--line) 0 4px, transparent 4px 8px) right / 1px 100% no-repeat;
+  }
+}
+
+/* Full-width dividers: short, frequent dashes instead of a solid rule. */
+.divider-top,
+.divider-bottom {
+  background-image: repeating-linear-gradient(to right, var(--line) 0 4px, transparent 4px 8px);
+  background-size: 100% 1px;
+  background-repeat: no-repeat;
+}
+
+.divider-top {
+  background-position: top;
+}
+
+.divider-bottom {
+  background-position: bottom;
+}
+
+/*
   Headings, including the hero title, use the body font (Figtree) at semibold. .font-display is Fjalla One.
   In the base layer so utilities such as font-medium can override the weight.
 */

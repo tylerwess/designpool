@@ -28,7 +28,7 @@ function NavLink({ href, children }: { href: string; children: ReactNode }) {
 
 export function Header() {
   return (
-    <header className="border-b border-line">
+    <header className="divider-bottom">
       <Container className="flex items-center justify-between gap-4 py-4">
         <Link href="/" className="text-xl" aria-label="Designpool">
           <Logo />

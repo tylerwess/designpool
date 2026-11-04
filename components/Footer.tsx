@@ -7,7 +7,7 @@ import { VerifiedIcon } from "@/components/ui/VerifiedIcon";
 
 export function Footer() {
   return (
-    <footer className="border-t border-line">
+    <footer className="divider-top">
       <Container className="grid gap-8 py-10 sm:grid-cols-3">
         <div>
           <Logo className="text-lg" />

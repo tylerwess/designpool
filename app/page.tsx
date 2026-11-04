@@ -40,7 +40,7 @@ export default async function HomePage() {
         </Container>
       ) : null}
       <Container size="narrow" className="pt-10 sm:pt-14">
-        <h1 className="hero-title max-w-3xl text-[2.109375rem] leading-[1.1] sm:text-[3.515625rem]">
+        <h1 className="hero-title max-w-3xl text-[1.58203125rem] leading-[1.1] sm:text-[2.63671875rem]">
           A{" "}
           <span className="hero-chip">
             <span className="hero-chip-icon" aria-hidden="true">
@@ -68,7 +68,7 @@ export default async function HomePage() {
         </Surface>
       </Container>
 
-      <section aria-labelledby="latest-roles" className="source-stack mt-12 border-t border-line pt-10 pb-14">
+      <section aria-labelledby="latest-roles" className="source-stack divider-top mt-12 pt-10 pb-14">
         <Container size="narrow">
           <div className="mb-5 flex items-baseline justify-between gap-4">
             <h2 id="latest-roles" className="text-2xl">
@@ -91,7 +91,7 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      <section className="bg-surface">
+      <section className="divider-top">
         <Container size="narrow" className="py-14 sm:py-16">
           <h2 className="max-w-3xl text-4xl leading-tight sm:text-5xl">Eight levels, not one bucket.</h2>
           <p className="mt-3 max-w-xl text-base leading-7 text-muted">
