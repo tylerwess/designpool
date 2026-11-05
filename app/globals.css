@@ -164,6 +164,7 @@
   --font-sans: var(--font-sans);
   --font-body: var(--font-body);
   --font-display: var(--font-display);
+  --font-script: var(--font-script);
   --text-xs: 0.875rem;
   --text-xs--line-height: 1.4;
   --text-sm: 1rem;
@@ -289,29 +290,37 @@ h1.font-display,
   mix-blend-mode: screen;
 }
 
-/* Hero level: an icon and the streamed word, kept on one line. Clearing fades both out before the next level. */
+/* Hero level: the icon and the typed word, kept on one line. */
 .hero-levels {
   display: inline-flex;
   /* The icon's bottom edge is its baseline, so the bars stand on the text's baseline. */
   align-items: baseline;
   gap: 0.2em;
   white-space: nowrap;
-  transition: opacity 0.18s ease;
 }
 
-.hero-levels.is-clearing {
-  opacity: 0;
+/* The typed word in a script face, sized down so its tall loops sit close to the headline's cap height. */
+.hero-levels-text {
+  font-family: var(--font-script), "Pacifico", cursive;
+  font-weight: 400;
+  font-size: 0.92em;
+  line-height: 1;
 }
 
-/* Each streamed token fades and un-blurs in, the way chat answers arrive. */
-.hero-token {
-  animation: hero-token-in 0.35s ease-out both;
+/* A hard-blinking caret after the typed word. */
+.hero-levels-text::after {
+  content: "";
+  display: inline-block;
+  width: 0.06em;
+  height: 0.8em;
+  margin-left: 0.04em;
+  background: currentColor;
+  animation: hero-caret 1s steps(1) infinite;
 }
 
-@keyframes hero-token-in {
-  from {
-    opacity: 0;
-    filter: blur(4px);
+@keyframes hero-caret {
+  50% {
+    visibility: hidden;
   }
 }
 
@@ -697,11 +706,8 @@ input.control[type="number"]::-webkit-outer-spin-button {
   display: inline-flex;
   width: 1.25rem;
   height: 1.25rem;
-  align-items: center;
-  justify-content: center;
   border-radius: 999px;
   background-color: var(--light-bg);
-  color: var(--light-muted);
   transition: transform 0.2s ease;
 }
 
@@ -711,7 +717,6 @@ input.control[type="number"]::-webkit-outer-spin-button {
 
 .theme-switch input:checked + .theme-switch-track .theme-switch-knob {
   transform: translateX(1.25rem);
-  color: var(--accent);
 }
 
 .theme-switch input:focus-visible + .theme-switch-track {
@@ -1190,7 +1195,6 @@ input.control[type="number"]::-webkit-outer-spin-button {
   .theme-switch-knob,
   .odometer-digit-strip,
   .slot-reel-strip,
-  .hero-levels,
   .btn-primary,
   .btn-outline {
     transition: none;
@@ -1199,6 +1203,10 @@ input.control[type="number"]::-webkit-outer-spin-button {
   .tower-loader-wrap .box {
     animation: none;
     opacity: 1;
+  }
+
+  .hero-levels-text::after {
+    animation: none;
   }
 
   .shadow-roll-digit::before {
