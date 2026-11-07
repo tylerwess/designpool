@@ -307,23 +307,6 @@ h1.font-display,
   line-height: 1;
 }
 
-/* A hard-blinking caret after the typed word. */
-.hero-levels-text::after {
-  content: "";
-  display: inline-block;
-  width: 0.06em;
-  height: 0.8em;
-  margin-left: 0.04em;
-  background: currentColor;
-  animation: hero-caret 1s steps(1) infinite;
-}
-
-@keyframes hero-caret {
-  50% {
-    visibility: hidden;
-  }
-}
-
 .hero-levels-icon {
   /* Cap height, so the tallest bar matches the capitals. */
   width: 0.88em;

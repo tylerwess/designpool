@@ -19,7 +19,7 @@ function applyTheme(dark: boolean) {
 
 /** Flat on/off switch: gray track for light, accent track for dark, plain white knob. */
 export function ThemeToggle() {
-  const dark = useSyncExternalStore(subscribe, isDark, () => false);
+  const dark = useSyncExternalStore(subscribe, isDark, () => true);
 
   function onChange(event: ChangeEvent<HTMLInputElement>) {
     const next = event.target.checked;

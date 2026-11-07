@@ -52,9 +52,10 @@ test("CSS palettes match the token contract", () => {
   assert.match(css, /\.force-dark\s*\{/);
 });
 
-test("theme init stores an explicit choice and falls back to the system", () => {
+test("theme init honors a stored choice and otherwise defaults to dark", () => {
   assert.match(themeInitScript, new RegExp(THEME_STORAGE_KEY));
-  assert.match(themeInitScript, /prefers-color-scheme: dark/);
+  assert.match(themeInitScript, /t!=="light"/);
+  assert.doesNotMatch(themeInitScript, /prefers-color-scheme/);
   assert.match(themeInitScript, /classList\.toggle\("dark"/);
 });
 
