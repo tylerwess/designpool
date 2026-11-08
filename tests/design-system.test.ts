@@ -112,13 +112,13 @@ test("primary accent text meets WCAG AA in both themes", () => {
 
 test("the written system and the gallery route exist", () => {
   const doc = readFileSync(join(ROOT, "DESIGN_SYSTEM.md"), "utf8");
-  for (const phrase of ["60/30/10", "/design", "Fjalla One", "Figtree", "Source Serif 4", "OpenAI", "1.125rem", "-0.03em", "-0.02em"]) {
+  for (const phrase of ["60/30/10", "/design", "Fjalla One", "Inter", "Inter Tight", "OpenAI", "1.125rem", "-0.03em", "-0.02em"]) {
     assert.equal(doc.includes(phrase), true, `DESIGN_SYSTEM.md should mention ${phrase}`);
   }
-  assert.equal(TYPE_ROLES.body.family, "Figtree");
-  assert.equal(TYPE_ROLES.structure.family, "Source Serif 4");
-  assert.equal(TYPE_BODY.family, "Figtree");
-  assert.equal(TYPE_BODY.weight, 500);
+  assert.equal(TYPE_ROLES.body.family, "Inter");
+  assert.equal(TYPE_ROLES.structure.family, "Inter Tight");
+  assert.equal(TYPE_BODY.family, "Inter");
+  assert.equal(TYPE_BODY.weight, 400);
   assert.equal(TYPE_BODY.size, "1.125rem");
   assert.equal(TYPE_BODY.tracking, TRACKING.body);
   assert.equal(TYPE_BODY.tracking, "-0.03em");
@@ -167,7 +167,7 @@ test("the theme switch and floating apply tokens stay documented", () => {
 
 test("body type tokens drive CSS and next/font", () => {
   const css = readFileSync(join(ROOT, "app/globals.css"), "utf8");
-  assert.match(css, /font-family:\s*var\(--font-body\),\s*"Figtree"/);
+  assert.match(css, /font-family:\s*var\(--font-body\),\s*"Inter"/);
   assert.match(css, new RegExp(`font-weight:\\s*${TYPE_BODY.weight}`));
   assert.match(css, new RegExp(`font-size:\\s*${TYPE_BODY.size}`));
   assert.match(css, new RegExp(`--tracking-body:\\s*${TYPE_BODY.tracking.replace(".", "\\.")}`));
@@ -183,8 +183,9 @@ test("body type tokens drive CSS and next/font", () => {
   }
   const layout = readFileSync(join(ROOT, "app/layout.tsx"), "utf8");
   assert.equal(layout.includes("Work_Sans"), false);
-  assert.match(layout, /Figtree/);
-  assert.match(layout, /Source_Serif_4/);
+  assert.match(layout, /\bInter\b/);
+  assert.match(layout, /Inter_Tight/);
+  assert.equal(layout.includes("Figtree"), false);
   assert.equal(layout.includes("Lato"), false);
   assert.match(layout, /Fjalla_One/);
 });

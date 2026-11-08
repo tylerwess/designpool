@@ -106,8 +106,8 @@ export const TRACKING = {
 } as const;
 
 export const TYPE_BODY = {
-  family: "Figtree",
-  weight: 500,
+  family: "Inter",
+  weight: 400,
   size: "1.125rem",
   tracking: TRACKING.body,
   metaTracking: TRACKING.meta,
@@ -137,9 +137,9 @@ export const TYPE_ROLES = {
   },
   structure: {
     share: 30,
-    family: "Source Serif 4",
-    utility: "font-serif",
-    use: "Page titles, section headings, job titles, and the hero at 600. Buttons stay in Figtree 600.",
+    family: "Inter Tight",
+    utility: "font-heading",
+    use: "Page titles, section headings, and job titles at 600. Buttons stay in Inter 600.",
   },
   expressive: {
     share: 10,

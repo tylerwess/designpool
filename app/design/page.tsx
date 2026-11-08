@@ -116,7 +116,7 @@ export default function DesignPage() {
           <div>
             <dt className="font-display text-xl">Structure · {PROPORTIONS.structure}%</dt>
             <dd className="mt-2 text-sm leading-6 text-muted">
-              Surfaces, ink, muted text, and 1px rules. Headings in roman serif sit in this share too.
+              Surfaces, ink, muted text, and 1px rules. Headings in Inter Tight sit in this share too.
             </dd>
           </div>
           <div>

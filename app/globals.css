@@ -12,7 +12,7 @@
   --light-ink: #111111;
   --light-muted: #5c5c5c;
   --light-line: #e4e4e4;
-  /* Dashed dividers, gutter rails and the gutter dot grid. */
+  /* Dashed dividers, gutter rails and the gutter hatching. */
   --light-rule: #e4e4e4;
   --light-accent: #0073e6;
   --light-accent-hover: #0062c2;
@@ -170,7 +170,7 @@
   --color-tag-fg: var(--tag-fg);
   --color-positive: var(--positive);
   --font-body: var(--font-body);
-  --font-serif: var(--font-serif);
+  --font-heading: var(--font-heading);
   --font-display: var(--font-display);
   --text-xs: 0.875rem;
   --text-xs--line-height: 1.4;
@@ -187,15 +187,15 @@
 body {
   background: var(--canvas);
   color: var(--ink);
-  font-family: var(--font-body), "Figtree", "Segoe UI", sans-serif;
-  font-weight: 500;
+  font-family: var(--font-body), "Inter", "Segoe UI", sans-serif;
+  font-weight: 400;
   font-size: 1.125rem;
   letter-spacing: var(--tracking-body);
   line-height: 1.6;
 }
 
 /*
-  Page frame: the gutters outside the max-w-6xl column get a dot grid, edged by dashed rails.
+  Page frame: the gutters outside the max-w-6xl column get diagonal hatching, edged by dashed rails.
   Only once the viewport is wider than the column, so phones and narrow windows stay plain.
 */
 @media (min-width: 72rem) {
@@ -209,9 +209,7 @@ body {
   }
 
   body::before {
-    background-image: radial-gradient(circle, var(--rule) 1px, transparent 1.25px);
-    background-size: 14px 14px;
-    background-position: center top;
+    background-image: repeating-linear-gradient(-45deg, var(--rule) 0 1px, transparent 1px 10px);
     -webkit-mask-image: linear-gradient(to right, #000 calc(50% - 36rem), transparent 0 calc(50% + 36rem), #000 0);
     mask-image: linear-gradient(to right, #000 calc(50% - 36rem), transparent 0 calc(50% + 36rem), #000 0);
   }
@@ -242,14 +240,14 @@ body {
 }
 
 /*
-  Headings, including the hero title, use Source Serif 4 at semibold. .font-display is Fjalla One.
+  Headings use Inter Tight at semibold. The hero and .font-display are Fjalla One.
   In the base layer so utilities such as font-medium can override the weight.
 */
 @layer base {
   h1,
   h2,
   h3 {
-    font-family: var(--font-serif), "Source Serif 4", Georgia, serif;
+    font-family: var(--font-heading), "Inter Tight", "Helvetica Neue", Arial, sans-serif;
     font-weight: 600;
     letter-spacing: var(--tracking-display);
   }
@@ -274,8 +272,7 @@ h1.font-display,
 }
 
 /*
-  Hero backdrop: the halftone mountain, faint, inside the page frame and fading out at the bottom.
-  Light multiplies so the image's white drops out; dark inverts it to pale dots and screens them on.
+  Hero backdrop: a design-tool canvas. A dot grid inside the page frame, fading out at the bottom.
 */
 .hero-bg {
   position: absolute;
@@ -283,18 +280,244 @@ h1.font-display,
   z-index: -1;
   max-width: 72rem;
   margin-inline: auto;
-  background: url("/hero-bg.jpg") center 70% / cover no-repeat;
-  opacity: 0.1;
-  mix-blend-mode: multiply;
+  background-image: radial-gradient(circle, var(--line) 1px, transparent 1.5px);
+  background-size: 22px 22px;
+  background-position: center top;
   pointer-events: none;
   -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent);
   mask-image: linear-gradient(to bottom, #000 40%, transparent);
 }
 
-.dark .hero-bg {
-  opacity: 0.14;
-  filter: invert(1) hue-rotate(180deg);
-  mix-blend-mode: screen;
+/* The headline drawn as a selected frame: accent outline, corner handles, a layer label and a size readout. */
+.hero-frame {
+  position: relative;
+  margin-bottom: 2.5rem;
+}
+
+.hero-frame::before {
+  content: "";
+  position: absolute;
+  inset: -10px -12px;
+  border: 1.5px solid var(--accent);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.hero-handle {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border: 1.5px solid var(--accent);
+  border-radius: 2px;
+  background: var(--canvas);
+  pointer-events: none;
+}
+
+.hero-handle[data-pos="tl"] { top: -14.5px; left: -16.5px; }
+.hero-handle[data-pos="tr"] { top: -14.5px; right: -16.5px; }
+.hero-handle[data-pos="bl"] { bottom: -14.5px; left: -16.5px; }
+.hero-handle[data-pos="br"] { bottom: -14.5px; right: -16.5px; }
+
+.hero-frame-label {
+  position: absolute;
+  top: -34px;
+  left: -12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--accent);
+  font-family: var(--font-body), "Inter", "Segoe UI", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: var(--tracking-meta);
+  line-height: 1;
+}
+
+.hero-frame-label svg {
+  width: 10px;
+  height: 10px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+
+.hero-frame-size {
+  position: absolute;
+  bottom: -33px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 4px;
+  background: var(--accent);
+  color: var(--on-accent);
+  padding: 2px 6px;
+  font-family: var(--font-body), "Inter", "Segoe UI", sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+/* A second collaborator's cursor, multiplayer style. Wide screens only, where it has room. */
+.hero-cursor {
+  --cursor: #ec4899;
+  position: absolute;
+  right: 3%;
+  bottom: -52px;
+  display: none;
+  pointer-events: none;
+}
+
+.hero-cursor svg {
+  width: 16px;
+  height: 20px;
+  fill: var(--cursor);
+  stroke: var(--canvas);
+  stroke-width: 1.25;
+  stroke-linejoin: round;
+}
+
+.hero-cursor-name {
+  position: absolute;
+  top: 16px;
+  left: 12px;
+  border-radius: 4px 999px 999px 999px;
+  background: var(--cursor);
+  color: #ffffff;
+  padding: 3px 9px;
+  font-family: var(--font-body), "Inter", "Segoe UI", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: var(--tracking-meta);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+@media (min-width: 64rem) {
+  .hero-cursor {
+    display: block;
+  }
+}
+
+/* Small label above a block, quieter than a section heading. */
+.section-label {
+  font-family: var(--font-body), "Inter", "Segoe UI", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: var(--tracking-meta);
+  color: var(--muted);
+}
+
+/* Section headings lead with an accent swatch. */
+.swatch-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.swatch-heading::before {
+  content: "";
+  width: 0.5em;
+  height: 0.5em;
+  flex-shrink: 0;
+  border-radius: 3px;
+  background: var(--accent);
+}
+
+/* Discipline chips. */
+.discipline-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--ink);
+  padding: 6px 12px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: var(--tracking-meta);
+  line-height: 1.2;
+  white-space: nowrap;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.discipline-chip:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.discipline-chip-icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.15s ease;
+}
+
+.discipline-chip:hover .discipline-chip-icon {
+  stroke: var(--accent);
+}
+
+.discipline-chip-count {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The eight seniority levels as a 100–800 color ramp. --step runs 0.125 to 1. */
+.level-ramp {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+@media (min-width: 40rem) {
+  .level-ramp {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+}
+
+.level-ramp-step {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.level-ramp-swatch {
+  height: 3.5rem;
+  margin-bottom: 6px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: color-mix(in oklab, var(--accent) calc(var(--step) * 100%), var(--surface));
+  transition: outline-color 0.15s ease;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.level-ramp-step:hover .level-ramp-swatch,
+.level-ramp-step:focus-visible .level-ramp-swatch {
+  outline-color: var(--accent);
+}
+
+.level-ramp-token {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.3;
+}
+
+.level-ramp-name {
+  color: var(--ink);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: var(--tracking-meta);
+  line-height: 1.3;
 }
 
 /* Hero level: the icon and the typed word, kept on one line. */
@@ -415,7 +638,7 @@ h1.font-display,
   background: var(--tag-bg);
   color: var(--tag-fg);
   padding: 6px 12px;
-  font-family: var(--font-body), "Figtree", "Segoe UI", sans-serif;
+  font-family: var(--font-body), "Inter", "Segoe UI", sans-serif;
   font-weight: 500;
   font-size: 0.9375rem;
   letter-spacing: var(--tracking-meta);
@@ -546,32 +769,24 @@ h1.font-display,
   color: var(--ink);
 }
 
-/* Primary CTA: accent fill with a subtle raised edge — light top lip, darker rim, soft shadow. */
+/* Primary CTA: flat accent fill. */
 .btn-primary {
-  border: 1px solid var(--accent-active);
+  border: 1px solid var(--accent);
   background-color: var(--accent);
-  background-image: linear-gradient(180deg, rgb(255 255 255 / 0.1), rgb(255 255 255 / 0) 60%);
   color: var(--on-accent);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.28),
-    inset 0 -2px 0 rgb(0 0 0 / 0.12),
-    0 1px 2px rgb(0 0 0 / 0.18);
   transition:
     background-color 0.15s ease,
-    box-shadow 0.15s ease,
-    transform 0.15s ease;
+    border-color 0.15s ease;
 }
 
 .btn-primary:hover {
+  border-color: var(--accent-hover);
   background-color: var(--accent-hover);
 }
 
 .btn-primary:active {
+  border-color: var(--accent-active);
   background-color: var(--accent-active);
-  transform: translateY(1px);
-  box-shadow:
-    inset 0 1px 2px rgb(0 0 0 / 0.18),
-    0 0 0 rgb(0 0 0 / 0);
 }
 
 /* Secondary CTA: plain outline that follows the theme. */
@@ -1185,7 +1400,9 @@ input.control[type="number"]::-webkit-outer-spin-button {
   .odometer-digit-strip,
   .slot-reel-strip,
   .btn-primary,
-  .btn-outline {
+  .btn-outline,
+  .discipline-chip,
+  .level-ramp-swatch {
     transition: none;
   }
 
