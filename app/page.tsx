@@ -33,9 +33,7 @@ export default async function HomePage() {
               <span className="block">
                 <HeroLevels />{" "}
                 {/* Its own line on phones, so the streaming level never pushes "design" back and forth. */}
-                <span className="block whitespace-nowrap sm:inline">
-                  <span className="text-accent">design</span> professionals.
-                </span>
+                <span className="block whitespace-nowrap sm:inline">design professionals.</span>
               </span>
             </h1>
           </HeroFrame>
