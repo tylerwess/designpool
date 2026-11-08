@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { Metadata, Viewport } from "next";
-import { Figtree, Fjalla_One, Pacifico, Work_Sans } from "next/font/google";
+import { Figtree, Fjalla_One, Pacifico, Source_Serif_4 } from "next/font/google";
 import Script from "next/script";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -8,18 +8,18 @@ import { themeInitScript } from "@/lib/design-tokens";
 import { SITE_DESCRIPTION, SITE_NAME, siteUrl } from "@/lib/site";
 import "./globals.css";
 
-/** Buttons. */
-const sans = Work_Sans({
-  subsets: ["latin"],
-  weight: ["600"],
-  variable: "--font-sans",
-});
-
-/** Body copy at 500 and headings (including the hero title) at 600, plus navigation, filters, tags, and meta. */
+/** Body copy at 500, buttons at 600, plus navigation, filters, tags, and meta. */
 const body = Figtree({
   subsets: ["latin"],
   weight: ["500", "600"],
   variable: "--font-body",
+});
+
+/** Headings and the hero title. */
+const serif = Source_Serif_4({
+  subsets: ["latin"],
+  weight: ["600"],
+  variable: "--font-serif",
 });
 
 const display = Fjalla_One({
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${body.variable} ${display.variable} ${script.variable} dark h-full antialiased`} suppressHydrationWarning>
+    <html lang="en" className={`${body.variable} ${serif.variable} ${display.variable} ${script.variable} dark h-full antialiased`} suppressHydrationWarning>
       <body className="flex min-h-full flex-col bg-canvas text-ink">
         <Script id="designpool-theme" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <Header />

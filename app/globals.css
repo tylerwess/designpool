@@ -161,8 +161,8 @@
   --color-tag-bg: var(--tag-bg);
   --color-tag-fg: var(--tag-fg);
   --color-positive: var(--positive);
-  --font-sans: var(--font-sans);
   --font-body: var(--font-body);
+  --font-serif: var(--font-serif);
   --font-display: var(--font-display);
   --font-script: var(--font-script);
   --text-xs: 0.875rem;
@@ -235,14 +235,14 @@ body {
 }
 
 /*
-  Headings, including the hero title, use the body font (Figtree) at semibold. .font-display is Fjalla One.
+  Headings, including the hero title, use Source Serif 4 at semibold. .font-display is Fjalla One.
   In the base layer so utilities such as font-medium can override the weight.
 */
 @layer base {
   h1,
   h2,
   h3 {
-    font-family: var(--font-body), "Figtree", "Segoe UI", sans-serif;
+    font-family: var(--font-serif), "Source Serif 4", Georgia, serif;
     font-weight: 600;
     letter-spacing: var(--tracking-display);
   }
@@ -261,7 +261,7 @@ h1.font-display,
 
 .hero-title {
   margin-top: 0;
-  font-family: var(--font-body), "Figtree", "Segoe UI", sans-serif;
+  font-family: var(--font-serif), "Source Serif 4", Georgia, serif;
   font-weight: 600;
   letter-spacing: -0.04em;
 }
@@ -296,6 +296,8 @@ h1.font-display,
   /* The icon's bottom edge is its baseline, so the bars stand on the text's baseline. */
   align-items: baseline;
   gap: 0.2em;
+  /* Extra room before "design professionals"; Pacifico's trailing swash eats the plain space. */
+  margin-right: 0.15em;
   white-space: nowrap;
 }
 
@@ -1186,10 +1188,6 @@ input.control[type="number"]::-webkit-outer-spin-button {
   .tower-loader-wrap .box {
     animation: none;
     opacity: 1;
-  }
-
-  .hero-levels-text::after {
-    animation: none;
   }
 
   .shadow-roll-digit::before {

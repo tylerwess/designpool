@@ -137,9 +137,9 @@ export const TYPE_ROLES = {
   },
   structure: {
     share: 30,
-    family: "Figtree",
-    utility: "font-body",
-    use: "Page titles, section headings, and job titles at 600. Buttons are Work Sans 600.",
+    family: "Source Serif 4",
+    utility: "font-serif",
+    use: "Page titles, section headings, job titles, and the hero at 600. Buttons stay in Figtree 600.",
   },
   expressive: {
     share: 10,

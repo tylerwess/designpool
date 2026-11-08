@@ -112,11 +112,11 @@ test("primary accent text meets WCAG AA in both themes", () => {
 
 test("the written system and the gallery route exist", () => {
   const doc = readFileSync(join(ROOT, "DESIGN_SYSTEM.md"), "utf8");
-  for (const phrase of ["60/30/10", "/design", "Fjalla One", "Work Sans", "Figtree", "OpenAI", "1.125rem", "-0.03em", "-0.02em"]) {
+  for (const phrase of ["60/30/10", "/design", "Fjalla One", "Figtree", "Source Serif 4", "OpenAI", "1.125rem", "-0.03em", "-0.02em"]) {
     assert.equal(doc.includes(phrase), true, `DESIGN_SYSTEM.md should mention ${phrase}`);
   }
   assert.equal(TYPE_ROLES.body.family, "Figtree");
-  assert.equal(TYPE_ROLES.structure.family, "Figtree");
+  assert.equal(TYPE_ROLES.structure.family, "Source Serif 4");
   assert.equal(TYPE_BODY.family, "Figtree");
   assert.equal(TYPE_BODY.weight, 500);
   assert.equal(TYPE_BODY.size, "1.125rem");
@@ -182,8 +182,9 @@ test("body type tokens drive CSS and next/font", () => {
     assert.match(css, new RegExp(`--text-${step}:\\s*${size.replace(".", "\\.")}`));
   }
   const layout = readFileSync(join(ROOT, "app/layout.tsx"), "utf8");
-  assert.match(layout, /Work_Sans/);
+  assert.equal(layout.includes("Work_Sans"), false);
   assert.match(layout, /Figtree/);
+  assert.match(layout, /Source_Serif_4/);
   assert.equal(layout.includes("Lato"), false);
   assert.match(layout, /Fjalla_One/);
 });
