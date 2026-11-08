@@ -4,11 +4,14 @@ export function Container({
   children,
   className = "",
   size = "default",
+  gutter = "default",
 }: {
   children: ReactNode;
   className?: string;
-  size?: "default" | "narrow";
+  size?: "default" | "medium" | "narrow";
+  gutter?: "default" | "roomy";
 }) {
-  const width = size === "narrow" ? "max-w-3xl" : "max-w-6xl";
-  return <div className={`mx-auto w-full px-5 ${width} ${className}`.trim()}>{children}</div>;
+  const width = size === "narrow" ? "max-w-3xl" : size === "medium" ? "max-w-5xl" : "max-w-6xl";
+  const padding = gutter === "roomy" ? "px-7.5" : "px-5";
+  return <div className={`mx-auto w-full ${padding} ${width} ${className}`.trim()}>{children}</div>;
 }

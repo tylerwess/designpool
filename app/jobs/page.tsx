@@ -31,7 +31,7 @@ export default async function JobsPage({
   const pageJobs = jobs.slice((page - 1) * JOBS_PAGE_SIZE, page * JOBS_PAGE_SIZE);
 
   return (
-    <Container className="py-10">
+    <Container gutter="roomy" size="medium" className="py-10">
       <h1 className="text-4xl sm:text-5xl">Open roles</h1>
       <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">
         Design roles from public company boards. Each one is at most 30 days old.
