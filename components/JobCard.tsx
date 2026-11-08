@@ -40,20 +40,14 @@ export function JobCard({ listing, titleHref }: { listing: Listing; titleHref?: 
             ) : null}
             {salary ? (
               <li>
-                <Badge>Salary</Badge>
+                <Badge>{salary}</Badge>
               </li>
             ) : null}
           </ul>
           {listingMeta(listing) ? <p className="mt-2 text-sm leading-6 text-ink">{listingMeta(listing)}</p> : null}
-          {salary || listing.employmentType !== "full_time" ? (
+          {listing.employmentType === "internship" || listing.employmentType === "contract" ? (
             <p className="mt-2 text-sm text-muted">
-              {[
-                salary,
-                listing.employmentType === "internship" ? "Internship" : null,
-                listing.employmentType === "contract" ? "Contract" : null,
-              ]
-                .filter(Boolean)
-                .join(" · ")}
+              {listing.employmentType === "internship" ? "Internship" : "Contract"}
             </p>
           ) : null}
         </div>
