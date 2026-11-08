@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { Metadata, Viewport } from "next";
-import { Figtree, Fjalla_One, Pacifico, Source_Serif_4 } from "next/font/google";
+import { Figtree, Fjalla_One, Source_Serif_4 } from "next/font/google";
 import Script from "next/script";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -26,13 +26,6 @@ const display = Fjalla_One({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-display",
-});
-
-/** The hero's typed level. */
-const script = Pacifico({
-  subsets: ["latin"],
-  weight: "400",
-  variable: "--font-script",
 });
 
 export const viewport: Viewport = {
@@ -68,7 +61,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${body.variable} ${serif.variable} ${display.variable} ${script.variable} dark h-full antialiased`} suppressHydrationWarning>
+    <html lang="en" className={`${body.variable} ${serif.variable} ${display.variable} dark h-full antialiased`} suppressHydrationWarning>
       <body className="flex min-h-full flex-col bg-canvas text-ink">
         <Script id="designpool-theme" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <Header />

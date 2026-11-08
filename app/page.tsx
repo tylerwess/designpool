@@ -22,14 +22,6 @@ export default async function HomePage() {
     <div>
       <div className="relative isolate pb-12">
         <div className="hero-bg" aria-hidden="true" />
-        {/* Freshness banner: same container as the header, so its right edge lines up with the nav's. */}
-        {ingestStats ? (
-          // Hangs straight off the nav's bottom border. On phones it takes its own row so it can't cover the
-          // tower; from sm up it floats over the hero's top padding.
-          <Container className="relative flex justify-end sm:block">
-            <LastUpdated iso={ingestStats.ranAt} className="sm:absolute sm:top-0 sm:right-5 sm:z-10" />
-          </Container>
-        ) : null}
         <Container size="narrow" className="pt-10 sm:pt-14">
           <h1 className="hero-title max-w-3xl text-[1.58203125rem] leading-[1.1] sm:text-[2.63671875rem]">
             {/* The level gets its own line so the reel never reflows the sentence; balance keeps phones from orphaning "board for". */}
@@ -72,6 +64,7 @@ export default async function HomePage() {
               </Button>
             ) : null}
           </div>
+          {ingestStats ? <LastUpdated iso={ingestStats.ranAt} className="mb-5" /> : null}
           {jobs.length > 0 ? (
             <LandingLive jobs={jobs} />
           ) : (
