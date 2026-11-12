@@ -8,18 +8,31 @@ import { activeFilterCount, filtersToQuery, type JobFilters } from "@/lib/filter
 import { yearsFilterLabel } from "@/lib/format";
 import {
   DISCIPLINES,
-  EMPLOYMENT_TYPES,
   INDUSTRIES,
   POSTED_WINDOWS,
   SENIORITY_LABELS,
   SENIORITY_LEVELS,
-  SIZE_BUCKETS,
   WORK_TYPES,
 } from "@/lib/taxonomy";
 
 function hrefFor(filters: JobFilters): string {
   const query = filtersToQuery(filters);
   return query ? `/jobs?${query}` : "/jobs";
+}
+
+/** An on/off filter chip: a link to the same search with the flag flipped. */
+function Toggle({ href, on, children }: { href: string; on: boolean; children: ReactNode }) {
+  return (
+    <Link
+      href={href}
+      aria-pressed={on}
+      className={`inline-flex h-9 items-center rounded-[10px] border px-3.5 text-sm ${
+        on ? "border-ink bg-ink text-bg" : "border-line bg-bg text-ink"
+      }`}
+    >
+      {children}
+    </Link>
+  );
 }
 
 function choiceLabel(name: string, selected: string[]): string {
@@ -173,7 +186,6 @@ function FilterForm({ filters }: { filters: JobFilters }) {
   const industryLabels = filters.industry.map((id) => INDUSTRIES.find((item) => item.id === id)?.label ?? id);
   const disciplineLabels = filters.discipline.map((id) => DISCIPLINES.find((item) => item.id === id)?.label ?? id);
   const workLabels = filters.work.map((id) => WORK_TYPES.find((item) => item.id === id)?.label ?? id);
-  const employmentLabels = filters.employment.map((id) => EMPLOYMENT_TYPES.find((item) => item.id === id)?.label ?? id);
   const postedLabel = POSTED_WINDOWS.find((window) => window.id === filters.posted)?.label;
   const yearsActive = filters.yearsMin != null || filters.yearsMax != null || !filters.includeUnknownYears;
 
@@ -335,42 +347,6 @@ function FilterForm({ filters }: { filters: JobFilters }) {
         </Menu>
 
         <Menu
-          id={`${baseId}-employment`}
-          open={open === "employment"}
-          label={choiceLabel("Employment", employmentLabels)}
-          active={filters.employment.length > 0}
-          clearHref={hrefFor({ ...filters, employment: [] })}
-          onToggle={() => toggle("employment")}
-        >
-          {EMPLOYMENT_TYPES.map((option) => (
-            <Option
-              key={option.id}
-              type="checkbox"
-              name="employment"
-              value={option.id}
-              defaultChecked={filters.employment.includes(option.id)}
-            >
-              {option.label}
-            </Option>
-          ))}
-        </Menu>
-
-        <Menu
-          id={`${baseId}-size`}
-          open={open === "size"}
-          label={choiceLabel("Company size", filters.size)}
-          active={filters.size.length > 0}
-          clearHref={hrefFor({ ...filters, size: [] })}
-          onToggle={() => toggle("size")}
-        >
-          {SIZE_BUCKETS.map((bucket) => (
-            <Option key={bucket} type="checkbox" name="size" value={bucket} defaultChecked={filters.size.includes(bucket)}>
-              {bucket}
-            </Option>
-          ))}
-        </Menu>
-
-        <Menu
           id={`${baseId}-years`}
           open={open === "years"}
           label={yearsLabel(filters)}
@@ -410,15 +386,15 @@ function FilterForm({ filters }: { filters: JobFilters }) {
           </Option>
         </Menu>
 
-        <Link
-          href={hrefFor({ ...filters, salary: !filters.salary })}
-          aria-pressed={filters.salary}
-          className={`inline-flex h-9 items-center rounded-[10px] border px-3.5 text-sm ${
-            filters.salary ? "border-ink bg-ink text-bg" : "border-line bg-bg text-ink"
-          }`}
-        >
-          Has salary
-        </Link>
+        <Toggle href={hrefFor({ ...filters, sponsorsVisa: !filters.sponsorsVisa })} on={filters.sponsorsVisa}>
+          Sponsors visa
+        </Toggle>
+        <Toggle href={hrefFor({ ...filters, opt: !filters.opt })} on={filters.opt}>
+          Has OPT
+        </Toggle>
+        <Toggle href={hrefFor({ ...filters, relocation: !filters.relocation })} on={filters.relocation}>
+          Relocation assistance
+        </Toggle>
 
         {count > 0 ? (
           <Button href="/jobs" variant="ghost">

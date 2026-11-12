@@ -7,7 +7,7 @@ const variants = {
   secondary:
     "btn-outline inline-flex h-11 items-center justify-center rounded-full px-6 font-body font-semibold text-sm",
   ghost:
-    "inline-flex items-center font-body font-semibold text-sm text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent",
+    "inline-flex items-center font-body font-semibold text-sm text-ink underline decoration-brand/50 underline-offset-4 hover:text-brand-ink hover:decoration-brand",
 } as const;
 
 function LaunchIcon() {

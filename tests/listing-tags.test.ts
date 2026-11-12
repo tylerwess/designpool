@@ -31,13 +31,16 @@ function job(overrides: Partial<Listing> = {}): Listing {
     industry: "productivity",
     sizeBucket: "1000+",
     disciplines: ["product_design"],
+    opt: false,
+    relocation: false,
+    sponsorsVisa: false,
     ...overrides,
   };
 }
 
 describe("listingTags", () => {
   it("uses filter-chip labels and links each tag to /jobs", () => {
-    const tags = listingTags(job());
+    const tags = listingTags(job({ sponsorsVisa: true, opt: true, relocation: true }));
     const byKey = Object.fromEntries(tags.map((tag) => [tag.key, tag]));
 
     assert.equal(byKey["seniority:senior"]?.label, "Senior");
@@ -49,10 +52,14 @@ describe("listingTags", () => {
     assert.equal(byKey["discipline:product_design"]?.label, "Product design");
     assert.equal(byKey["work:remote"]?.label, "Remote");
     assert.equal(byKey["work:remote"]?.href, "/jobs?work=remote");
-    assert.equal(byKey["employment:full_time"]?.label, "Full-time");
-    assert.equal(byKey["size:1000+"]?.label, "1000+");
-    assert.equal(byKey.salary?.label, "Has salary");
-    assert.equal(byKey.salary?.href, "/jobs?salary=1");
+    assert.equal(byKey.visa?.label, "Sponsors visa");
+    assert.equal(byKey.visa?.href, "/jobs?visa=1");
+    assert.equal(byKey.opt?.href, "/jobs?opt=1");
+    assert.equal(byKey.relocation?.href, "/jobs?relocation=1");
+    assert.equal(
+      tags.some((tag) => tag.key.startsWith("employment:") || tag.key.startsWith("size:") || tag.key === "salary"),
+      false,
+    );
     assert.equal(
       tags.some((tag) => /stretch|not stated|not listed|past |san francisco/i.test(tag.label)),
       false,
@@ -63,7 +70,7 @@ describe("listingTags", () => {
     );
   });
 
-  it("omits unknown years, work type, and salary", () => {
+  it("omits unknown years and work type, and work-auth tags the listing doesn't offer", () => {
     const tags = listingTags(
       job({
         yearsMin: null,
@@ -76,11 +83,10 @@ describe("listingTags", () => {
     );
     const keys = tags.map((tag) => tag.key);
     assert.equal(
-      keys.some((key) => key.startsWith("years:") || key.startsWith("work:") || key === "salary"),
+      keys.some((key) => key.startsWith("years:") || key.startsWith("work:") || ["visa", "opt", "relocation"].includes(key)),
       false,
     );
     assert.ok(keys.includes("seniority:senior"));
-    assert.ok(keys.includes("employment:full_time"));
   });
 
   it("matches years chip vocabulary", () => {

@@ -55,7 +55,7 @@ export default async function HomePage() {
           <Surface className="mt-8 flex items-end justify-between gap-4 p-4 sm:p-5">
             <div className="flex min-w-0 flex-col gap-2">
               <p className="text-sm text-muted">Open roles</p>
-              <FreshListingsCount count={jobs.length} className="self-start text-[2.109375rem] leading-none text-accent" />
+              <FreshListingsCount count={jobs.length} className="self-start text-[2.109375rem] leading-none text-brand-ink" />
               <p className="text-xs text-muted">Posted in the last 30 days</p>
             </div>
             {trend ? <RoleTrend days={trend} /> : null}
@@ -66,7 +66,7 @@ export default async function HomePage() {
       <section aria-labelledby="latest-roles" className="source-stack divider-top pt-10 pb-14">
         <Container size="narrow">
           <div className="mb-5 flex items-baseline justify-between gap-4">
-            <h2 id="latest-roles" className="swatch-heading text-2xl">
+            <h2 id="latest-roles" className="text-2xl">
               Latest roles
             </h2>
             {jobs.length > 0 ? (
@@ -89,7 +89,7 @@ export default async function HomePage() {
 
       <section className="divider-top">
         <Container size="narrow" className="py-14 sm:py-16">
-          <h2 className="swatch-heading max-w-3xl text-2xl">Eight levels, not one bucket.</h2>
+          <h2 className="max-w-3xl text-2xl">Eight levels, not one bucket.</h2>
           <p className="mt-3 max-w-xl text-base leading-7 text-muted">
             Title first, years second. Lead stays an individual contributor unless the role manages people.
           </p>

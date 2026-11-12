@@ -17,7 +17,7 @@ function applyTheme(dark: boolean) {
   document.documentElement.style.colorScheme = dark ? "dark" : "light";
 }
 
-/** Flat on/off switch: gray track for light, accent track for dark, plain white knob. */
+/** Flat on/off switch: gray track for light, accent (white) track for dark, knob flips to on-accent. */
 export function ThemeToggle() {
   const dark = useSyncExternalStore(subscribe, isDark, () => true);
 

@@ -8,7 +8,7 @@ The interface follows the restraint of OpenAI’s product pages: a flat canvas, 
 | --- | --- | --- |
 | 60% canvas | `bg`. White in light mode, black in dark mode. | Inter for body, navigation, filters, tags, and meta |
 | 30% structure | `surface` (the gray band), `ink`, `muted`, `line` | Inter Tight 600 for page titles, section headings, and job titles |
-| 10% expressive | `accent`, `accent-hover`, `accent-active`, `on-accent`, `accent-focus`, and `accent-soft`. Light base is `#0073e6`. Dark base is `#4da3ff`. | Fjalla One at display size: the hero and live stat numbers |
+| 10% expressive | `accent`, `accent-hover`, `accent-active`, `on-accent`, `accent-focus`, and `accent-soft`. The accent follows ink: white (`#ffffff`) in dark with black `on-accent`, near-black (`#111111`) in light with white `on-accent`. Blue lives in `brand` / `brand-soft` (light `#0073e6`, dark `#4da3ff`) and is reserved for icons, data viz (role trend, level ramp, circuit traces, the open-roles count) and quiet secondary touches: `brand-soft` fills with `brand-ink` type (`.tag-info` on "Jobs updated", discipline-chip hover, text selection), and thin `brand` lines (active nav underline, ghost-link underline, level-ramp hover ring). Primary buttons, the logo pill, pagination and focus rings stay on the white/ink `accent`. | Fjalla One at display size: the hero and live stat numbers |
 
 The brand violet is only on primary CTAs (Apply, Search, Browse, and other default buttons). Secondary and ghost stay ink. Cards sit on the canvas with a 1px border. `surface` is the slightly lighter or darker band under a single statement, not a stack of value-prop columns.
 
@@ -22,13 +22,13 @@ Job rows use two actions: Read more opens the role, and Apply launches the compa
 
 ## Design-tool motifs
 
-The landing borrows from design tools so it reads as a design job board. The hero sits on a dot-grid canvas (`.hero-bg`), and the headline is drawn as a selected Figma component (`HeroFrame`): a `#9747ff` component-purple outline in both themes, corner handles, a "Hero" label with the four-diamond component icon, and a "Fill × Hug" size readout. Under the hero, `DisciplineChips` lists every discipline as a pill with a minimal 16px line icon (muted, accent on hover) and a live count. The seniority section shows the eight levels as a 100–800 accent ramp (`LevelRamp`), each step linking to its filter. Section headings lead with a small accent square (`.swatch-heading`). Wide-screen gutters use thin diagonal hatching in `rule`, edged by dashed rails.
+The landing borrows from design tools so it reads as a design job board. The hero sits on a dot-grid canvas (`.hero-bg`), and the headline is drawn as a selected Figma component (`HeroFrame`): a `#9747ff` component-purple outline in both themes, corner handles, a "Hero" label with the four-diamond component icon, and a "Fill × Hug" size readout. Under the hero, `DisciplineChips` lists every discipline as a pill with a minimal 16px line icon (muted; on hover the chip goes light blue with a `brand` icon) and a live count. The seniority section shows the eight levels as a 100–800 `brand` ramp (`LevelRamp`), each step linking to its filter. Wide-screen gutters use thin diagonal hatching in `rule`, edged by dashed rails.
 
 ## Themes
 
 `app/globals.css` defines a light set and a dark set. Semantic tokens point at one set. `.dark` on `<html>` swaps the pointers.
 
-The first visit follows `prefers-color-scheme`. The header control is a flat theme switch (`.theme-switch`, a checkbox with `role="switch"` and `aria-label="Dark mode"`). The 44×24 track is `line` when light and `accent` when dark; the white knob carries a sun or moon. It mirrors the `dark` class on `<html>` and writes `designpool-theme` (`light` or `dark`) to `localStorage`. `themeInitScript` runs before paint. `prefers-reduced-motion` turns the slide off.
+The first visit follows `prefers-color-scheme`. The header control is a flat theme switch (`.theme-switch`, a checkbox with `role="switch"` and `aria-label="Dark mode"`). The 44×24 track is `line` when light and `accent` (white) when dark; the knob is white, or `on-accent` on the white track, carries a sun or moon. It mirrors the `dark` class on `<html>` and writes `designpool-theme` (`light` or `dark`) to `localStorage`. `themeInitScript` runs before paint. `prefers-reduced-motion` turns the slide off.
 
 `/design` is a local-only gallery (`npm run dev`). It 404s when `NODE_ENV === "production"` or `VERCEL_ENV` is set, is omitted from the sitemap and robots, and sends `noindex`. The page still shows both palettes at once with `.force-light` and `.force-dark`.
 

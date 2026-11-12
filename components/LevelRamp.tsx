@@ -15,7 +15,7 @@ const SHORT: Record<Seniority, string> = {
   executive: "Executive",
 };
 
-/** The eight seniority levels as a color ramp, light to full accent, like a design-system scale. */
+/** The eight seniority levels as a color ramp, light to full brand blue, like a design-system scale. */
 export function LevelRamp() {
   return (
     <ol className="level-ramp">

@@ -17,7 +17,7 @@ function NavLink({ href, children }: { href: string; children: ReactNode }) {
       aria-current={active ? "page" : undefined}
       className={`relative pb-1 ${
         active
-          ? "text-accent after:absolute after:inset-x-0 after:-bottom-1 after:h-0.5 after:rounded-full after:bg-accent"
+          ? "text-ink after:absolute after:inset-x-0 after:-bottom-1 after:h-0.5 after:rounded-full after:bg-brand"
           : "text-ink hover:underline"
       }`}
     >

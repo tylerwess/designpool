@@ -1,6 +1,6 @@
 import { jobsHref } from "./filters";
 import { yearsFilterLabel } from "./format";
-import { EMPLOYMENT_TYPES, SENIORITY_LABELS, WORK_TYPES, disciplineLabel, industryLabel } from "./taxonomy";
+import { SENIORITY_LABELS, WORK_TYPES, disciplineLabel, industryLabel } from "./taxonomy";
 import type { Listing } from "./types";
 
 export type ListingTag = {
@@ -60,29 +60,14 @@ export function listingTags(listing: Listing): ListingTag[] {
     });
   }
 
-  const employment = EMPLOYMENT_TYPES.find((item) => item.id === listing.employmentType);
-  if (employment) {
-    tags.push({
-      key: `employment:${employment.id}`,
-      label: employment.label,
-      href: jobsHref({ employment: [employment.id] }),
-    });
+  if (listing.sponsorsVisa) {
+    tags.push({ key: "visa", label: "Sponsors visa", href: jobsHref({ sponsorsVisa: true }) });
   }
-
-  if (known(listing.sizeBucket)) {
-    tags.push({
-      key: `size:${listing.sizeBucket}`,
-      label: listing.sizeBucket,
-      href: jobsHref({ size: [listing.sizeBucket] }),
-    });
+  if (listing.opt) {
+    tags.push({ key: "opt", label: "Has OPT", href: jobsHref({ opt: true }) });
   }
-
-  if (listing.salaryMin != null || listing.salaryMax != null) {
-    tags.push({
-      key: "salary",
-      label: "Has salary",
-      href: jobsHref({ salary: true }),
-    });
+  if (listing.relocation) {
+    tags.push({ key: "relocation", label: "Relocation assistance", href: jobsHref({ relocation: true }) });
   }
 
   return tags;

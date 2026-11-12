@@ -17,6 +17,7 @@ import { fetchCompanyJobs, type FetchedJob } from "./sources";
 import { disciplinesFor } from "./text";
 import { parseYears } from "./years";
 import type { ListingDraft } from "./types";
+import { workAuthFrom } from "./work-auth";
 
 const FETCH_CONCURRENCY = 6;
 
@@ -90,6 +91,7 @@ export async function toListingDraft(company: Company, job: FetchedJob, seenAt: 
     industry: company.industry,
     sizeBucket: company.sizeBucket,
     disciplines: disciplinesFor(job.title, description),
+    ...workAuthFrom(description),
   };
 }
 

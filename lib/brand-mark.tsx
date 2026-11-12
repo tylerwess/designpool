@@ -18,7 +18,7 @@ export function brandMarkStyle(size: number): CSSProperties {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    background: PALETTES.light.accent,
+    background: PALETTES.light.brand,
     color: PALETTES.light["on-accent"],
     borderRadius: Math.round(size * 0.25),
     fontFamily: TYPE_DISPLAY.family,

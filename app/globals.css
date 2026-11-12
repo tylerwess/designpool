@@ -14,12 +14,16 @@
   --light-line: #e4e4e4;
   /* Dashed dividers, gutter rails and the gutter hatching. */
   --light-rule: #e4e4e4;
-  --light-accent: #0073e6;
-  --light-accent-hover: #0062c2;
-  --light-accent-active: #0052a3;
+  --light-accent: #111111;
+  --light-accent-hover: #333333;
+  --light-accent-active: #000000;
   --light-on-accent: #ffffff;
-  --light-accent-focus: #0073e6;
-  --light-accent-soft: #e3f0fd;
+  --light-accent-focus: #111111;
+  --light-accent-soft: #ebebeb;
+  /* Blue is reserved for icons and data viz. */
+  --light-brand: #0073e6;
+  --light-brand-soft: #e3f0fd;
+  --light-brand-ink: #0058b3;
   --light-tower-left: #0052a3;
   --light-tower-right: #0073e6;
   --light-tower-top: #8cc3ff;
@@ -35,12 +39,16 @@
   --dark-line: #333333;
   /* About the same contrast on black as --light-rule has on white. */
   --dark-rule: #222222;
-  --dark-accent: #4da3ff;
-  --dark-accent-hover: #3d93f2;
-  --dark-accent-active: #2f82e0;
-  --dark-on-accent: #021326;
-  --dark-accent-focus: #4da3ff;
-  --dark-accent-soft: #0f2440;
+  --dark-accent: #ffffff;
+  --dark-accent-hover: #e6e6e6;
+  --dark-accent-active: #cccccc;
+  --dark-on-accent: #000000;
+  --dark-accent-focus: #ffffff;
+  --dark-accent-soft: #2c2c2c;
+  /* Blue is reserved for icons and data viz. */
+  --dark-brand: #4da3ff;
+  --dark-brand-soft: #0f2440;
+  --dark-brand-ink: #a8d2ff;
   --dark-tower-left: #2f82e0;
   --dark-tower-right: #4da3ff;
   --dark-tower-top: #a8d2ff;
@@ -61,6 +69,9 @@
   --on-accent: var(--light-on-accent);
   --accent-focus: var(--light-accent-focus);
   --accent-soft: var(--light-accent-soft);
+  --brand: var(--light-brand);
+  --brand-soft: var(--light-brand-soft);
+  --brand-ink: var(--light-brand-ink);
   --tower-left: var(--light-tower-left);
   --tower-right: var(--light-tower-right);
   --tower-top: var(--light-tower-top);
@@ -95,6 +106,9 @@
   --on-accent: var(--dark-on-accent);
   --accent-focus: var(--dark-accent-focus);
   --accent-soft: var(--dark-accent-soft);
+  --brand: var(--dark-brand);
+  --brand-soft: var(--dark-brand-soft);
+  --brand-ink: var(--dark-brand-ink);
   --tower-left: var(--dark-tower-left);
   --tower-right: var(--dark-tower-right);
   --tower-top: var(--dark-tower-top);
@@ -118,6 +132,9 @@
   --on-accent: var(--light-on-accent);
   --accent-focus: var(--light-accent-focus);
   --accent-soft: var(--light-accent-soft);
+  --brand: var(--light-brand);
+  --brand-soft: var(--light-brand-soft);
+  --brand-ink: var(--light-brand-ink);
   --tower-left: var(--light-tower-left);
   --tower-right: var(--light-tower-right);
   --tower-top: var(--light-tower-top);
@@ -141,6 +158,9 @@
   --on-accent: var(--dark-on-accent);
   --accent-focus: var(--dark-accent-focus);
   --accent-soft: var(--dark-accent-soft);
+  --brand: var(--dark-brand);
+  --brand-soft: var(--dark-brand-soft);
+  --brand-ink: var(--dark-brand-ink);
   --tower-left: var(--dark-tower-left);
   --tower-right: var(--dark-tower-right);
   --tower-top: var(--dark-tower-top);
@@ -163,6 +183,9 @@
   --color-on-accent: var(--on-accent);
   --color-accent-focus: var(--accent-focus);
   --color-accent-soft: var(--accent-soft);
+  --color-brand: var(--brand);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-ink: var(--brand-ink);
   --color-tower-left: var(--tower-left);
   --color-tower-right: var(--tower-right);
   --color-tower-top: var(--tower-top);
@@ -374,22 +397,6 @@ h1.font-display,
   color: var(--muted);
 }
 
-/* Section headings lead with an accent swatch. */
-.swatch-heading {
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-}
-
-.swatch-heading::before {
-  content: "";
-  width: 0.5em;
-  height: 0.5em;
-  flex-shrink: 0;
-  border-radius: 3px;
-  background: var(--accent);
-}
-
 /* Discipline chips. */
 .discipline-chip {
   display: inline-flex;
@@ -411,8 +418,9 @@ h1.font-display,
 }
 
 .discipline-chip:hover {
-  border-color: var(--accent);
-  background: var(--accent-soft);
+  border-color: color-mix(in oklab, var(--brand) 55%, transparent);
+  background: var(--brand-soft);
+  color: var(--brand-ink);
 }
 
 .discipline-chip-icon {
@@ -428,7 +436,7 @@ h1.font-display,
 }
 
 .discipline-chip:hover .discipline-chip-icon {
-  stroke: var(--accent);
+  stroke: var(--brand);
 }
 
 .discipline-chip-count {
@@ -460,7 +468,7 @@ h1.font-display,
   margin-bottom: 6px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: color-mix(in oklab, var(--accent) calc(var(--step) * 100%), var(--surface));
+  background: color-mix(in oklab, var(--brand) calc(var(--step) * 100%), var(--surface));
   transition: outline-color 0.15s ease;
   outline: 2px solid transparent;
   outline-offset: 2px;
@@ -468,7 +476,7 @@ h1.font-display,
 
 .level-ramp-step:hover .level-ramp-swatch,
 .level-ramp-step:focus-visible .level-ramp-swatch {
-  outline-color: var(--accent);
+  outline-color: var(--brand);
 }
 
 .level-ramp-token {
@@ -511,7 +519,7 @@ h1.font-display,
 }
 
 .hero-levels-icon .is-on {
-  fill: var(--accent);
+  fill: var(--brand);
 }
 
 .fresh-sticker {
@@ -613,6 +621,12 @@ h1.font-display,
   box-shadow: none;
 }
 
+/* Secondary light-blue tag for status notes like "Jobs updated". */
+.tag-info {
+  background: var(--brand-soft);
+  color: var(--brand-ink);
+}
+
 .tag-row {
   display: flex;
   flex-wrap: wrap;
@@ -662,8 +676,8 @@ h1.font-display,
 .source-circuit .trace-flow {
   fill: none;
   /* Each trace sets --trace-color to its platform's icon color. */
-  stroke: var(--trace-color, var(--accent));
-  color: var(--trace-color, var(--accent));
+  stroke: var(--trace-color, var(--brand));
+  color: var(--trace-color, var(--brand));
   stroke-width: 1.8;
   stroke-linecap: round;
   /* pathLength is 100, so every trace takes the same time end to end. */
@@ -819,7 +833,7 @@ h1.font-display,
 }
 
 ::selection {
-  background: var(--accent-soft);
+  background: var(--brand-soft);
   color: var(--ink);
 }
 
@@ -886,6 +900,7 @@ input.control[type="number"]::-webkit-outer-spin-button {
 }
 
 .theme-switch input:checked + .theme-switch-track .theme-switch-knob {
+  background-color: var(--on-accent);
   transform: translateX(1.25rem);
 }
 
@@ -934,13 +949,13 @@ input.control[type="number"]::-webkit-outer-spin-button {
   display: block;
   width: 100%;
   border-radius: 4px 4px 2px 2px;
-  background: var(--accent-soft);
+  background: var(--brand-soft);
   transform-origin: bottom;
   animation: role-trend-grow 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .role-trend-bar.is-today {
-  background: var(--accent);
+  background: var(--brand);
 }
 
 .role-trend-bar.is-empty {

@@ -17,7 +17,7 @@ function useIsClient(): boolean {
 
 function CloudIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" className="shrink-0 text-accent">
+    <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" className="shrink-0 text-brand">
       <path
         d="M7 18.5h10.25a4.25 4.25 0 0 0 .6-8.46A6 6 0 0 0 6.3 11.1 3.75 3.75 0 0 0 7 18.5Z"
         fill="none"
@@ -39,7 +39,7 @@ export function LastUpdated({ iso, className = "" }: { iso: string; className?: 
   const label = FORMAT.format(new Date(iso));
 
   return (
-    <p className={`tag gap-1.5 ${className}`.trim()}>
+    <p className={`tag tag-info gap-1.5 ${className}`.trim()}>
       <CloudIcon />
       <span>
         Jobs updated <time dateTime={iso}>{label}</time>

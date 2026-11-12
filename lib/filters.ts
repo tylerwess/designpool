@@ -3,13 +3,10 @@ import {
   isDiscipline,
   isIndustry,
   isSeniority,
-  isSizeBucket,
   POSTED_WINDOWS,
   type DisciplineId,
-  type EmploymentType,
   type IndustryId,
   type Seniority,
-  type SizeBucket,
 } from "./taxonomy";
 
 export type SortKey = "newest" | "company";
@@ -24,9 +21,9 @@ export type JobFilters = {
   discipline: DisciplineId[];
   work: Array<"remote" | "hybrid" | "onsite">;
   location: string;
-  employment: EmploymentType[];
-  salary: boolean;
-  size: SizeBucket[];
+  opt: boolean;
+  relocation: boolean;
+  sponsorsVisa: boolean;
   posted: string;
   sort: SortKey;
 };
@@ -53,6 +50,10 @@ function numberOrNull(params: SearchParams, key: string): number | null {
   return Number.isFinite(value) ? value : null;
 }
 
+function flag(params: SearchParams, key: string): boolean {
+  return values(params, key).some((value) => value === "1" || value === "true");
+}
+
 export function parseSearchParams(params: SearchParams): JobFilters {
   const posted = first(params, "posted");
   const unknown = params.includeUnknownYears;
@@ -70,12 +71,9 @@ export function parseSearchParams(params: SearchParams): JobFilters {
         value === "remote" || value === "hybrid" || value === "onsite",
     ),
     location: first(params, "location"),
-    employment: values(params, "employment").filter(
-      (value): value is EmploymentType =>
-        value === "full_time" || value === "contract" || value === "internship",
-    ),
-    salary: values(params, "salary").some((value) => value === "1" || value === "true"),
-    size: values(params, "size").filter(isSizeBucket),
+    opt: flag(params, "opt"),
+    relocation: flag(params, "relocation"),
+    sponsorsVisa: flag(params, "visa"),
     posted: POSTED_WINDOWS.some((window) => window.id === posted) ? posted : "",
     sort: first(params, "sort") === "company" ? "company" : "newest",
   };
@@ -127,9 +125,9 @@ export function matchesFilters(listing: Listing, filters: JobFilters, now = Date
     const location = (listing.location ?? "").toLowerCase();
     if (!location.includes(filters.location.toLowerCase())) return false;
   }
-  if (filters.employment.length > 0 && !filters.employment.includes(listing.employmentType)) return false;
-  if (filters.salary && listing.salaryMin == null && listing.salaryMax == null) return false;
-  if (filters.size.length > 0 && !filters.size.includes(listing.sizeBucket)) return false;
+  if (filters.opt && !listing.opt) return false;
+  if (filters.relocation && !listing.relocation) return false;
+  if (filters.sponsorsVisa && !listing.sponsorsVisa) return false;
   if (filters.posted) {
     const windowMs = POSTED_MS[filters.posted];
     if (now - listingTimestamp(listing) > windowMs) return false;
@@ -183,9 +181,9 @@ export function filtersToQuery(filters: JobFilters): string {
   for (const value of filters.discipline) params.append("discipline", value);
   for (const value of filters.work) params.append("work", value);
   if (filters.location) params.set("location", filters.location);
-  for (const value of filters.employment) params.append("employment", value);
-  if (filters.salary) params.set("salary", "1");
-  for (const value of filters.size) params.append("size", value);
+  if (filters.opt) params.set("opt", "1");
+  if (filters.relocation) params.set("relocation", "1");
+  if (filters.sponsorsVisa) params.set("visa", "1");
   if (filters.posted) params.set("posted", filters.posted);
   if (filters.sort !== "newest") params.set("sort", filters.sort);
   return params.toString();
@@ -200,9 +198,9 @@ export function activeFilterCount(filters: JobFilters): number {
     filters.discipline.length,
     filters.work.length,
     filters.location,
-    filters.employment.length,
-    filters.salary,
-    filters.size.length,
+    filters.opt,
+    filters.relocation,
+    filters.sponsorsVisa,
     filters.posted,
     filters.sort !== "newest",
   ].filter(Boolean).length;

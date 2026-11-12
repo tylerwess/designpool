@@ -35,6 +35,10 @@ export type Listing = {
   industry: IndustryId;
   sizeBucket: SizeBucket;
   disciplines: DisciplineId[];
+  /** Read from the description: offers OPT, relocation help, visa sponsorship. */
+  opt: boolean;
+  relocation: boolean;
+  sponsorsVisa: boolean;
 };
 
 export type ListingDraft = Listing & { description: string };

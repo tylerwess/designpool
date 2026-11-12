@@ -1,5 +1,6 @@
 import { getDb, type SqlParam } from "./db";
 import type { Listing, ListingDraft } from "./types";
+import { workAuthFrom } from "./work-auth";
 import type { Ats, DisciplineId, EmploymentType, IndustryId, Seniority, SizeBucket, WorkType } from "./taxonomy";
 
 /** Single source of truth for "nothing older than 30 days": both the cron sweep and every read use this. */
@@ -80,6 +81,7 @@ function mapRow(row: ListingRow): Listing {
     industry: row.industry as IndustryId,
     sizeBucket: row.size_bucket as SizeBucket,
     disciplines,
+    ...workAuthFrom(row.description),
   };
 }
 
@@ -92,10 +94,11 @@ function mapRow(row: ListingRow): Listing {
 export async function listListings(now = Date.now()): Promise<Listing[]> {
   const db = await getDb();
   const rows = await db.all<ListingRow>(
-    `SELECT ${LIST_COLUMNS} FROM listings WHERE COALESCE(posted_at, first_seen_at) >= ?`,
+    `SELECT ${LIST_COLUMNS}, description FROM listings WHERE COALESCE(posted_at, first_seen_at) >= ?`,
     [freshCutoff(now)],
   );
-  return rows.map(mapRow);
+  // The description is only read for the work-auth flags; the board doesn't need the full text.
+  return rows.map((row) => ({ ...mapRow(row), description: undefined }));
 }
 
 export async function getListing(id: string, now = Date.now()): Promise<Listing | null> {

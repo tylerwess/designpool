@@ -26,15 +26,15 @@ test("the wordmark splits Design and pool without hardcoded colors", () => {
   assert.equal(TYPE_DISPLAY.heroTracking, "-0.035em");
 });
 
-test("the favicon and app icon use the accent pool mark", () => {
+test("the favicon and app icon use the brand-blue pool mark", () => {
   const svg = readFileSync(join(ROOT, "app/icon.svg"), "utf8");
   const icon = readFileSync(join(ROOT, "app/icon.tsx"), "utf8");
   const apple = readFileSync(join(ROOT, "app/apple-icon.tsx"), "utf8");
   const mark = readFileSync(join(ROOT, "lib/brand-mark.tsx"), "utf8");
 
   assert.match(svg, /prefers-color-scheme:\s*dark/);
-  assert.match(svg, new RegExp(PALETTES.light.accent));
-  assert.match(svg, new RegExp(PALETTES.dark.accent));
+  assert.match(svg, new RegExp(PALETTES.light.brand));
+  assert.match(svg, new RegExp(PALETTES.dark.brand));
   // "pool" is outlined as a white path so it renders in Fjalla One without a web font.
   assert.match(svg, /<path fill="#ffffff" d="M/);
   assert.equal(svg.includes("#f4f1ea"), false);

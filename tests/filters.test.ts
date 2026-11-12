@@ -33,13 +33,16 @@ function job(overrides: Partial<Listing>): Listing {
     industry: "productivity",
     sizeBucket: "1000+",
     disciplines: ["product_design"],
+    opt: false,
+    relocation: false,
+    sponsorsVisa: false,
     ...overrides,
   };
 }
 
 describe("filters", () => {
   const listings = [
-    job({ id: "a", yearsMin: 3, seniority: "senior", stretch: true }),
+    job({ id: "a", yearsMin: 3, seniority: "senior", stretch: true, sponsorsVisa: true, opt: true }),
     job({
       id: "b",
       title: "Senior Product Designer",
@@ -51,6 +54,7 @@ describe("filters", () => {
       location: "New York, NY",
       salaryMin: null,
       salaryMax: null,
+      relocation: true,
     }),
     job({
       id: "c",
@@ -79,7 +83,7 @@ describe("filters", () => {
     assert.deepEqual(matched, ["a"]);
   });
 
-  it("filters industry, work type, salary, discipline, and keyword", () => {
+  it("filters industry, work type, work authorization, discipline, and keyword", () => {
     assert.deepEqual(
       applyFilters(listings, parseSearchParams({ industry: "fintech" })).map((listing) => listing.id),
       ["b"],
@@ -89,8 +93,16 @@ describe("filters", () => {
       ["a"],
     );
     assert.deepEqual(
-      applyFilters(listings, parseSearchParams({ salary: "1" })).map((listing) => listing.id),
+      applyFilters(listings, parseSearchParams({ visa: "1" })).map((listing) => listing.id),
       ["a"],
+    );
+    assert.deepEqual(
+      applyFilters(listings, parseSearchParams({ opt: "1" })).map((listing) => listing.id),
+      ["a"],
+    );
+    assert.deepEqual(
+      applyFilters(listings, parseSearchParams({ relocation: "1" })).map((listing) => listing.id),
+      ["b"],
     );
     assert.deepEqual(
       applyFilters(listings, parseSearchParams({ discipline: "ux" })).map((listing) => listing.id),
@@ -104,14 +116,7 @@ describe("filters", () => {
       applyFilters(listings, parseSearchParams({ location: "new york" })).map((listing) => listing.id),
       ["b"],
     );
-    assert.deepEqual(
-      applyFilters(listings, parseSearchParams({ employment: "internship" })).map((listing) => listing.id),
-      ["c"],
-    );
-    assert.deepEqual(
-      applyFilters(listings, parseSearchParams({ size: "51-200" })).map((listing) => listing.id),
-      ["c"],
-    );
+    assert.equal(applyFilters(listings, parseSearchParams({ salary: "1", size: "51-200" })).length, 3);
   });
 });
 
