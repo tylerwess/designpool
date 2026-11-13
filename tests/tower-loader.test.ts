@@ -27,12 +27,12 @@ test("the tower loader is credited, scoped, and token-colored", () => {
   assert.match(css, /animation-delay: 2\.3s/);
   assert.match(css, /animation-delay: 3\.45s/);
   assert.match(css, /prefers-reduced-motion: reduce[\s\S]*\.tower-loader-wrap \.box/);
-  assert.equal(PALETTES.light["tower-left"], "#0052a3");
-  assert.equal(PALETTES.light["tower-right"], "#0073e6");
-  assert.equal(PALETTES.light["tower-top"], "#8cc3ff");
-  assert.equal(PALETTES.dark["tower-left"], "#2f82e0");
-  assert.equal(PALETTES.dark["tower-right"], "#4da3ff");
-  assert.equal(PALETTES.dark["tower-top"], "#a8d2ff");
+  assert.equal(PALETTES.light["tower-left"], "#333333");
+  assert.equal(PALETTES.light["tower-right"], "#5c5c5c");
+  assert.equal(PALETTES.light["tower-top"], "#a3a3a3");
+  assert.equal(PALETTES.dark["tower-left"], "#cccccc");
+  assert.equal(PALETTES.dark["tower-right"], "#a3a3a3");
+  assert.equal(PALETTES.dark["tower-top"], "#ffffff");
   // The tower lives in the /design gallery only; the landing hero no longer shows it.
   assert.equal(home.includes("TowerLoader"), false);
   assert.match(home, /className="hero-title /);

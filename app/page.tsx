@@ -1,4 +1,4 @@
-import { DisciplineChips } from "@/components/DisciplineChips";
+import { EnamelPins } from "@/components/EnamelPins";
 import { FreshListingsCount } from "@/components/FreshListingsCount";
 import { HeroFrame } from "@/components/HeroFrame";
 import { HeroLevels } from "@/components/HeroLevels";
@@ -9,6 +9,7 @@ import { LevelRamp } from "@/components/LevelRamp";
 import { ArrowIcon, Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Surface } from "@/components/ui/Surface";
+import { hiringPins } from "@/lib/hiring-pins";
 import { loadBoard, loadIngestStats, loadRoleTrend } from "@/lib/board";
 import { pageMetadata } from "@/lib/site";
 
@@ -45,14 +46,16 @@ export default async function HomePage() {
             </Button>
           </div>
 
-          <div className="mt-10">
-            <h2 className="section-label">Browse by discipline</h2>
-            <div className="mt-3">
-              <DisciplineChips jobs={jobs} />
+          {jobs.length > 0 && (
+            <div className="mt-10">
+              <h2 className="section-label">Who&apos;s hiring</h2>
+              <div className="mt-4">
+                <EnamelPins pins={hiringPins(jobs)} />
+              </div>
             </div>
-          </div>
+          )}
 
-          <Surface className="mt-8 flex items-end justify-between gap-4 p-4 sm:p-5">
+          <Surface className="mt-10 flex items-end justify-between gap-4 p-4 sm:p-5">
             <div className="flex min-w-0 flex-col gap-2">
               <p className="text-sm text-muted">Open roles</p>
               <FreshListingsCount count={jobs.length} className="self-start text-[2.109375rem] leading-none text-brand-ink" />

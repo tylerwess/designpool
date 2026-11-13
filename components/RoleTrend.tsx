@@ -7,7 +7,7 @@ const WEEKDAY = new Intl.DateTimeFormat("en-US", { weekday: "short", timeZone: "
 const MIN_SHARE = 0.12;
 
 /**
- * Open roles over the last five days: past days in the soft brand blue, today in the brand blue on the
+ * Open roles over the last five days: past days in the soft brand tone, today in the brand tone on the
  * right. Bars grow from the baseline on load, staggered left to right. Days without a recorded count
  * use the estimate from loadRoleTrend and look the same as recorded days.
  */

@@ -108,7 +108,7 @@ test("primary accent text meets WCAG AA in both themes", () => {
   }
   assert.equal(PALETTES.light.accent, "#111111");
   assert.equal(PALETTES.dark.accent, "#ffffff");
-  assert.equal(PALETTES.light.brand, "#0073e6");
+  assert.equal(PALETTES.light.brand, "#111111");
   assert.equal(PALETTES.light["on-accent"], "#ffffff");
 });
 
@@ -126,7 +126,7 @@ test("the written system and the gallery route exist", () => {
   assert.equal(TYPE_BODY.tracking, "-0.03em");
   assert.equal(TYPE_BODY.metaTracking, "-0.02em");
   assert.equal(TYPE_DISPLAY.family, "Fjalla One");
-  assert.equal(TYPE_DISPLAY.heroTracking, "-0.035em");
+  assert.equal(TYPE_DISPLAY.heroTracking, "-0.015em");
   const page = readFileSync(join(ROOT, "app/design/page.tsx"), "utf8");
   assert.match(page, /force-light/);
   assert.match(page, /force-dark/);

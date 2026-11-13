@@ -20,13 +20,13 @@
   --light-on-accent: #ffffff;
   --light-accent-focus: #111111;
   --light-accent-soft: #ebebeb;
-  /* Blue is reserved for icons and data viz. */
-  --light-brand: #0073e6;
-  --light-brand-soft: #e3f0fd;
-  --light-brand-ink: #0058b3;
-  --light-tower-left: #0052a3;
-  --light-tower-right: #0073e6;
-  --light-tower-top: #8cc3ff;
+  /* Neutral: icons and data viz follow ink. */
+  --light-brand: #111111;
+  --light-brand-soft: #ebebeb;
+  --light-brand-ink: #111111;
+  --light-tower-left: #333333;
+  --light-tower-right: #5c5c5c;
+  --light-tower-top: #a3a3a3;
   --light-tag-bg: #f0f0f0;
   --light-tag-fg: #3d3d3d;
   --light-positive: #02a969;
@@ -45,13 +45,13 @@
   --dark-on-accent: #000000;
   --dark-accent-focus: #ffffff;
   --dark-accent-soft: #2c2c2c;
-  /* Blue is reserved for icons and data viz. */
-  --dark-brand: #4da3ff;
-  --dark-brand-soft: #0f2440;
-  --dark-brand-ink: #a8d2ff;
-  --dark-tower-left: #2f82e0;
-  --dark-tower-right: #4da3ff;
-  --dark-tower-top: #a8d2ff;
+  /* Neutral: icons and data viz follow ink. */
+  --dark-brand: #ffffff;
+  --dark-brand-soft: #2c2c2c;
+  --dark-brand-ink: #ffffff;
+  --dark-tower-left: #cccccc;
+  --dark-tower-right: #a3a3a3;
+  --dark-tower-top: #ffffff;
   --dark-tag-bg: #232323;
   --dark-tag-fg: #c8c8c8;
   --dark-positive: #02a969;
@@ -86,8 +86,8 @@
   --space-8: 2rem;
   --tracking-body: -0.03em;
   --tracking-meta: -0.02em;
-  --tracking-display: -0.02em;
-  --tracking-hero: -0.035em;
+  --tracking-display: -0.005em;
+  --tracking-hero: -0.015em;
 
   color-scheme: light;
 }
@@ -397,51 +397,98 @@ h1.font-display,
   color: var(--muted);
 }
 
-/* Discipline chips. */
-.discipline-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--bg);
-  color: var(--ink);
-  padding: 6px 12px;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  letter-spacing: var(--tracking-meta);
-  line-height: 1.2;
-  white-space: nowrap;
+/*
+  "Who's hiring": companies drawn as round soft enamel pins. A physical object, so the metal and
+  enamel colors are fixed in both themes: a polished nickel rim around white enamel holding the
+  company's mark. The role count is a UI notification badge pinned to the top-right corner.
+*/
+.enamel-pins {
+  --metal: linear-gradient(150deg, #fbfbfb 0%, #b9b9b9 38%, #f2f2f2 55%, #8d8d8d 100%);
+  --enamel-ink: #161616;
+  --enamel-white: #fafafa;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px 14px;
+  padding: 12px 4px 4px;
+}
+
+.enamel-pin {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  rotate: var(--tilt, 0deg);
+  filter: drop-shadow(0 2px 2px rgb(0 0 0 / 0.22)) drop-shadow(0 6px 10px rgb(0 0 0 / 0.12));
   transition:
-    border-color 0.15s ease,
-    background-color 0.15s ease;
+    rotate 0.2s ease,
+    translate 0.2s ease,
+    filter 0.2s ease;
 }
 
-.discipline-chip:hover {
-  border-color: color-mix(in oklab, var(--brand) 55%, transparent);
-  background: var(--brand-soft);
-  color: var(--brand-ink);
+.enamel-pin:hover,
+.enamel-pin:focus-visible {
+  rotate: 0deg;
+  translate: 0 -3px;
+  filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.22)) drop-shadow(0 12px 16px rgb(0 0 0 / 0.16));
 }
 
-.discipline-chip-icon {
-  width: 15px;
-  height: 15px;
-  flex-shrink: 0;
-  fill: none;
-  stroke: var(--muted);
-  stroke-width: 1.4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: stroke 0.15s ease;
+.enamel-pin:focus-visible {
+  outline: 2px solid var(--accent-focus);
+  outline-offset: 4px;
+  border-radius: 50%;
 }
 
-.discipline-chip:hover .discipline-chip-icon {
-  stroke: var(--brand);
+/* The pin itself: white enamel inside a polished rim, with a fine inner bevel. */
+.enamel-pin-logo {
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  border: 4px solid transparent;
+  border-radius: 50%;
+  background:
+    linear-gradient(var(--enamel-white), var(--enamel-white)) padding-box,
+    var(--metal) border-box;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.12);
+  overflow: hidden;
 }
 
-.discipline-chip-count {
-  color: var(--muted);
+.enamel-pin-logo img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.enamel-pin-initial {
+  color: var(--enamel-ink);
+  font-family: var(--font-display), "Fjalla One", "Arial Narrow", sans-serif;
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+/* Notification badge: stays level while the pin tilts, so it reads as UI on top of the object. */
+.enamel-pin-badge {
+  position: absolute;
+  top: -8px;
+  right: -22px;
+  border: 2px solid var(--bg);
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--on-accent);
+  padding: 3px 8px;
+  font-family: var(--font-body), "Inter", "Segoe UI", sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0;
+  white-space: nowrap;
   font-variant-numeric: tabular-nums;
+  rotate: calc(var(--tilt, 0deg) * -1);
+  transition: rotate 0.2s ease;
+}
+
+.enamel-pin:hover .enamel-pin-badge,
+.enamel-pin:focus-visible .enamel-pin-badge {
+  rotate: 0deg;
 }
 
 /* The eight seniority levels as a 100–800 color ramp. --step runs 0.125 to 1. */
@@ -1382,8 +1429,9 @@ input.control[type="number"]::-webkit-outer-spin-button {
   .slot-reel-strip,
   .btn-primary,
   .btn-outline,
-  .discipline-chip,
-  .level-ramp-swatch {
+  .level-ramp-swatch,
+  .enamel-pin,
+  .enamel-pin-badge {
     transition: none;
   }
 
