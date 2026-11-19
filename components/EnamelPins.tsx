@@ -8,7 +8,7 @@ import type { HiringPin } from "@/lib/hiring-pins";
 const TILTS = [-4, 3, -2, 5, -3, 2, -5, 4];
 
 /**
- * Companies hiring right now, drawn as round enamel pins carrying only the company's mark,
+ * Companies hiring right now, drawn as app-icon-shaped enamel pins carrying only the company's mark,
  * with a notification badge for the role count. Each links to that company's roles.
  */
 export function EnamelPins({ pins }: { pins: HiringPin[] }) {
