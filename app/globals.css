@@ -398,72 +398,64 @@ h1.font-display,
 }
 
 /*
-  "Who's hiring": companies drawn as app-icon-shaped soft enamel pins. A physical object, so the metal and
-  enamel colors are fixed in both themes: a polished nickel rim around white enamel holding the
-  company's mark. The role count is a UI notification badge pinned to the top-right corner.
+  "Who's hiring": companies as a level row of app-icon-shaped tiles holding the company's mark on
+  the theme's surface, edged by a hairline. The open-role count is a muted caption under each tile,
+  so the row reads as one quiet strip of marks.
 */
 .enamel-pins {
-  --metal: linear-gradient(150deg, #fbfbfb 0%, #b9b9b9 38%, #f2f2f2 55%, #8d8d8d 100%);
-  --enamel-ink: #161616;
-  --enamel-white: #fafafa;
   /* App-icon corners: ~22.5% of the side, like a home-screen icon. */
   --pin-radius: 22.5%;
   display: flex;
   flex-wrap: wrap;
-  gap: 22px 14px;
-  padding: 12px 4px 4px;
+  gap: 16px 12px;
 }
 
 .enamel-pin {
-  position: relative;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
   text-decoration: none;
-  rotate: var(--tilt, 0deg);
-  filter: drop-shadow(0 2px 2px rgb(0 0 0 / 0.22)) drop-shadow(0 6px 10px rgb(0 0 0 / 0.12));
-  transition:
-    rotate 0.2s ease,
-    translate 0.2s ease,
-    filter 0.2s ease;
+  transition: translate 0.2s ease;
 }
 
 .enamel-pin:hover,
 .enamel-pin:focus-visible {
-  rotate: 0deg;
-  translate: 0 -3px;
-  filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.22)) drop-shadow(0 12px 16px rgb(0 0 0 / 0.16));
+  translate: 0 -2px;
 }
 
 .enamel-pin:focus-visible {
-  outline: 2px solid var(--accent-focus);
-  outline-offset: 4px;
-  border-radius: var(--pin-radius);
+  outline: none;
 }
 
-/* The pin itself: white enamel inside a polished rim, with a fine inner bevel. */
+.enamel-pin:focus-visible .enamel-pin-logo {
+  outline: 2px solid var(--accent-focus);
+  outline-offset: 3px;
+}
+
 .enamel-pin-logo {
   display: grid;
   place-items: center;
-  width: 76px;
-  height: 76px;
-  border: 4px solid transparent;
+  width: 56px;
+  height: 56px;
   border-radius: var(--pin-radius);
-  background:
-    linear-gradient(var(--enamel-white), var(--enamel-white)) padding-box,
-    var(--metal) border-box;
-  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.12);
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--line);
   overflow: hidden;
 }
 
+/* Favicons come as small squares; rounding their corners keeps any baked-in background tidy on dark. */
 .enamel-pin-logo img {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
   object-fit: contain;
 }
 
 .enamel-pin-initial {
-  color: var(--enamel-ink);
+  color: var(--ink);
   font-family: var(--font-display), "Fjalla One", "Arial Narrow", sans-serif;
-  font-size: 1.75rem;
+  font-size: 1.375rem;
   line-height: 1;
 }
 
@@ -473,36 +465,23 @@ h1.font-display,
     --pin-radius: 32%;
   }
 
-  .enamel-pin-logo,
-  .enamel-pin:focus-visible {
+  .enamel-pin-logo {
     corner-shape: squircle;
   }
 }
 
-/* Notification badge: stays level while the pin tilts, so it reads as UI on top of the object. */
-.enamel-pin-badge {
-  position: absolute;
-  top: -8px;
-  right: -22px;
-  border: 2px solid var(--bg);
-  border-radius: 999px;
-  background: var(--accent);
-  color: var(--on-accent);
-  padding: 3px 8px;
-  font-family: var(--font-body), "Inter", "Segoe UI", sans-serif;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: 0;
+.enamel-pin-count {
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
-  rotate: calc(var(--tilt, 0deg) * -1);
-  transition: rotate 0.2s ease;
+  transition: color 0.2s ease;
 }
 
-.enamel-pin:hover .enamel-pin-badge,
-.enamel-pin:focus-visible .enamel-pin-badge {
-  rotate: 0deg;
+.enamel-pin:hover .enamel-pin-count,
+.enamel-pin:focus-visible .enamel-pin-count {
+  color: var(--ink);
 }
 
 /* The eight seniority levels as a 100–800 color ramp. --step runs 0.125 to 1. */
@@ -1445,7 +1424,7 @@ input.control[type="number"]::-webkit-outer-spin-button {
   .btn-outline,
   .level-ramp-swatch,
   .enamel-pin,
-  .enamel-pin-badge {
+  .enamel-pin-count {
     transition: none;
   }
 

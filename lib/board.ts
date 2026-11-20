@@ -1,6 +1,7 @@
 import { databaseMode } from "./db";
 import { listListings, getListing, getIngestStats, getRoleCounts, recordRoleCount, type IngestStats } from "./listings";
 import { listingTimestamp } from "./filters";
+import { mockDataEnabled, mockListings } from "./mock-board";
 import type { Listing } from "./types";
 
 export type BoardState = {
@@ -10,6 +11,10 @@ export type BoardState = {
 };
 
 export async function loadBoard(): Promise<BoardState> {
+  if (mockDataEnabled()) {
+    const jobs = databaseMode() === "unconfigured" ? [] : await listListings().catch(() => []);
+    if (jobs.length === 0) return { status: "ok", jobs: mockListings(), message: null };
+  }
   if (databaseMode() === "unconfigured") {
     return {
       status: "unconfigured",
@@ -32,6 +37,13 @@ export async function loadBoard(): Promise<BoardState> {
 
 /** Null when the database is unconfigured, unreachable, or no ingest has run yet. */
 export async function loadIngestStats(): Promise<IngestStats | null> {
+  if (mockDataEnabled()) {
+    const real = databaseMode() === "unconfigured" ? null : await getIngestStats().catch(() => null);
+    if (!real || Date.now() - Date.parse(real.ranAt) > 2 * DAY_MS) {
+      return { freshAdded: 14, staleRemoved: 6, ranAt: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString() };
+    }
+    return real;
+  }
   if (databaseMode() === "unconfigured") return null;
   try {
     return await getIngestStats();
@@ -42,6 +54,9 @@ export async function loadIngestStats(): Promise<IngestStats | null> {
 }
 
 export async function loadListing(id: string): Promise<{ status: BoardState["status"]; job: Listing | null; message: string | null }> {
+  if (mockDataEnabled() && id.includes(":mock-")) {
+    return { status: "ok", job: mockListings().find((job) => job.id === id) ?? null, message: null };
+  }
   if (databaseMode() === "unconfigured") {
     return {
       status: "unconfigured",
@@ -90,6 +105,14 @@ function estimateOpenRoles(jobs: Listing[], day: string): number {
  */
 export async function loadRoleTrend(jobs: Listing[], days = 5, now = Date.now()): Promise<RoleTrendDay[] | null> {
   const todayCount = jobs.length;
+  // Mock roles never touch the database: estimate the whole trend from them instead of recording counts.
+  if (mockDataEnabled() && jobs.some((job) => job.externalId.startsWith("mock-"))) {
+    return Array.from({ length: days }, (_, index) => {
+      const day = new Date(now - (days - 1 - index) * DAY_MS).toISOString().slice(0, 10);
+      const isToday = index === days - 1;
+      return { day, openRoles: isToday ? todayCount : estimateOpenRoles(jobs, day), isToday, estimated: !isToday };
+    });
+  }
   if (databaseMode() === "unconfigured") return null;
   const keys = Array.from({ length: days }, (_, index) => new Date(now - (days - 1 - index) * DAY_MS).toISOString().slice(0, 10));
   const today = keys[keys.length - 1];
