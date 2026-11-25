@@ -28,8 +28,8 @@ export default async function HomePage() {
         <Container size="narrow" className="pt-10 sm:pt-14">
             <h1 className="hero-title max-w-3xl text-[1.58203125rem] leading-[1.1] sm:text-[2.63671875rem]">
               {/* The level gets its own line so the reel never reflows the sentence; balance keeps phones from orphaning "board for". */}
-              <span className="block text-balance">A no-nonsense job board for</span>
-              <span className="mt-8 block">
+              <span className="block text-balance">A <span className="hero-emph">no-nonsense</span> job board for</span>
+              <span className="block">
                 <HeroLevels />{" "}
                 {/* Its own line on phones, so the streaming level never pushes "design" back and forth. */}
                 <span className="block whitespace-nowrap sm:inline">design professionals.</span>

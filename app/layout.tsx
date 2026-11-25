@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { Metadata, Viewport } from "next";
-import { Fjalla_One, Inter, Inter_Tight } from "next/font/google";
+import { Fjalla_One, Inter, Inter_Tight, Antonio } from "next/font/google";
 import Script from "next/script";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -26,6 +26,13 @@ const display = Fjalla_One({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-display",
+});
+
+/** The hero headline only: a condensed gothic, extra-light with semibold emphasis. Fjalla One still sets the logo and icon. */
+const hero = Antonio({
+  subsets: ["latin"],
+  weight: ["200", "600"],
+  variable: "--font-hero",
 });
 
 export const viewport: Viewport = {
@@ -61,7 +68,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${body.variable} ${heading.variable} ${display.variable} dark h-full antialiased`} suppressHydrationWarning>
+    <html lang="en" className={`${body.variable} ${heading.variable} ${display.variable} ${hero.variable} dark h-full antialiased`} suppressHydrationWarning>
       <body className="flex min-h-full flex-col bg-canvas text-ink">
         <Script id="designpool-theme" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <Header />
