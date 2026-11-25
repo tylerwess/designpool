@@ -1,5 +1,6 @@
 import { databaseMode } from "./db";
-import { listListings, getListing, getIngestStats, getRoleCounts, recordRoleCount, type IngestStats } from "./listings";
+import { cachedRead } from "./data-cache";
+import { freshCutoff, listListings, listListingsWithDescriptions, getIngestStats, getRoleCounts, recordRoleCount, type IngestStats } from "./listings";
 import { listingTimestamp } from "./filters";
 import { mockDataEnabled, mockListings } from "./mock-board";
 import type { Listing } from "./types";
@@ -9,6 +10,17 @@ export type BoardState = {
   jobs: Listing[];
   message: string | null;
 };
+
+/**
+ * Pages read through the six-hour cache in data-cache.ts, so a page view or a crawler normally
+ * costs no database query. Detail pages are served from the same snapshot as the board.
+ */
+async function cachedListings(now = Date.now()): Promise<Listing[]> {
+  const jobs = await cachedRead("listings", () => listListingsWithDescriptions(now), now);
+  // Same 30-day rule as the SQL, re-applied so a cached snapshot never shows a role that aged out mid-window.
+  const cutoff = freshCutoff(now);
+  return jobs.filter((job) => (job.postedAt ?? job.firstSeenAt) >= cutoff);
+}
 
 export async function loadBoard(): Promise<BoardState> {
   if (mockDataEnabled()) {
@@ -23,7 +35,7 @@ export async function loadBoard(): Promise<BoardState> {
     };
   }
   try {
-    const jobs = await listListings();
+    const jobs = (await cachedListings()).map((job) => ({ ...job, description: undefined }));
     return { status: "ok", jobs, message: null };
   } catch (error) {
     console.error(error);
@@ -46,7 +58,7 @@ export async function loadIngestStats(): Promise<IngestStats | null> {
   }
   if (databaseMode() === "unconfigured") return null;
   try {
-    return await getIngestStats();
+    return await cachedRead("ingest-stats", () => getIngestStats());
   } catch (error) {
     console.error(error);
     return null;
@@ -65,7 +77,7 @@ export async function loadListing(id: string): Promise<{ status: BoardState["sta
     };
   }
   try {
-    const job = await getListing(id);
+    const job = (await cachedListings()).find((listing) => listing.id === id) ?? null;
     return { status: "ok", job, message: null };
   } catch (error) {
     console.error(error);
@@ -117,8 +129,16 @@ export async function loadRoleTrend(jobs: Listing[], days = 5, now = Date.now())
   const keys = Array.from({ length: days }, (_, index) => new Date(now - (days - 1 - index) * DAY_MS).toISOString().slice(0, 10));
   const today = keys[keys.length - 1];
   try {
-    await recordRoleCount(today, todayCount, new Date(now).toISOString(), false);
-    const counts = new Map((await getRoleCounts(keys)).map((row) => [row.day, row.openRoles]));
+    const counts = new Map(
+      (await cachedRead(`role-counts:${keys.join(",")}`, () => getRoleCounts(keys), now)).map((row) => [row.day, row.openRoles]),
+    );
+    // The ingest writes today's row; a view only fills it on days before that, once per cache window.
+    if (!counts.has(today)) {
+      await cachedRead(`role-count-fill:${today}`, async () => {
+        await recordRoleCount(today, todayCount, new Date(now).toISOString(), false);
+        return true;
+      }, now);
+    }
     return keys.map((day) => {
       if (day === today) return { day, openRoles: todayCount, isToday: true, estimated: false };
       const recorded = counts.get(day);

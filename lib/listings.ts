@@ -92,13 +92,18 @@ function mapRow(row: ListingRow): Listing {
  * nothing stale is ever displayed in the meantime.
  */
 export async function listListings(now = Date.now()): Promise<Listing[]> {
+  // The description is only read for the work-auth flags; the board doesn't need the full text.
+  return (await listListingsWithDescriptions(now)).map((job) => ({ ...job, description: undefined }));
+}
+
+/** Every listing inside the 30-day window, with descriptions. One query that the page cache serves from. */
+export async function listListingsWithDescriptions(now = Date.now()): Promise<Listing[]> {
   const db = await getDb();
   const rows = await db.all<ListingRow>(
     `SELECT ${LIST_COLUMNS}, description FROM listings WHERE COALESCE(posted_at, first_seen_at) >= ?`,
     [freshCutoff(now)],
   );
-  // The description is only read for the work-auth flags; the board doesn't need the full text.
-  return rows.map((row) => ({ ...mapRow(row), description: undefined }));
+  return rows.map(mapRow);
 }
 
 export async function getListing(id: string, now = Date.now()): Promise<Listing | null> {

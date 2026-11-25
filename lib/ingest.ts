@@ -95,6 +95,11 @@ export async function toListingDraft(company: Company, job: FetchedJob, seenAt: 
   };
 }
 
+/** Same rule as the reads and deleteExpired: COALESCE(posted_at, first_seen_at) < cutoff. */
+export function isExpired(draft: Pick<ListingDraft, "postedAt" | "firstSeenAt">, cutoffIso: string): boolean {
+  return (draft.postedAt ?? draft.firstSeenAt) < cutoffIso;
+}
+
 export async function runIngest(source: Company[] = companiesForIngest()): Promise<IngestResult> {
   const seenAt = new Date().toISOString();
   const cutoff = freshCutoff();
@@ -107,6 +112,9 @@ export async function runIngest(source: Company[] = companiesForIngest()): Promi
       for (const job of jobs) {
         const draft = await toListingDraft(company, job, seenAt);
         if (!draft) continue;
+        // Older than the 30-day window: it would be inserted, then deleted by deleteExpired below,
+        // and never shown. Skipping it saves the write and keeps "removed" in ingest_stats honest.
+        if (isExpired(draft, cutoff)) continue;
         await upsertListing(draft);
         upserted += 1;
       }
