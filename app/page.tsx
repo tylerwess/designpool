@@ -1,10 +1,11 @@
 import { EnamelPins } from "@/components/EnamelPins";
 import { FreshListingsCount } from "@/components/FreshListingsCount";
 import { HeroLevels } from "@/components/HeroLevels";
+import { SourcePlatforms } from "@/components/SourcePlatforms";
+import { VerifiedIcon } from "@/components/ui/VerifiedIcon";
 import { RoleTrend } from "@/components/RoleTrend";
 import { LandingLive } from "@/components/LandingLive";
 import { LastUpdated } from "@/components/LastUpdated";
-import { LevelRamp } from "@/components/LevelRamp";
 import { ArrowIcon, Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Surface } from "@/components/ui/Surface";
@@ -26,6 +27,13 @@ export default async function HomePage() {
       <div className="relative isolate pb-12">
         <div className="hero-bg" aria-hidden="true" />
         <Container size="narrow" className="pt-10 sm:pt-14">
+            <div className="mb-5 flex items-center gap-3">
+              <p className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-sm text-muted">
+                <VerifiedIcon />
+                Real listings from
+              </p>
+              <SourcePlatforms className="text-base" />
+            </div>
             <h1 className="hero-title max-w-3xl text-[1.58203125rem] leading-[1.1] sm:text-[2.63671875rem]">
               {/* The level gets its own line so the reel never reflows the sentence; balance keeps phones from orphaning "board for". */}
               <span className="block text-balance">A <span className="hero-emph">no-nonsense</span> job board for</span>
@@ -51,15 +59,6 @@ export default async function HomePage() {
               </div>
             </div>
           )}
-
-          <Surface className="mt-10 flex items-end justify-between gap-4 p-4 sm:p-5">
-            <div className="flex min-w-0 flex-col gap-2">
-              <p className="text-sm text-muted">Open roles</p>
-              <FreshListingsCount count={jobs.length} className="self-start text-[2.109375rem] leading-none text-brand-ink" />
-              <p className="text-xs text-muted">Posted in the last 30 days</p>
-            </div>
-            {trend ? <RoleTrend days={trend} /> : null}
-          </Surface>
         </Container>
       </div>
 
@@ -84,6 +83,16 @@ export default async function HomePage() {
               {board.status === "ok" ? "No roles yet. Listings show up after the first ingest." : board.message}
             </Surface>
           )}
+          {jobs.length > 0 ? (
+            <Surface className="mt-8 flex items-end justify-between gap-4 p-4 sm:p-5">
+              <div className="flex min-w-0 flex-col gap-2">
+                <p className="text-sm text-muted">Open roles</p>
+                <FreshListingsCount count={jobs.length} className="self-start text-[2.109375rem] leading-none text-brand-ink" />
+                <p className="text-xs text-muted">Posted in the last 30 days</p>
+              </div>
+              {trend ? <RoleTrend days={trend} /> : null}
+            </Surface>
+          ) : null}
         </Container>
       </section>
 
@@ -93,9 +102,6 @@ export default async function HomePage() {
           <p className="mt-3 max-w-xl text-base leading-7 text-muted">
             Title first, years second. Lead stays an individual contributor unless the role manages people.
           </p>
-          <div className="mt-6">
-            <LevelRamp />
-          </div>
           <div className="mt-5">
             <Button href="/about" variant="ghost">
               Read how seniority is decided

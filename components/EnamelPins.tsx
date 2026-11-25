@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { PinLogo } from "@/components/PinLogo";
+import { ArrowIcon } from "@/components/ui/Button";
 import { jobsHref } from "@/lib/filters";
 import type { HiringPin } from "@/lib/hiring-pins";
 
 /**
- * Companies hiring right now, drawn as a level row of app-icon-shaped tiles carrying only the
- * company's mark, with the open-role count as a quiet caption underneath. Each links to that company's roles.
+ * Companies hiring right now, as a hairline-ruled grid: each cell holds the company's mark and a
+ * tertiary "8 roles →" link to that company's roles.
  */
 export function EnamelPins({ pins }: { pins: HiringPin[] }) {
   if (pins.length === 0) return null;
@@ -24,6 +25,7 @@ export function EnamelPins({ pins }: { pins: HiringPin[] }) {
               <PinLogo name={pin.company} website={pin.website} />
               <span className="enamel-pin-count" aria-hidden="true">
                 {roles}
+                <ArrowIcon />
               </span>
             </Link>
           </li>

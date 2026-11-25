@@ -57,6 +57,9 @@
   --dark-positive: #02a969;
 
   --canvas: var(--light-canvas);
+  --verified: #1a73e8; /* 4.8:1 on white */
+  --purple: #6d28d9; /* text and graphics: 7.1:1 on white, 6.4:1 on surface */
+  --purple-fill: #6d28d9; /* button fill, white text 7.1:1 */
   --bg: var(--light-bg);
   --surface: var(--light-surface);
   --ink: var(--light-ink);
@@ -88,12 +91,17 @@
   --tracking-meta: -0.02em;
   --tracking-display: -0.005em;
   --tracking-hero: -0.015em;
+  /* Inter Tight headings in the page body: loose enough to breathe, the face is already tight. */
+  --tracking-heading: 0.01em;
 
   color-scheme: light;
 }
 
 .dark {
   --canvas: var(--dark-canvas);
+  --verified: #5aa9ff; /* 8:1 on black */
+  --purple: #b07dff; /* text and graphics: 7.2:1 on black, 4.8:1 on surface */
+  --purple-fill: #7c3aed; /* button fill, white text 5.7:1; 3.7:1 against black */
   --bg: var(--dark-bg);
   --surface: var(--dark-surface);
   --ink: var(--dark-ink);
@@ -120,6 +128,9 @@
 
 .force-light {
   --canvas: var(--light-canvas);
+  --verified: #1a73e8; /* 4.8:1 on white */
+  --purple: #6d28d9; /* text and graphics: 7.1:1 on white, 6.4:1 on surface */
+  --purple-fill: #6d28d9; /* button fill, white text 7.1:1 */
   --bg: var(--light-bg);
   --surface: var(--light-surface);
   --ink: var(--light-ink);
@@ -146,6 +157,9 @@
 
 .force-dark {
   --canvas: var(--dark-canvas);
+  --verified: #5aa9ff; /* 8:1 on black */
+  --purple: #b07dff; /* text and graphics: 7.2:1 on black, 4.8:1 on surface */
+  --purple-fill: #7c3aed; /* button fill, white text 5.7:1; 3.7:1 against black */
   --bg: var(--dark-bg);
   --surface: var(--dark-surface);
   --ink: var(--dark-ink);
@@ -277,7 +291,7 @@ body {
   h3 {
     font-family: var(--font-heading), "Inter Tight", "Helvetica Neue", Arial, sans-serif;
     font-weight: 600;
-    letter-spacing: var(--tracking-display);
+    letter-spacing: var(--tracking-heading);
   }
 }
 
@@ -326,47 +340,52 @@ h1.font-display,
 }
 
 /*
-  "Who's hiring": companies as a level row of app-icon-shaped tiles holding the company's mark on
-  the theme's surface, edged by a hairline. The open-role count is a muted caption under each tile,
-  so the row reads as one quiet strip of marks.
+  "Who's hiring": a hairline-ruled grid. Each cell holds the company's mark with a tertiary
+  "8 roles →" link under it. Rules are the top/left border of the grid plus the right/bottom
+  border of each cell, so a short last row leaves no stray lines.
 */
 .enamel-pins {
-  /* App-icon corners: ~22.5% of the side, like a home-screen icon. */
-  --pin-radius: 22.5%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+
+@media (min-width: 640px) {
+  .enamel-pins {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.enamel-pins > li {
   display: flex;
-  flex-wrap: wrap;
-  gap: 16px 12px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
 }
 
 .enamel-pin {
   display: flex;
+  flex: 1;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 14px;
+  padding: 28px 12px 22px;
   text-decoration: none;
-  transition: translate 0.2s ease;
-}
-
-.enamel-pin:hover,
-.enamel-pin:focus-visible {
-  translate: 0 -2px;
 }
 
 .enamel-pin:focus-visible {
-  outline: none;
-}
-
-.enamel-pin:focus-visible .enamel-pin-logo {
   outline: 2px solid var(--accent-focus);
-  outline-offset: 3px;
+  outline-offset: -4px;
 }
 
+/* A small surface tile keeps light marks (Linear) visible on a white page. */
 .enamel-pin-logo {
   display: grid;
   place-items: center;
-  width: 56px;
-  height: 56px;
-  border-radius: var(--pin-radius);
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
   background: var(--surface);
   box-shadow: inset 0 0 0 1px var(--line);
   overflow: hidden;
@@ -383,83 +402,41 @@ h1.font-display,
 .enamel-pin-initial {
   color: var(--ink);
   font-family: var(--font-display), "Fjalla One", "Arial Narrow", sans-serif;
-  font-size: 1.375rem;
+  font-size: 1.75rem;
   line-height: 1;
 }
 
-/* Where supported, true squircle corners for a closer home-screen icon silhouette. */
-@supports (corner-shape: squircle) {
-  .enamel-pins {
-    --pin-radius: 32%;
-  }
-
-  .enamel-pin-logo {
-    corner-shape: squircle;
-  }
-}
-
+/* The tertiary button: the ghost style, a semibold underlined label with an arrow. */
 .enamel-pin-count {
-  color: var(--muted);
-  font-size: 0.75rem;
-  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink);
+  font-family: var(--font-body), "Inter", "Segoe UI", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.2;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
-  transition: color 0.2s ease;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--purple) 45%, transparent);
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.2s ease;
+}
+
+.enamel-pin-count svg {
+  color: var(--purple);
+  transition: translate 0.2s ease;
 }
 
 .enamel-pin:hover .enamel-pin-count,
 .enamel-pin:focus-visible .enamel-pin-count {
-  color: var(--ink);
+  text-decoration-color: var(--purple);
 }
 
-/* The eight seniority levels as a 100–800 color ramp. --step runs 0.125 to 1. */
-.level-ramp {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-}
-
-@media (min-width: 40rem) {
-  .level-ramp {
-    grid-template-columns: repeat(8, minmax(0, 1fr));
-  }
-}
-
-.level-ramp-step {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.level-ramp-swatch {
-  height: 3.5rem;
-  margin-bottom: 6px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: color-mix(in oklab, var(--brand) calc(var(--step) * 100%), var(--surface));
-  transition: outline-color 0.15s ease;
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-}
-
-.level-ramp-step:hover .level-ramp-swatch,
-.level-ramp-step:focus-visible .level-ramp-swatch {
-  outline-color: var(--brand);
-}
-
-.level-ramp-token {
-  color: var(--muted);
-  font-size: 0.75rem;
-  font-variant-numeric: tabular-nums;
-  line-height: 1.3;
-}
-
-.level-ramp-name {
-  color: var(--ink);
-  font-size: 0.875rem;
-  font-weight: 500;
-  letter-spacing: var(--tracking-meta);
-  line-height: 1.3;
+.enamel-pin:hover .enamel-pin-count svg,
+.enamel-pin:focus-visible .enamel-pin-count svg {
+  translate: 3px 0;
 }
 
 /* Hero level: the typed word, on one line. The height is held so the line never collapses mid-erase. */
@@ -705,24 +682,24 @@ h1.font-display,
   color: var(--ink);
 }
 
-/* Primary CTA: flat accent fill. */
+/* Primary CTA: flat dark-purple fill with white text (7.1:1 light, 5.7:1 dark). */
 .btn-primary {
-  border: 1px solid var(--accent);
-  background-color: var(--accent);
-  color: var(--on-accent);
+  border: 1px solid var(--purple-fill);
+  background-color: var(--purple-fill);
+  color: #ffffff;
   transition:
     background-color 0.15s ease,
     border-color 0.15s ease;
 }
 
 .btn-primary:hover {
-  border-color: var(--accent-hover);
-  background-color: var(--accent-hover);
+  border-color: color-mix(in srgb, var(--purple-fill) 85%, #000000);
+  background-color: color-mix(in srgb, var(--purple-fill) 85%, #000000);
 }
 
 .btn-primary:active {
-  border-color: var(--accent-active);
-  background-color: var(--accent-active);
+  border-color: color-mix(in srgb, var(--purple-fill) 70%, #000000);
+  background-color: color-mix(in srgb, var(--purple-fill) 70%, #000000);
 }
 
 /* Secondary CTA: plain outline that follows the theme. */
@@ -911,7 +888,7 @@ input.control[type="number"]::-webkit-outer-spin-button {
 }
 
 .role-trend-bar.is-today {
-  background: var(--brand);
+  background: var(--purple);
 }
 
 .role-trend-bar.is-empty {
@@ -1338,9 +1315,8 @@ input.control[type="number"]::-webkit-outer-spin-button {
   .slot-reel-strip,
   .btn-primary,
   .btn-outline,
-  .level-ramp-swatch,
-  .enamel-pin,
-  .enamel-pin-count {
+  .enamel-pin-count,
+  .enamel-pin-count svg {
     transition: none;
   }
 
