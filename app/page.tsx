@@ -1,6 +1,5 @@
 import { EnamelPins } from "@/components/EnamelPins";
 import { FreshListingsCount } from "@/components/FreshListingsCount";
-import { HeroFrame } from "@/components/HeroFrame";
 import { HeroLevels } from "@/components/HeroLevels";
 import { RoleTrend } from "@/components/RoleTrend";
 import { LandingLive } from "@/components/LandingLive";
@@ -27,17 +26,15 @@ export default async function HomePage() {
       <div className="relative isolate pb-12">
         <div className="hero-bg" aria-hidden="true" />
         <Container size="narrow" className="pt-10 sm:pt-14">
-          <HeroFrame>
             <h1 className="hero-title max-w-3xl text-[1.58203125rem] leading-[1.1] sm:text-[2.63671875rem]">
               {/* The level gets its own line so the reel never reflows the sentence; balance keeps phones from orphaning "board for". */}
               <span className="block text-balance">A no-nonsense job board for</span>
-              <span className="block">
+              <span className="mt-8 block">
                 <HeroLevels />{" "}
                 {/* Its own line on phones, so the streaming level never pushes "design" back and forth. */}
                 <span className="block whitespace-nowrap sm:inline">design professionals.</span>
               </span>
             </h1>
-          </HeroFrame>
           <p className="mt-4 max-w-2xl text-base text-muted">No roles older than 30 days. Apply goes right to the official job listing.</p>
           <div className="mt-6">
             <Button href="/jobs" className="w-full gap-1.5 sm:w-auto">
